@@ -58,3 +58,13 @@ Speech: Icefall AISHELL3 VITS model (Apache-2.0), sherpa-onnx engine (Apache-2.0
 https://huggingface.co/csukuangfj/icefall-tts-aishell3-vits-low-2024-04-06
 https://github.com/k2-fsa/sherpa-onnx
 Narration is synthetic, not a real person's recording.
+
+
+Sound library expansion — original OGG files copied unchanged.
+Source: https://github.com/Muges/ambientsounds/tree/7ef9aefeeed93c37bca3cdb246a982dd1afce2f0
+大雨滂沱: D W; CC BY (version unspecified by upstream); https://freesound.org/people/D%20W/sounds/136971/; file heavy-rain.ogg
+林间阵雨: Corsica_S; CC BY (version unspecified by upstream); https://freesound.org/people/Corsica_S/sounds/169031/; file forest-rain.ogg
+远雷雨夜: RHumphries; CC BY (version unspecified by upstream); https://freesound.org/people/RHumphries/sounds/2523/; file thunderstorm.ogg
+林中潺潺: mystiscool; CC BY (version unspecified by upstream); https://freesound.org/people/mystiscool/sounds/7138/; file stream.ogg
+柴火噼啪: inchadney; CC0; https://freesound.org/people/inchadney/sounds/132534/; file fireplace.ogg
+Upstream license inventory: https://github.com/Muges/ambientsounds/blob/7ef9aefeeed93c37bca3cdb246a982dd1afce2f0/readme.md

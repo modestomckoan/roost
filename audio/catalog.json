@@ -8,7 +8,8 @@
     "license": "CC0",
     "source": "https://freesound.org/people/kvgarlic/sounds/156826/",
     "repository": "https://github.com/rafaelmardojai/blanket",
-    "path": "birds"
+    "path": "birds",
+    "group": "nature"
   },
   {
     "id": "stream",
@@ -19,7 +20,8 @@
     "license": "CC0",
     "source": "https://freesound.org/people/gluckose/sounds/333987/",
     "repository": "https://github.com/rafaelmardojai/blanket",
-    "path": "stream"
+    "path": "stream",
+    "group": "water"
   },
   {
     "id": "wind",
@@ -30,7 +32,8 @@
     "license": "CC0",
     "source": "https://freesound.org/people/felix.blume/sounds/217506/",
     "repository": "https://github.com/rafaelmardojai/blanket",
-    "path": "wind"
+    "path": "wind",
+    "group": "nature"
   },
   {
     "id": "fire",
@@ -41,7 +44,8 @@
     "license": "Public Domain",
     "source": "https://soundbible.com/1543-Fireplace.html",
     "repository": "https://github.com/rafaelmardojai/blanket",
-    "path": "fireplace"
+    "path": "fireplace",
+    "group": "life"
   },
   {
     "id": "night",
@@ -52,7 +56,8 @@
     "license": "Public Domain",
     "source": "https://soundbible.com/2083-Crickets-Chirping-At-Night.html",
     "repository": "https://github.com/rafaelmardojai/blanket",
-    "path": "summer-night"
+    "path": "summer-night",
+    "group": "nature"
   },
   {
     "id": "boat",
@@ -63,18 +68,21 @@
     "license": "CC0",
     "source": "https://freesound.org/people/Falcet/sounds/439365/",
     "repository": "https://github.com/rafaelmardojai/blanket",
-    "path": "boat"
+    "path": "boat",
+    "group": "water"
   },
   {
     "id": "rain",
-    "name": "细雨落下",
+    "name": "细雨淅沥",
     "file": "audio/rain.ogg",
     "category": "自然与生活 · 真实录音",
     "author": "alex36917 · 编辑 Porrumentzio",
     "license": "CC BY（上游标注）",
     "source": "https://freesound.org/people/alex36917/sounds/524605/",
     "repository": "https://github.com/rafaelmardojai/blanket",
-    "path": "rain"
+    "path": "rain",
+    "group": "rain",
+    "description": "轻柔细雨，均匀落下"
   },
   {
     "id": "waves",
@@ -85,7 +93,8 @@
     "license": "CC BY（上游标注）",
     "source": "https://freesound.org/people/Luftrum/sounds/48412/",
     "repository": "https://github.com/rafaelmardojai/blanket",
-    "path": "waves"
+    "path": "waves",
+    "group": "water"
   },
   {
     "id": "cafe",
@@ -96,7 +105,8 @@
     "license": "Public Domain",
     "source": "https://soundbible.com/1664-Restaurant-Ambiance.html",
     "repository": "https://github.com/rafaelmardojai/blanket",
-    "path": "coffee-shop"
+    "path": "coffee-shop",
+    "group": "life"
   },
   {
     "id": "piano",
@@ -106,7 +116,8 @@
     "author": "Nicholaus P. Brosowsky（采样）；ROOST（编配）",
     "license": "CC BY 3.0 · 已编配、混响与混音",
     "source": "https://github.com/nbrosowsky/tonejs-instruments",
-    "icon": "♬"
+    "icon": "♬",
+    "group": "music"
   },
   {
     "id": "harp",
@@ -116,7 +127,8 @@
     "author": "Nicholaus P. Brosowsky（采样）；ROOST（编配）",
     "license": "CC BY 3.0 · 已编配、混响与混音",
     "source": "https://github.com/nbrosowsky/tonejs-instruments",
-    "icon": "♬"
+    "icon": "♬",
+    "group": "music"
   },
   {
     "id": "guitar",
@@ -126,6 +138,72 @@
     "author": "Nicholaus P. Brosowsky（采样）；ROOST（编配）",
     "license": "CC BY 3.0 · 已编配、混响与混音",
     "source": "https://github.com/nbrosowsky/tonejs-instruments",
-    "icon": "♬"
+    "icon": "♬",
+    "group": "music"
+  },
+  {
+    "id": "heavy-rain",
+    "name": "大雨滂沱",
+    "description": "密集雨幕，持续而饱满",
+    "file": "audio/heavy-rain.ogg",
+    "category": "自然与生活 · 开放许可录音",
+    "author": "D W",
+    "license": "CC BY（上游标注）",
+    "source": "https://freesound.org/people/D%20W/sounds/136971/",
+    "repository": "https://github.com/Muges/ambientsounds",
+    "revision": "7ef9aefeeed93c37bca3cdb246a982dd1afce2f0",
+    "group": "rain"
+  },
+  {
+    "id": "forest-rain",
+    "name": "林间阵雨",
+    "description": "雨滴穿过树叶，层层落下",
+    "file": "audio/forest-rain.ogg",
+    "category": "自然与生活 · 开放许可录音",
+    "author": "Corsica_S",
+    "license": "CC BY（上游标注）",
+    "source": "https://freesound.org/people/Corsica_S/sounds/169031/",
+    "repository": "https://github.com/Muges/ambientsounds",
+    "revision": "7ef9aefeeed93c37bca3cdb246a982dd1afce2f0",
+    "group": "rain"
+  },
+  {
+    "id": "thunder-rain",
+    "name": "远雷雨夜",
+    "description": "雨声中伴随雷声，有音量起伏",
+    "file": "audio/thunder-rain.ogg",
+    "category": "自然与生活 · 开放许可录音",
+    "author": "RHumphries",
+    "license": "CC BY（上游标注）",
+    "source": "https://freesound.org/people/RHumphries/sounds/2523/",
+    "repository": "https://github.com/Muges/ambientsounds",
+    "revision": "7ef9aefeeed93c37bca3cdb246a982dd1afce2f0",
+    "group": "rain"
+  },
+  {
+    "id": "forest-stream",
+    "name": "林中潺潺",
+    "description": "近处流水与细密水花",
+    "file": "audio/forest-stream.ogg",
+    "category": "自然与生活 · 开放许可录音",
+    "author": "mystiscool",
+    "license": "CC BY（上游标注）",
+    "source": "https://freesound.org/people/mystiscool/sounds/7138/",
+    "repository": "https://github.com/Muges/ambientsounds",
+    "revision": "7ef9aefeeed93c37bca3cdb246a982dd1afce2f0",
+    "group": "water"
+  },
+  {
+    "id": "crackle-fire",
+    "name": "柴火噼啪",
+    "description": "木柴燃烧，间歇轻响",
+    "file": "audio/crackle-fire.ogg",
+    "category": "自然与生活 · 开放许可录音",
+    "author": "inchadney",
+    "license": "CC0",
+    "source": "https://freesound.org/people/inchadney/sounds/132534/",
+    "repository": "https://github.com/Muges/ambientsounds",
+    "revision": "7ef9aefeeed93c37bca3cdb246a982dd1afce2f0",
+    "group": "life"
   }
 ]

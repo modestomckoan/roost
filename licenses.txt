@@ -1,0 +1,60 @@
+ROOST audio attribution
+
+Blanket audio licensing: https://github.com/rafaelmardojai/blanket/blob/master/SOUNDS_LICENSING.md
+Original recordings copied without modification. Blanket code is not incorporated.
+
+林间鸟鸣: kvgarlic
+CC0
+https://freesound.org/people/kvgarlic/sounds/156826/
+
+山间溪流: gluckose
+CC0
+https://freesound.org/people/gluckose/sounds/333987/
+
+旷野微风: felix.blume
+CC0
+https://freesound.org/people/felix.blume/sounds/217506/
+
+炉边暖火: ezwa
+Public Domain
+https://soundbible.com/1543-Fireplace.html
+
+夏夜虫鸣: Lisa Redfern
+Public Domain
+https://soundbible.com/2083-Crickets-Chirping-At-Night.html
+
+湖面轻舟: Falcet
+CC0
+https://freesound.org/people/Falcet/sounds/439365/
+
+细雨落下: alex36917 · 编辑 Porrumentzio
+CC BY（上游标注）
+https://freesound.org/people/alex36917/sounds/524605/
+
+潮汐海岸: Luftrum · 编辑 Porrumentzio
+CC BY（上游标注）
+https://freesound.org/people/Luftrum/sounds/48412/
+
+午后咖啡馆: stephan
+Public Domain
+https://soundbible.com/1664-Restaurant-Ambiance.html
+
+微光钢琴: Nicholaus P. Brosowsky（采样）；ROOST（编配）
+CC BY 3.0 · 已编配、混响与混音
+https://github.com/nbrosowsky/tonejs-instruments
+
+月下竖琴: Nicholaus P. Brosowsky（采样）；ROOST（编配）
+CC BY 3.0 · 已编配、混响与混音
+https://github.com/nbrosowsky/tonejs-instruments
+
+晚风木吉他: Nicholaus P. Brosowsky（采样）；ROOST（编配）
+CC BY 3.0 · 已编配、混响与混音
+https://github.com/nbrosowsky/tonejs-instruments
+
+Instrument samples: https://github.com/nbrosowsky/tonejs-instruments (CC BY 3.0). Original sampled instruments rearranged into slow instrumental loops with reverb.
+License: https://creativecommons.org/licenses/by/3.0/
+
+Speech: Icefall AISHELL3 VITS model (Apache-2.0), sherpa-onnx engine (Apache-2.0).
+https://huggingface.co/csukuangfj/icefall-tts-aishell3-vits-low-2024-04-06
+https://github.com/k2-fsa/sherpa-onnx
+Narration is synthetic, not a real person's recording.

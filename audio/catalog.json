@@ -1,0 +1,131 @@
+[
+  {
+    "id": "birds",
+    "name": "林间鸟鸣",
+    "file": "audio/birds.ogg",
+    "category": "自然与生活 · 真实录音",
+    "author": "kvgarlic",
+    "license": "CC0",
+    "source": "https://freesound.org/people/kvgarlic/sounds/156826/",
+    "repository": "https://github.com/rafaelmardojai/blanket",
+    "path": "birds"
+  },
+  {
+    "id": "stream",
+    "name": "山间溪流",
+    "file": "audio/stream.ogg",
+    "category": "自然与生活 · 真实录音",
+    "author": "gluckose",
+    "license": "CC0",
+    "source": "https://freesound.org/people/gluckose/sounds/333987/",
+    "repository": "https://github.com/rafaelmardojai/blanket",
+    "path": "stream"
+  },
+  {
+    "id": "wind",
+    "name": "旷野微风",
+    "file": "audio/wind.ogg",
+    "category": "自然与生活 · 真实录音",
+    "author": "felix.blume",
+    "license": "CC0",
+    "source": "https://freesound.org/people/felix.blume/sounds/217506/",
+    "repository": "https://github.com/rafaelmardojai/blanket",
+    "path": "wind"
+  },
+  {
+    "id": "fire",
+    "name": "炉边暖火",
+    "file": "audio/fire.ogg",
+    "category": "自然与生活 · 真实录音",
+    "author": "ezwa",
+    "license": "Public Domain",
+    "source": "https://soundbible.com/1543-Fireplace.html",
+    "repository": "https://github.com/rafaelmardojai/blanket",
+    "path": "fireplace"
+  },
+  {
+    "id": "night",
+    "name": "夏夜虫鸣",
+    "file": "audio/night.ogg",
+    "category": "自然与生活 · 真实录音",
+    "author": "Lisa Redfern",
+    "license": "Public Domain",
+    "source": "https://soundbible.com/2083-Crickets-Chirping-At-Night.html",
+    "repository": "https://github.com/rafaelmardojai/blanket",
+    "path": "summer-night"
+  },
+  {
+    "id": "boat",
+    "name": "湖面轻舟",
+    "file": "audio/boat.ogg",
+    "category": "自然与生活 · 真实录音",
+    "author": "Falcet",
+    "license": "CC0",
+    "source": "https://freesound.org/people/Falcet/sounds/439365/",
+    "repository": "https://github.com/rafaelmardojai/blanket",
+    "path": "boat"
+  },
+  {
+    "id": "rain",
+    "name": "细雨落下",
+    "file": "audio/rain.ogg",
+    "category": "自然与生活 · 真实录音",
+    "author": "alex36917 · 编辑 Porrumentzio",
+    "license": "CC BY（上游标注）",
+    "source": "https://freesound.org/people/alex36917/sounds/524605/",
+    "repository": "https://github.com/rafaelmardojai/blanket",
+    "path": "rain"
+  },
+  {
+    "id": "waves",
+    "name": "潮汐海岸",
+    "file": "audio/waves.ogg",
+    "category": "自然与生活 · 真实录音",
+    "author": "Luftrum · 编辑 Porrumentzio",
+    "license": "CC BY（上游标注）",
+    "source": "https://freesound.org/people/Luftrum/sounds/48412/",
+    "repository": "https://github.com/rafaelmardojai/blanket",
+    "path": "waves"
+  },
+  {
+    "id": "cafe",
+    "name": "午后咖啡馆",
+    "file": "audio/cafe.ogg",
+    "category": "自然与生活 · 真实录音",
+    "author": "stephan",
+    "license": "Public Domain",
+    "source": "https://soundbible.com/1664-Restaurant-Ambiance.html",
+    "repository": "https://github.com/rafaelmardojai/blanket",
+    "path": "coffee-shop"
+  },
+  {
+    "id": "piano",
+    "name": "微光钢琴",
+    "file": "audio/piano.ogg",
+    "category": "器乐 · 原创缓拍编配",
+    "author": "Nicholaus P. Brosowsky（采样）；ROOST（编配）",
+    "license": "CC BY 3.0 · 已编配、混响与混音",
+    "source": "https://github.com/nbrosowsky/tonejs-instruments",
+    "icon": "♬"
+  },
+  {
+    "id": "harp",
+    "name": "月下竖琴",
+    "file": "audio/harp.ogg",
+    "category": "器乐 · 原创缓拍编配",
+    "author": "Nicholaus P. Brosowsky（采样）；ROOST（编配）",
+    "license": "CC BY 3.0 · 已编配、混响与混音",
+    "source": "https://github.com/nbrosowsky/tonejs-instruments",
+    "icon": "♬"
+  },
+  {
+    "id": "guitar",
+    "name": "晚风木吉他",
+    "file": "audio/guitar.ogg",
+    "category": "器乐 · 原创缓拍编配",
+    "author": "Nicholaus P. Brosowsky（采样）；ROOST（编配）",
+    "license": "CC BY 3.0 · 已编配、混响与混音",
+    "source": "https://github.com/nbrosowsky/tonejs-instruments",
+    "icon": "♬"
+  }
+]

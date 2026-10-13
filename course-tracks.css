@@ -1,0 +1,167 @@
+/* ============================================================
+   栖 ROOST · 多时长课程轨道样式
+   配合 course-tracks.js 使用，沿用浅色自然系主题变量。
+   ============================================================ */
+
+/* ---------- 轨道选择器（三档卡片） ---------- */
+.track-picker {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 6px 0 22px;
+}
+.track-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 18px;
+  padding: 14px 13px;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+  transition: border-color .25s, background .25s, transform .15s;
+  font-family: inherit;
+  color: var(--ink);
+}
+.track-card:active { transform: scale(.97); }
+.track-card.on {
+  border-color: var(--sage-deep);
+  background: var(--sage-tint);
+}
+.tc-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+}
+.tc-name { font-size: 13.5px; font-weight: 600; line-height: 1.3; }
+.tc-dot { color: var(--sage-deep); font-size: 10px; line-height: 1; }
+.tc-sub {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--sage-deep);
+}
+.tc-meta {
+  font-size: 10.5px;
+  color: var(--ink-dim);
+  line-height: 1.5;
+  min-height: 30px;
+}
+.tc-bar {
+  height: 4px;
+  background: var(--line);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+.tc-bar i {
+  display: block;
+  height: 100%;
+  background: var(--sage);
+  border-radius: 3px;
+  transition: width .5s ease;
+}
+.tc-progress {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--ink-faint);
+}
+
+/* ---------- 当前轨道续接大卡 ---------- */
+.track-cta-card {
+  background: linear-gradient(135deg, var(--sage-tint), var(--mist-tint));
+  border-radius: 22px;
+  padding: 20px 18px;
+  margin-bottom: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.tcc-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.tcc-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--sage-deep);
+}
+.tcc-progress {
+  font-size: 11px;
+  color: var(--ink-dim);
+}
+.tcc-for {
+  font-size: 13px;
+  color: var(--ink);
+  line-height: 1.7;
+}
+.tcc-get {
+  font-size: 11.5px;
+  color: var(--ink-dim);
+  line-height: 1.7;
+}
+.track-cta-card .cta {
+  align-self: flex-start;
+  margin-top: 4px;
+}
+
+/* ---------- 课程行：完成态与箭头（补充 features.css） ---------- */
+.course-row { position: relative; }
+.course-row.done .course-start .day-num {
+  background: var(--sage);
+  color: #fff;
+}
+.course-arrow {
+  color: var(--ink-faint);
+  font-size: 17px;
+  flex-shrink: 0;
+}
+
+/* ---------- 整程完成横幅 ---------- */
+.track-finish {
+  text-align: center;
+  background: var(--mist-tint);
+  border-radius: 22px;
+  padding: 32px 22px 30px;
+  margin-top: 8px;
+}
+.tf-mark {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--sage);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  margin: 0 auto 12px;
+}
+.track-finish h3 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.track-finish p {
+  font-size: 12.5px;
+  color: var(--ink-dim);
+  line-height: 1.8;
+  margin-bottom: 18px;
+}
+.track-finish .cta {
+  margin: 0 auto;
+}
+
+/* ---------- 窄屏适配 ---------- */
+@media (max-width: 380px) {
+  .track-picker { gap: 8px; }
+  .track-card { padding: 12px 11px; }
+  .tc-name { font-size: 12.5px; }
+  .tc-meta { font-size: 10px; min-height: 36px; }
+}

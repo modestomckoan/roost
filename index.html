@@ -744,6 +744,14 @@ const PROGRAM = [
     },
     "breathHint": "可选吸 4 拍 · 呼 6 拍 · 不屏息；不适合时自然呼吸",
     "intention": "认识支撑，允许第一次练习并不安静",
+    "audioTrack": {
+      "segments": [
+        {"url": "https://aka.doubaocdn.com/s/kvqVjrrzoa", "pauseAfter": 90},
+        {"url": "https://aka.doubaocdn.com/s/N5l0bxi2Ar", "pauseAfter": 120},
+        {"url": "https://aka.doubaocdn.com/s/xMshrohRRE", "pauseAfter": 120},
+        {"url": "https://aka.doubaocdn.com/s/oo76s8aoj9", "pauseAfter": 150}
+      ]
+    },
     "steps": [
       {
         "t": "欢迎来到第一天。今天我们从「在这里安顿」开始，认识支撑，遇见内心最深处的自己。",
@@ -6815,7 +6823,7 @@ const SCAN_ROUTE=['head','face','neck','shoulder','chest','heart','belly','hand'
 const PART_TO_ROUTE={head:'head',face:'face',nose:'face',neck:'neck',shoulder:'shoulder',armL:'shoulder',armR:'shoulder',chest:'chest',back:'chest',heart:'heart',belly:'belly',hand:'hand',hip:'hip',legL:'foot',legR:'foot',foot:'foot'};
 const PART_LABEL={head:'头顶',face:'面部',nose:'鼻腔',neck:'后颈',shoulder:'肩颈',chest:'胸口',back:'后背',heart:'心口',belly:'腹部',hand:'双手',hip:'臀部',foot:'双脚'};
 
-let session={day:null,stepIdx:0,playing:false,timerInt:null,stepInt:null,elapsed:0,audioCtx:null,soundOn:false,ambientNodes:null,bowlIv:null};
+let session={day:null,stepIdx:0,playing:false,timerInt:null,stepInt:null,elapsed:0,audioCtx:null,soundOn:false,ambientNodes:null,bowlIv:null,audioSegIdx:0,audioEl:null,audioPauseInt:null,bgmSel:null};
 
 function median(a){const s=a.slice().sort((x,y)=>x-y);const n=s.length;return n?(n%2?s[n>>1]:0.5*(s[n/2-1]+s[n/2])):0;}
 function mad(a,m){return median(a.map(v=>Math.abs(v-m)));}
@@ -6889,6 +6897,7 @@ const CalmSim={
 function startSession(dayNum){
   stopEEG();
   session.day=PROGRAM[dayNum-1];session.stepIdx=0;session.elapsed=0;session.playing=false;
+  session.audioSegIdx=0; if(session.audioEl){session.audioEl.pause();session.audioEl=null;}
   const totalSec=session.day.steps.reduce((s,x)=>s+x.s,0);
   CalmSim.reset(totalSec);
   go('session');
@@ -6911,11 +6920,33 @@ function playSession(){
         String(Math.floor(session.elapsed/60)).padStart(2,'0')+':'+String(session.elapsed%60).padStart(2,'0');
     },1000);
   }
+  if(session.day.audioTrack){ playAudioSegment(); return; }
   playStep();
+}
+function playAudioSegment(){
+  if(!session.playing) return;
+  const track=session.day.audioTrack;
+  if(session.audioSegIdx>=track.segments.length){ finishSession(); return; }
+  const seg=track.segments[session.audioSegIdx];
+  document.getElementById('scriptText').textContent=session.day.steps[Math.min(session.audioSegIdx*5, session.day.steps.length-1)].t;
+  document.getElementById('scriptHint').textContent=`AI人声引导 · 第 ${session.audioSegIdx+1} / ${track.segments.length} 段`;
+  // 创建或复用音频元素
+  if(!session.audioEl){ session.audioEl=new Audio(); session.audioEl.crossOrigin='anonymous'; }
+  session.audioEl.src=seg.url;
+  session.audioEl.play().catch(e=>console.log('audio play err',e));
+  session.audioEl.onended=()=>{
+    // 播完后静默 pauseAfter 秒
+    session.audioPauseInt=setTimeout(()=>{
+      session.audioSegIdx++;
+      playAudioSegment();
+    }, seg.pauseAfter*1000);
+  };
 }
 function pauseSession(){
   session.playing=false;document.getElementById('playBtn').textContent='继续';
   clearTimeout(session.stepInt);
+  clearTimeout(session.audioPauseInt);
+  if(session.audioEl){ session.audioEl.pause(); }
   if(window.speechSynthesis) speechSynthesis.cancel();
 }
 function quitSession(){

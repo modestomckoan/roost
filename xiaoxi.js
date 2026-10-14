@@ -1,105 +1,52 @@
-﻿// 小栖AI陪伴助手 v1.0 - 离线版
+// 小栖AI陪伴助手 v2.0 - 离线场景陪伴版
 (function(){
-  const floatBtn = document.createElement('div');
-  floatBtn.style = `
-    position: fixed; bottom: 24px; right: 24px; width: 56px; height: 56px;
-    border-radius: 50%; background: linear-gradient(135deg, #8FB996, #B8D8BA);
-    box-shadow: 0 4px 20px rgba(143,185,150,0.4); cursor: pointer; z-index: 9999;
-    display: flex; align-items: center; justify-content: center; font-size: 24px;
-    transition: transform 0.3s ease;
-  `;
-  floatBtn.innerText = '🍃';
-  floatBtn.onmouseover = () => floatBtn.style.transform = 'scale(1.1)';
-  floatBtn.onmouseout = () => floatBtn.style.transform = 'scale(1)';
-  document.body.appendChild(floatBtn);
-
-  const chatBox = document.createElement('div');
-  chatBox.style = `
-    position: fixed; bottom: 90px; right: 24px; width: 340px; height: 480px;
-    background: #f8faf7; border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-    z-index: 9999; display: none; flex-direction: column; overflow: hidden;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  `;
-  chatBox.innerHTML = `
-    <div style="padding:16px; background: linear-gradient(135deg, #8FB996, #B8D8BA); color:white;">
-      <div style="font-weight:600; font-size:16px;">小栖 🍃</div>
-      <div style="font-size:12px; opacity:0.9; margin-top:2px;">陪你慢慢静下来</div>
-    </div>
-    <div id="chatMsgs" style="flex:1; padding:16px; overflow-y:auto; background:#f8faf7;"></div>
-    <div style="padding:12px; border-top:1px solid #e5e7eb; background:white;">
-      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px;">
-        <button style="font-size:12px; padding:4px 10px; border-radius:12px; border:1px solid #8FB996; background:white; color:#5a7d60; cursor:pointer;">我静不下心怎么办</button>
-        <button style="font-size:12px; padding:4px 10px; border-radius:12px; border:1px solid #8FB996; background:white; color:#5a7d60; cursor:pointer;">30天课程是什么</button>
-        <button style="font-size:12px; padding:4px 10px; border-radius:12px; border:1px solid #8FB996; background:white; color:#5a7d60; cursor:pointer;">冥想时身体不舒服要停吗</button>
-      </div>
-      <div style="display:flex; gap:8px;">
-        <input id="chatInput" placeholder="和小栖说点什么..." style="flex:1; padding:8px 12px; border:1px solid #e5e7eb; border-radius:8px; outline:none;">
-        <button id="chatSend" style="padding:8px 16px; background:#8FB996; color:white; border:none; border-radius:8px; cursor:pointer;">发送</button>
-      </div>
-    </div>
-  `;
+  const STORE_KEY = 'xiaoxi_state_v2';
+  const defaultState = {name:'',totalSessions:0,streak:0,lastPracticeDay:null,currentDay:1,moodLogs:[],chatHistory:[],lastDailyQuote:null,onboarded:false};
+  let state = loadState();
+  function loadState(){try{return Object.assign({},defaultState,JSON.parse(localStorage.getItem(STORE_KEY)||'{}'));}catch(e){return Object.assign({},defaultState);}}
+  function saveState(){try{localStorage.setItem(STORE_KEY,JSON.stringify(state));}catch(e){}}
+  function getTodayStr(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+  function daysBetween(a,b){if(!a||!b)return 99;return Math.round((new Date(b)-new Date(a))/86400000);}
+  const dailyQuotes=["今天不用做得很好，只要回来就好。","呼吸一直都在，等你随时回来。","允许自己什么都不做，这本身就是休息。","念头不是敌人，它只是路过。","此刻的你，已经足够好了。","慢一点没关系，我们不赶时间。","身体比你以为的，更需要这一刻的安静。","你不需要清空大脑，只是看见它。","每一次呼吸，都是一次温柔的回来。","今天的放松，不需要任何条件。","让肩膀落下来，让呼吸慢下来。","你已经很努力了，现在换你被照顾。","安静不是没有声音，是听见自己。","走神一百次，就温柔回来一百次。","今天的风很软，你也可以很软。","不用和任何人比，包括昨天的自己。","此刻的呼吸，只属于你。","累了就歇，冥想从来不是任务。","你能坐在这里，就已经很勇敢了。","把注意力轻轻放在呼吸上，像放一片羽毛。","所有的情绪，都可以被允许在这里。","今天只需要练习一件事：对自己温柔。","呼吸在，你就在。","不必完美，只需在场。","安静会自己来，你不用追。","当你觉得来不及，恰恰是最该慢下来的时候。","身体记得你给它的每一次温柔。","不用抓住平静，它会在你松手时来。","回来就好，我一直在。","今天的你，也值得被好好接住。"];
+  function detectScene(){if(document.querySelector('.view.active')){const v=document.querySelector('.view.active').id||'';if(v.includes('splash')||document.getElementById('splash'))return 'splash';if(v.includes('onboard'))return 'onboarding';if(v.includes('player')||document.querySelector('.player-view.active'))return 'player';if(v.includes('garden')||document.querySelector('.sound-studio'))return 'garden';if(v.includes('course')||document.querySelector('.course-view.active'))return 'course';if(v.includes('home'))return 'home';}if(location.hash.includes('player'))return 'player';if(location.hash.includes('garden'))return 'garden';if(location.hash.includes('course'))return 'course';return 'home';}
+  function stageGreeting(){const day=state.currentDay||1;if(!state.onboarded){state.onboarded=true;saveState();return '你好呀，我是小栖🍃 接下来的日子，我会一直在这里陪你，不用紧张，我们慢慢来就好。';}const gap=daysBetween(state.lastPracticeDay,getTodayStr());if(gap>3&&state.lastPracticeDay)return '你回来啦🍃 没关系，断了几天也完全没关系，我们不用接着之前的进度逼自己，今天就当是新的第一次，我陪你。';if(day===1)return '嗨，今天是我们的第一天呀，不用做得完美，只要坐下来开始，就已经很棒了。';if(day===7)return '哇，今天是第七天啦，你已经坚持了一整周，我看见你了，真的很温柔很有耐心。';if(day===14)return '两周啦，你有没有发现，身体比一开始更容易松下来了？这就是你给自己的礼物。';if(day===21)return '第三周结束，你已经在慢慢养成回到自己的习惯了，这真的很了不起。';if(day===30)return '今天是第三十天，我们一起走到这里了。谢谢你没有放弃自己，不管以后练不练，我都在这里。';if(day<7)return '今天是第'+day+'天，我们继续慢慢走，不用急，一步一步就好。';if(day<14)return '第二周啦，第'+day+'天，哪怕今天只做三分钟也完全可以。';if(day<21)return '第三周，第'+day+'天，你已经很会照顾自己了。';return '第'+day+'天，我们又见面了，今天想从哪一刻安静下来？';}
+  function sceneGreeting(){const s=detectScene();if(s==='splash')return '先深呼吸一下，我们慢慢加载，不着急。';if(s==='onboarding')return '这四个问题没有标准答案，凭当下的感觉选就好，我会根据你的状态，给你推荐合适的练习。';if(s==='player')return '现在跟着引导就好，走神了也没关系，轻轻把注意力拉回呼吸就行，我陪着你。';if(s==='garden')return '这里是声音花园，你可以单独听雨声、溪水，也可以几层声音叠在一起，调到你觉得舒服的音量。';if(s==='course')return '这里是30天的课程，想从哪一天开始都可以，不用强迫自己按顺序，今天想点哪节就点哪节。';const q=dailyQuotes[new Date().getDate()%dailyQuotes.length];if(state.lastDailyQuote!==getTodayStr()){state.lastDailyQuote=getTodayStr();saveState();return stageGreeting()+'\n\n今天想送你一句话：'+q;}return stageGreeting();}
+  function getQuickButtons(){const s=detectScene();const b=['我静不下心怎么办'];if(s==='player')return ['走神了怎么办','冥想时身体发紧','引导太快了跟不上'];if(s==='garden')return ['推荐什么背景音','声音怎么调舒服','可以边听边睡吗'];if(s==='course')return ['今天不想练怎么办','可以跳着练吗','练多久合适'];if(state.currentDay<=3)return b.concat(['第一次冥想要注意什么','30天真的有用吗']);return b.concat(['今天实在不想动','我断了好几天了']);}
+  function reply(text){const l=text.toLowerCase();
+    if(l.includes('第一次')||l.includes('新手')||l.includes('刚开始'))return '第一次完全不用紧张：找个舒服的姿势坐着躺着都可以；不用刻意清空脑子，有念头是正常的；走神了就轻轻把注意力拉回呼吸，拉回来一百次就练了一百次。哪怕只做两分钟也是成功的。';
+    if(l.includes('静不下心')||l.includes('烦躁')||l.includes('焦虑')||l.includes('慌')||l.includes('脑子乱'))return '没关系的呀，静不下来太正常了，我们不要求你马上静下来。现在先做三次长长的呼吸：吸气4秒，屏住2秒，慢慢呼气6秒，就做三次。你看，其实已经慢下来一点点了，我陪着你。';
+    if(l.includes('走神')||l.includes('集中不了'))return '走神本来就是冥想的一部分，不是你做错了。每一次发现走神、再轻轻拉回来，就是一次练习。不用责怪自己，温柔回来就好。';
+    if(l.includes('不舒服')||l.includes('疼')||l.includes('痛')||l.includes('麻')||l.includes('酸')||l.includes('发紧'))return '如果身体不舒服，第一反应是先动一动，不用硬撑。调整姿势，放下肩膀，松开牙关，怎么舒服怎么来。疼痛感明显就直接停下来，冥想是为了让身体舒服，不是考试。';
+    if(l.includes('跟不上')||l.includes('快')||l.includes('来不及'))return '跟不上就慢下来，这是你的练习。引导语只是提示，你完全可以在舒服的那一步多待一会儿，不用赶节奏，我们不着急。';
+    if(l.includes('30天')||l.includes('课程')||l.includes('有用'))return '30天不是必须完成的任务，是30次温柔的邀约。我们从最基础的呼吸开始，慢慢认识身体和情绪，一天十几分钟，不用打卡不用考试，中途隔一周再回来也永远欢迎你。';
+    if(l.includes('跳着')||l.includes('顺序'))return '当然可以跳着练！课程是给你用的，不是管你的。今天累就选放松，睡不着就选睡前，哪节看着舒服就点哪节，完全没关系。';
+    if(l.includes('多久')||l.includes('几分钟'))return '刚开始每天3-5分钟就特别好，比强迫自己坐20分钟然后再也不想练强一百倍。等你觉得轻松了，自然会想多待一会儿。';
+    if(l.includes('不想练')||l.includes('懒')||l.includes('没动力')||l.includes('不想动'))return '不想练就不练呀，我不会催你打卡。冥想不是KPI，今天累了就好好躺着，哪怕只听一分钟雨声也是照顾自己。等你想回来，我永远在。';
+    if(l.includes('断了')||l.includes('好几天没')||l.includes('放弃'))return '能回来就已经特别棒了。这里没有打卡惩罚，没有连续天数归零，你练过的每一次呼吸身体都记得。今天不用补课，就从这一节开始，我陪你。';
+    if(l.includes('背景音')||l.includes('推荐什么声音')||l.includes('选什么'))return '脑子乱推荐「细雨淅沥」，均匀不抢注意力；身体紧绷睡不着试试「林间清晨」鸟鸣加溪水；喜欢安静单开钢琴就好。引导人声和背景音可以同时开，背景音调到人声30%音量最舒服。';
+    if(l.includes('音量')||l.includes('怎么调')||l.includes('嘈杂'))return '先把引导人声调到刚好能听清但不吵，再慢慢加背景音，背景音要比人声小很多，像隔着窗户听外面的雨，就不会盖过引导。';
+    if(l.includes('睡觉')||l.includes('睡着')||l.includes('边听边睡'))return '当然可以，睡前练习听着睡着是非常好的状态，不用逼自己听完，身体睡着说明它真的松下来了。选睡前那节叠一层雨声，安心睡就好。';
+    if(l.includes('睡不着')||l.includes('失眠')||l.includes('入睡'))return '睡不着不用逼自己睡，越逼越清醒。打开睡前引导，把注意力放在脚和床接触的感觉上，从脚趾开始一个部位一个部位放松，配合慢呼吸，身体会自己困的。';
+    if(l.includes('难过')||l.includes('哭')||l.includes('伤心')||l.includes('低落'))return '嗯，我在这儿。难过的时候不用急着好起来，不用正能量，你可以就静静和这份难过待一会儿，它不会伤害你。跟着我慢慢呼吸，想哭就哭，我陪着你。';
+    if(l.includes('压力')||l.includes('工作')||l.includes('学习')||l.includes('考试'))return '现在先把那件事轻轻放在门外十分钟，这十分钟里你只是你自己。我们先放慢呼吸，放下肩膀，等十分钟结束再去处理，它不会跑的。';
+    if(l.includes('谢谢')||l.includes('感谢'))return '不用谢呀，我一直都在右下角，想说话或者想安静待会儿，随时点我。';
+    if(l.includes('你好')||l.includes('嗨')||l.includes('在吗'))return '我在呀🍃 今天过得怎么样？不用硬撑，想聊什么都可以。';
+    if(l.includes('你是谁')||l.includes('小栖'))return '我是小栖，专属于你的冥想陪伴者。我不催你打卡，不给你打分，你想练我带你，不想练我就安静陪着你，不会走。';
+    if(l.includes('耳机')||l.includes('脑电')||l.includes('硬件'))return '普通蓝牙耳机现在就能直接用，听引导和音乐完全没问题；等脑电耳机做好之后，我还能感觉到你什么时候紧、什么时候松，到时候会更懂你。';
+    return '嗯，我在听你说呢，慢慢讲，不着急。说不清楚也没关系，我们先一起做三个深呼吸，好吗？';
+  }
+  const floatBtn=document.createElement('div');floatBtn.style='position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#8FB996,#B8D8BA);box-shadow:0 4px 20px rgba(143,185,150,0.45);cursor:pointer;z-index:99999;display:flex;align-items:center;justify-content:center;font-size:26px;animation:xiaoxiBreathe 4s ease-in-out infinite;';floatBtn.innerText='🍃';
+  const styleEl=document.createElement('style');styleEl.textContent='@keyframes xiaoxiBreathe{0%,100%{transform:scale(1);box-shadow:0 4px 20px rgba(143,185,150,0.4)}50%{transform:scale(1.06);box-shadow:0 6px 28px rgba(143,185,150,0.6)}}@keyframes xiaoxiPop{0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}}.xiaoxi-msg{animation:xiaoxiPop .25s ease}';document.head.appendChild(styleEl);
+  floatBtn.onmouseover=()=>floatBtn.style.transform='scale(1.12)';floatBtn.onmouseout=()=>floatBtn.style.transform='';document.body.appendChild(floatBtn);
+  const chatBox=document.createElement('div');chatBox.style='position:fixed;bottom:92px;right:24px;width:min(340px,calc(100vw - 32px));height:min(520px,calc(100vh - 140px));background:#f8faf7;border-radius:20px;box-shadow:0 12px 40px rgba(0,0,0,0.15);z-index:99999;display:none;flex-direction:column;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,PingFang SC,Microsoft YaHei,sans-serif;';
+  chatBox.innerHTML='<div style="padding:16px 18px;background:linear-gradient(135deg,#8FB996,#B8D8BA);color:white"><div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-weight:600;font-size:17px">小栖 🍃</div><div style="font-size:12px;opacity:.92;margin-top:2px">陪你慢慢静下来</div></div><div style="width:10px;height:10px;border-radius:50%;background:#d9f2d9;box-shadow:0 0 8px #d9f2d9"></div></div></div><div id="chatMsgs" style="flex:1;padding:16px;overflow-y:auto;background:#f8faf7"></div><div style="padding:12px;border-top:1px solid #e5e7eb;background:white"><div id="quickBtns" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px"></div><div style="display:flex;gap:8px"><input id="chatInput" placeholder="和小栖说点什么..." style="flex:1;padding:10px 14px;border:1px solid #e5e7eb;border-radius:20px;outline:none;font-size:14px"><button id="chatSend" style="padding:8px 18px;background:linear-gradient(135deg,#8FB996,#88a88e);color:white;border:none;border-radius:20px;cursor:pointer;font-size:14px">发送</button></div></div>';
   document.body.appendChild(chatBox);
-
-  let opened = false;
-  floatBtn.onclick = () => {
-    opened = !opened;
-    chatBox.style.display = opened ? 'flex' : 'none';
-    if(opened) greet();
-  };
-
-  const msgs = document.getElementById('chatMsgs');
-  const input = document.getElementById('chatInput');
-  const sendBtn = document.getElementById('chatSend');
-
-  function addMsg(text, isUser=false){
-    const div = document.createElement('div');
-    div.style = `margin-bottom:12px; ${isUser ? 'text-align:right;' : ''}`;
-    div.innerHTML = `<div style="display:inline-block; padding:8px 12px; border-radius:12px; max-width:80%; font-size:14px; line-height:1.5; ${isUser ? 'background:#8FB996; color:white;' : 'background:white; color:#374151;'}">${text}</div>`;
-    msgs.appendChild(div);
-    msgs.scrollTop = msgs.scrollHeight;
-    let history = JSON.parse(localStorage.getItem('xiaoxi_chat') || '[]');
-    history.push({text, isUser, time: Date.now()});
-    localStorage.setItem('xiaoxi_chat', JSON.stringify(history));
-  }
-
-  function greet(){
-    const history = JSON.parse(localStorage.getItem('xiaoxi_chat') || '[]');
-    if(history.length === 0){
-      addMsg('你好呀，我是小栖 🍃 今天感觉怎么样？想聊点什么，或者直接开始今天的冥想都可以。');
-    } else {
-      addMsg('又见到你啦，今天想从哪一刻开始安静下来呢？');
-    }
-    history.forEach(m => addMsg(m.text, m.isUser));
-  }
-
-  function reply(text){
-    const lower = text.toLowerCase();
-    if(lower.includes('静不下心') || lower.includes('烦躁') || lower.includes('焦虑')){
-      return '没关系的呀，静不下来是很正常的事，不用逼自己马上就静下来。我们可以先从3次长长的呼吸开始，就只是跟着我吸气——呼气——慢慢就好了，我陪着你。';
-    }
-    if(lower.includes('30天') || lower.includes('课程')){
-      return '30天的课程是从最基础的呼吸开始，一天一天慢慢带你认识自己的身体和思绪，不用急，我们一天只做一点点，就像散步一样，慢慢走就到了。';
-    }
-    if(lower.includes('不舒服') || lower.includes('疼') || lower.includes('痛')){
-      return '如果冥想的时候身体觉得不舒服，随时停下来就好，不用硬撑。我们冥想不是为了完成任务，是为了让自己舒服一点，怎么舒服怎么来。';
-    }
-    if(lower.includes('你好') || lower.includes('嗨')){
-      return '嗨呀，你来啦。今天外面风很软，要不要找个舒服的地方坐一会儿？';
-    }
-    if(lower.includes('谢谢')){
-      return '不用谢呀，我一直在这儿陪你的。';
-    }
-    return '嗯，我在听你说呢。你慢慢讲，不着急，我们一起在这里待一会儿。';
-  }
-
-  function send(){
-    const text = input.value.trim();
-    if(!text) return;
-    addMsg(text, true);
-    input.value = '';
-    setTimeout(()=> addMsg(reply(text)), 800);
-  }
-
-  sendBtn.onclick = send;
-  input.onkeydown = (e) => e.key === 'Enter' && send();
+  const msgs=document.getElementById('chatMsgs'),input=document.getElementById('chatInput'),sendBtn=document.getElementById('chatSend'),quickWrap=document.getElementById('quickBtns');
+  function addMsg(text,isUser){isUser=isUser||false;const div=document.createElement('div');div.className='xiaoxi-msg';div.style='margin-bottom:14px;'+(isUser?'text-align:right;':'');div.innerHTML='<div style="display:inline-block;padding:10px 14px;border-radius:16px;max-width:85%;font-size:14px;line-height:1.7;white-space:pre-wrap;'+(isUser?'background:linear-gradient(135deg,#8FB996,#88a88e);color:white;border-bottom-right-radius:4px;':'background:white;color:#374151;box-shadow:0 2px 8px rgba(0,0,0,0.04);border-bottom-left-radius:4px;')+'">'+text+'</div>';msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;state.chatHistory.push({text:text,isUser:isUser,time:Date.now()});if(state.chatHistory.length>100)state.chatHistory=state.chatHistory.slice(-100);saveState();}
+  function renderQuickBtns(){quickWrap.innerHTML='';getQuickButtons().forEach(q=>{const b=document.createElement('button');b.textContent=q;b.style='font-size:12px;padding:5px 12px;border-radius:14px;border:1px solid #c5d9c9;background:white;color:#5a7d60;cursor:pointer';b.onmouseover=()=>b.style.background='#edf3ee';b.onmouseout=()=>b.style.background='white';b.onclick=()=>{input.value=q;send();};quickWrap.appendChild(b);});}
+  let opened=false,greeted=false;floatBtn.onclick=()=>{opened=!opened;chatBox.style.display=opened?'flex':'none';if(opened){renderQuickBtns();if(!greeted){greeted=true;msgs.innerHTML='';if(state.chatHistory.length>0)state.chatHistory.slice(-20).forEach(m=>{const d=document.createElement('div');d.style='margin-bottom:14px;'+(m.isUser?'text-align:right;':'');d.innerHTML='<div style="display:inline-block;padding:10px 14px;border-radius:16px;max-width:85%;font-size:14px;line-height:1.7;white-space:pre-wrap;'+(m.isUser?'background:#8FB996;color:white':'background:white;color:#374151')+'">'+m.text+'</div>';msgs.appendChild(d);});setTimeout(()=>addMsg(sceneGreeting()),300);}msgs.scrollTop=msgs.scrollHeight;}};
+  const observer=new MutationObserver(()=>{if(opened)renderQuickBtns();});document.querySelectorAll('.view').forEach(v=>observer.observe(v,{attributes:true,attributeFilter:['class']}));
+  window.addEventListener('roost:sessionComplete',()=>{state.totalSessions++;state.streak++;state.lastPracticeDay=getTodayStr();state.currentDay=Math.min(30,state.currentDay+1);saveState();if(opened)setTimeout(()=>addMsg('今天练习完啦，你做得很好，身体会记得这一刻的放松🍃'),500);});
+  function send(){const text=input.value.trim();if(!text)return;addMsg(text,true);input.value='';setTimeout(()=>addMsg(reply(text)),500+Math.random()*500);}
+  sendBtn.onclick=send;input.onkeydown=e=>e.key==='Enter'&&send();
 })();

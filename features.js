@@ -39,7 +39,4 @@ renderPlan();
 const eegDraw=drawEEG;drawEEG=function(){const show=$('closedLoop').checked;document.querySelector('.eeg-wrap').style.display=show?'block':'none';show?eegDraw():stopEEG();};
 $('closedLoop').addEventListener('change',drawEEG);
 document.querySelector('#view-sounds .sound-toolbar button').setAttribute('onclick','stopVoice();stopAmbient()');
-const voiceShelf=document.createElement('section');voiceShelf.className='voice-shelf';voiceShelf.innerHTML='<h2 class="serif">找到合拍的声音</h2><p class="intro">4 套中文开源神经网络音色，可先试听再选择。全部课程已生成音频，无需语音服务账号。</p><div id="voiceCards" class="voice-cards"></div><p class="source-note">方案来源：<a href="https://github.com/k2-fsa/sherpa-onnx" target="_blank" rel="noopener">sherpa-onnx ↗</a> · GitHub 15,239 Star（2026-10-12 查询，指项目关注度）。音色模型为 Icefall AISHELL3/VITS，采用 Apache-2.0 许可。音色名称为本站命名，非真人身份。</p>';
-document.querySelector('#view-sounds .credits').before(voiceShelf);
-fetch('voice/catalog.json').then(r=>r.json()).then(v=>{$('voiceCards').innerHTML=v.map(x=>`<article><b>${escapeHtml(x.name.split(' · ')[0])}</b><span>中文 · 神经网络音色 ${x.sid}</span><button onclick="chooseVoice('${x.id}')">试听并选择</button></article>`).join('');});
-function chooseVoice(id){$('voiceSelect').value=id;localStorage.setItem('roost_voice',id);previewVoice();document.querySelectorAll('#voiceCards button').forEach(b=>b.textContent=b.getAttribute('onclick').includes(id)?'已选 · 再次试听':'试听并选择');}
+// 旧声音选择卡片已移除，全新 ASMR 配音制作中

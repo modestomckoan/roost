@@ -1,0 +1,75 @@
+{
+ "sea-poster": {
+  "mime": "image/jpeg",
+  "files": [
+   "lite/v2/v2-sea-poster-p00.js",
+   "lite/v2/v2-sea-poster-p01.js"
+  ],
+  "b64len": 12064
+ },
+ "rain": {
+  "mime": "image/jpeg",
+  "files": [
+   "lite/v2/v2-rain-p00.js",
+   "lite/v2/v2-rain-p01.js",
+   "lite/v2/v2-rain-p02.js",
+   "lite/v2/v2-rain-p03.js",
+   "lite/v2/v2-rain-p04.js",
+   "lite/v2/v2-rain-p05.js"
+  ],
+  "b64len": 50696
+ },
+ "forest": {
+  "mime": "image/jpeg",
+  "files": [
+   "lite/v2/v2-forest-p00.js",
+   "lite/v2/v2-forest-p01.js",
+   "lite/v2/v2-forest-p02.js",
+   "lite/v2/v2-forest-p03.js",
+   "lite/v2/v2-forest-p04.js",
+   "lite/v2/v2-forest-p05.js",
+   "lite/v2/v2-forest-p06.js",
+   "lite/v2/v2-forest-p07.js",
+   "lite/v2/v2-forest-p08.js",
+   "lite/v2/v2-forest-p09.js",
+   "lite/v2/v2-forest-p10.js"
+  ],
+  "b64len": 104716
+ },
+ "fire": {
+  "mime": "image/jpeg",
+  "files": [
+   "lite/v2/v2-fire-p00.js",
+   "lite/v2/v2-fire-p01.js",
+   "lite/v2/v2-fire-p02.js"
+  ],
+  "b64len": 27800
+ },
+ "music": {
+  "mime": "image/jpeg",
+  "files": [
+   "lite/v2/v2-music-p00.js",
+   "lite/v2/v2-music-p01.js"
+  ],
+  "b64len": 16592
+ },
+ "seavideo": {
+  "mime": "video/mp4",
+  "files": [
+   "lite/v2/v2-seavideo-p00.js",
+   "lite/v2/v2-seavideo-p01.js",
+   "lite/v2/v2-seavideo-p02.js",
+   "lite/v2/v2-seavideo-p03.js",
+   "lite/v2/v2-seavideo-p04.js",
+   "lite/v2/v2-seavideo-p05.js",
+   "lite/v2/v2-seavideo-p06.js",
+   "lite/v2/v2-seavideo-p07.js",
+   "lite/v2/v2-seavideo-p08.js",
+   "lite/v2/v2-seavideo-p09.js",
+   "lite/v2/v2-seavideo-p10.js",
+   "lite/v2/v2-seavideo-p11.js",
+   "lite/v2/v2-seavideo-p12.js"
+  ],
+  "b64len": 120712
+ }
+}

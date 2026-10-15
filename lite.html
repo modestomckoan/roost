@@ -518,7 +518,7 @@ const MAX_LAYERS=2;
 /* ================= 音频引擎 ================= */
 let ac=null,master=null,duckGain=1;
 const bufferCache=new Map();
-const activeLayers=new Map(); // id -> {source,gain}
+const activeLayers=new Map();
 const voiceAudio=new Audio();
 voiceAudio.setAttribute('playsinline','');
 voiceAudio.setAttribute('preload','auto');
@@ -729,6 +729,7 @@ function loadSceneAsset(sc){
 function getB64(A,key){
   if(A[key]) return A[key];
   if(Array.isArray(A[key+'Parts'])) return A[key+'Parts'].join('');
+  if(Array.isArray(A.vidParts)) return A.vidParts.join('');
   return '';
 }
 function setupSceneVisual(){

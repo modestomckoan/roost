@@ -488,11 +488,11 @@ const SOUNDS = {
   guitar:{name:'晚风木吉他',file:'audio/guitar.ogg'}
 };
 const SCENES = {
-  sea:{name:'海边',icon:'🌊',desc:'海浪 · 小船 · 溪流',sounds:['waves','boat','stream','forest-stream'],def:['waves'],bg:'bg-sea',asset:['a-sea','a-sea-v1','a-sea-v2','a-sea-v3'],akey:'sea'},
-  rain:{name:'雨景',icon:'🌧️',desc:'细雨 · 大雨 · 远雷',sounds:['rain','heavy-rain','forest-rain','thunder-rain'],def:['rain'],bg:'bg-rain',asset:['a-rain','a-rain2','a-rain3','a-rain4'],akey:'rain',blob:'photoB64'},
-  forest:{name:'林间',icon:'🌲',desc:'鸟鸣 · 微风 · 虫鸣',sounds:['birds','wind','night'],def:['birds','wind'],bg:'bg-forest',asset:['a-forest','a-forest2','a-forest3','a-forest4'],akey:'forest',blob:'photoB64'},
-  fire:{name:'炉火',icon:'🔥',desc:'炉火 · 噼啪 · 咖啡馆',sounds:['fire','crackle-fire','cafe'],def:['fire','crackle-fire'],bg:'bg-fire',asset:'a-warm',akey:'warm',blob:'fireB64'},
-  music:{name:'器乐空间',icon:'🎹',desc:'钢琴 · 竖琴 · 吉他',sounds:['piano','harp','guitar'],def:['piano'],bg:'bg-music',asset:'a-warm',akey:'warm',blob:'musicB64'}
+  sea:{name:'海边',icon:'🌊',desc:'海浪 · 小船 · 溪流',sounds:['waves','boat','stream','forest-stream'],def:['waves'],bg:'bg-sea',asset:['n-sea'],akey:'sea',blob:'posterB64'},
+  rain:{name:'雨景',icon:'🌧️',desc:'细雨 · 大雨 · 远雷',sounds:['rain','heavy-rain','forest-rain','thunder-rain'],def:['rain'],bg:'bg-rain',asset:['n-rain','n-rain2','n-rain3','n-rain4'],akey:'rain',blob:'photoB64'},
+  forest:{name:'林间',icon:'🌲',desc:'鸟鸣 · 微风 · 虫鸣',sounds:['birds','wind','night'],def:['birds','wind'],bg:'bg-forest',asset:['n-forest','n-forest2','n-forest3','n-forest4','n-forest5','n-forest6'],akey:'forest',blob:'photoB64'},
+  fire:{name:'炉火',icon:'🔥',desc:'炉火 · 噼啪 · 咖啡馆',sounds:['fire','crackle-fire','cafe'],def:['fire','crackle-fire'],bg:'bg-fire',asset:['n-warm','n-warm2','n-warm3'],akey:'warm',blob:'fireB64'},
+  music:{name:'器乐空间',icon:'🎹',desc:'钢琴 · 竖琴 · 吉他',sounds:['piano','harp','guitar'],def:['piano'],bg:'bg-music',asset:['n-warm','n-warm2','n-warm3'],akey:'warm',blob:'musicB64'}
 };
 const TITLES = [
   '在这里安顿','一口气的来去','身体扫描初体验','和呼吸做朋友','看见念头来去',
@@ -729,7 +729,7 @@ function loadSceneAsset(sc){
 function getB64(A,key){
   if(A[key]) return A[key];
   if(Array.isArray(A[key+'Parts'])) return A[key+'Parts'].join('');
-  if(Array.isArray(A.vidParts)) return A.vidParts.join('');
+  if(Array.isArray(A.parts)) return A.parts.join('');
   return '';
 }
 function setupSceneVisual(){
@@ -744,14 +744,7 @@ function setupSceneVisual(){
   if(STATE.scene==='sea'){
     loadSceneAsset(sc).then(()=>{
       const A=window.LITE_A[sc.akey]; if(!A) return;
-      video.src=b64ToURL(getB64(A,'video'),'video/mp4');
-      video.poster=b64ToURL(A.posterB64,'image/jpeg');
-      video.style.display='block';
-      video.onerror=()=>{
-        video.style.display='none';
-        tryPhoto(b64ToURL(A.posterB64,'image/jpeg'));
-      };
-      video.play && video.play().catch(()=>{});
+      tryPhoto(b64ToURL(A.posterB64||getB64(A,'photo'),'image/jpeg'));
     }).catch(()=>{});
     $('wBand1').style.display=$('wBand2').style.display='block';
   }else{

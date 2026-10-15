@@ -1,17 +1,17 @@
-/* 栖 ROOST · lite service worker */
+/* 栖 ROOST · lite service v2
+ * 只对 lite 资源负责；旧版 index.html 等一律放行。
+ * 壳（lite.html/manifest/icon.svg）预缓存 cache-first；音频与 a-*.js 首次用到后缓存。
+ */
 'use strict';
 
-const VERSION = 'lite-v1';
+const VERSION = 'lite-v2';
 const SHELL_CACHE = VERSION + '-shell';
 const AUDIO_CACHE = VERSION + '-audio';
 
 const SHELL_ASSETS = [
   './lite.html',
   './lite.webmanifest',
-  './lite/icon-192.png',
-  './lite/icon-512.png',
-  './lite/apple-touch-icon.png',
-  './lite/favicon-32.png'
+  './lite/icon.svg'
 ];
 
 self.addEventListener('install', (event) => {
@@ -26,18 +26,16 @@ self.addEventListener('activate', (event) => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
     await Promise.all(
-      keys
-        .filter((k) => k.indexOf('lite-v') !== 0)
-        .map((k) => caches.delete(k))
+      keys.filter((k) => k.indexOf('lite-v') !== 0).map((k) => caches.delete(k))
     );
     await self.clients.claim();
   })());
 });
 
 function isLiteShellRequest(url) {
-  const path = url.pathname;
-  if (path.endsWith('/lite.html') || path.endsWith('/lite.webmanifest')) return true;
-  if (path.indexOf('/lite/') !== -1) return true;
+  const p = url.pathname;
+  if (p.endsWith('/lite.html') || p.endsWith('/lite.webmanifest') || p.endsWith('/lite/icon.svg')) return true;
+  if (p.indexOf('/lite/a-') !== -1 && p.endsWith('.js')) return true;
   return false;
 }
 
@@ -67,17 +65,15 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  if (isAudioRequest(url)) {
-    event.respondWith((async () => {
-      const cache = await caches.open(AUDIO_CACHE);
-      const hit = await cache.match(req);
-      const network = fetch(req)
-        .then((resp) => {
-          if (resp && resp.ok) cache.put(req, resp.clone());
-          return resp;
-        })
-        .catch(() => hit);
-      return hit || network;
-    })());
-  }
+  event.respondWith((async () => {
+    const cache = await caches.open(AUDIO_CACHE);
+    const hit = await cache.match(req);
+    const network = fetch(req)
+      .then((resp) => {
+        if (resp && resp.ok) cache.put(req, resp.clone());
+        return resp;
+      })
+      .catch(() => hit);
+    return hit || network;
+  })());
 });

@@ -488,11 +488,11 @@ const SOUNDS = {
   guitar:{name:'晚风木吉他',file:'audio/guitar.ogg'}
 };
 const SCENES = {
-  sea:{name:'海边',icon:'🌊',desc:'海浪 · 小船 · 溪流',sounds:['waves','boat','stream','forest-stream'],def:['waves'],bg:'bg-sea',asset:['n-sea'],akey:'sea',blob:'posterB64'},
-  rain:{name:'雨景',icon:'🌧️',desc:'细雨 · 大雨 · 远雷',sounds:['rain','heavy-rain','forest-rain','thunder-rain'],def:['rain'],bg:'bg-rain',asset:['n-rain','n-rain2','n-rain3','n-rain4'],akey:'rain',blob:'photoB64'},
-  forest:{name:'林间',icon:'🌲',desc:'鸟鸣 · 微风 · 虫鸣',sounds:['birds','wind','night'],def:['birds','wind'],bg:'bg-forest',asset:['n-forest','n-forest2','n-forest3','n-forest4','n-forest5','n-forest6'],akey:'forest',blob:'photoB64'},
-  fire:{name:'炉火',icon:'🔥',desc:'炉火 · 噼啪 · 咖啡馆',sounds:['fire','crackle-fire','cafe'],def:['fire','crackle-fire'],bg:'bg-fire',asset:['n-warm','n-warm2','n-warm3'],akey:'warm',blob:'fireB64'},
-  music:{name:'器乐空间',icon:'🎹',desc:'钢琴 · 竖琴 · 吉他',sounds:['piano','harp','guitar'],def:['piano'],bg:'bg-music',asset:['n-warm','n-warm2','n-warm3'],akey:'warm',blob:'musicB64'}
+  sea:{name:'海边',icon:'🌊',desc:'海浪 · 钢琴 · 呼吸',sounds:['waves','boat','stream','forest-stream'],def:['waves','piano'],bg:'bg-sea',v3key:'sea-poster'},
+  rain:{name:'雨景',icon:'🌧️',desc:'细雨 · 大雨 · 远雷',sounds:['rain','heavy-rain','forest-rain','thunder-rain'],def:['rain'],bg:'bg-rain',v3key:'rain'},
+  forest:{name:'林间',icon:'🌲',desc:'鸟鸣 · 微风 · 虫鸣',sounds:['birds','wind','night'],def:['birds','wind'],bg:'bg-forest',v3key:'forest'},
+  fire:{name:'炉火',icon:'🔥',desc:'炉火 · 噼啪 · 咖啡馆',sounds:['fire','crackle-fire','cafe'],def:['fire','crackle-fire'],bg:'bg-fire',v3key:'fire'},
+  music:{name:'器乐空间',icon:'🎹',desc:'钢琴 · 竖琴 · 吉他',sounds:['piano','harp','guitar'],def:['piano'],bg:'bg-music',v3key:'music'}
 };
 const TITLES = [
   '在这里安顿','一口气的来去','身体扫描初体验','和呼吸做朋友','看见念头来去',
@@ -518,7 +518,7 @@ const MAX_LAYERS=2;
 /* ================= 音频引擎 ================= */
 let ac=null,master=null,duckGain=1;
 const bufferCache=new Map();
-const activeLayers=new Map();
+const activeLayers=new Map(); // id -> {source,gain}
 const voiceAudio=new Audio();
 voiceAudio.setAttribute('playsinline','');
 voiceAudio.setAttribute('preload','auto');
@@ -554,7 +554,7 @@ async function startLayer(id){
     const g=ac.createGain(); g.gain.setValueAtTime(0,ac.currentTime);
     src.connect(g); g.connect(master);
     src.start();
-    g.gain.linearRampToValueAtTime(1,ac.currentTime+2);
+    g.gain.linearRampToValueAtTime(1,ac.currentTime+2); // 2s 淡入
     activeLayers.set(id,{source:src,gain:g});
   }catch(e){ toast(SOUNDS[id].name+' 加载失败，可稍后再试'); }
 }
@@ -565,6 +565,7 @@ function stopLayer(id){
 }
 function stopAllLayers(){ [...activeLayers.keys()].forEach(stopLayer); }
 function syncLayers(){
+  // 以 STATE.layers 为准
   [...activeLayers.keys()].forEach(id=>{ if(!STATE.layers.includes(id)) stopLayer(id); });
   STATE.layers.forEach(id=>{ if(!activeLayers.has(id)) startLayer(id); });
 }
@@ -706,63 +707,63 @@ function renderTimbre(){
 function renderSoundSheet(){ renderSceneList(); renderChips(); }
 /* ================= 场景视觉 ================= */
 let fxRAF=null, waveRAF=null;
-function b64ToURL(b64,type){
-  const bin=atob(b64), len=bin.length, u8=new Uint8Array(len);
-  for(let i=0;i<len;i++) u8[i]=bin.charCodeAt(i);
-  return URL.createObjectURL(new Blob([u8],{type:type}));
+/* ================= v3 分片资产 ================= */
+self.$R=self.$R||{};
+const V3N={'sea-poster':6,'rain':22,'forest':44,'fire':12,'music':7,'seavideo':51};
+async function loadV3(key){
+  if(self.$R&&$R[key])return;
+  for(let i=0;i<V3N[key];i++){
+    await new Promise((res,rej)=>{
+      const s=document.createElement('script');
+      s.src='lite/v3/v3-'+key+'-p'+String(i).padStart(3,'0')+'.js';
+      s.onload=res; s.onerror=rej;
+      document.head.appendChild(s);
+    });
+  }
 }
-function loadScript(name){
-  return new Promise((res,rej)=>{
-    const s=document.createElement('script');
-    s.src='lite/'+name+'.js';
-    s.onload=res; s.onerror=rej;
-    document.head.appendChild(s);
-  });
+function b64url(b64,t){
+  const n=atob(b64),a=new Uint8Array(n.length);
+  for(let i=0;i<n.length;i++)a[i]=n.charCodeAt(i);
+  return URL.createObjectURL(new Blob([a],{type:t}));
 }
-function loadSceneAsset(sc){
-  if(window.LITE_A && window.LITE_A[sc.akey] && window.LITE_A[sc.akey]._ready) return Promise.resolve();
-  const names=Array.isArray(sc.asset)?sc.asset:[sc.asset];
-  return names.reduce((p,n)=>p.then(()=>loadScript(n)),Promise.resolve()).then(()=>{
-    if(window.LITE_A[sc.akey]) window.LITE_A[sc.akey]._ready=true;
-  });
-}
-function getB64(A,key){
-  if(A[key]) return A[key];
-  if(Array.isArray(A[key+'Parts'])) return A[key+'Parts'].join('');
-  if(Array.isArray(A.parts)) return A.parts.join('');
-  return '';
-}
-function setupSceneVisual(){
+async function setupSceneVisual(){
   const sc=SCENES[STATE.scene];
   const bg=$('sceneBg');
   bg.className=sc.bg;
   const photo=$('scenePhoto'), video=$('sceneVideo');
   photo.style.display='none'; video.style.display='none';
-  photo.onerror=null; video.onerror=null;
+  photo.onerror=null; video.poster='';
   $('wBand1').style.display=$('wBand2').style.display='none';
   $('fireGlow').style.display=$('blob1').style.display=$('blob2').style.display='none';
   if(STATE.scene==='sea'){
-    loadSceneAsset(sc).then(()=>{
-      const A=window.LITE_A[sc.akey]; if(!A) return;
-      tryPhoto(b64ToURL(A.posterB64||getB64(A,'photo'),'image/jpeg'));
-    }).catch(()=>{});
+    try{
+      await loadV3('sea-poster');
+      if(!self.$R['sea-poster']) throw 0;
+      const poster=b64url($R['sea-poster'],'image/jpeg');
+      photo.src=poster; photo.style.display='block';
+      await loadV3('seavideo');
+      if(!self.$R['seavideo']) throw 0;
+      video.poster=poster;
+      video.src=b64url($R['seavideo'],'video/mp4');
+      video.muted=true; video.loop=true; video.setAttribute('playsinline',''); video.controls=false;
+      video.style.display='block';
+      const pr=video.play&&video.play();
+      if(pr&&pr.catch) pr.catch(()=>{ video.style.display='none'; photo.style.display='block'; });
+      video.onerror=()=>{ video.style.display='none'; photo.style.display='block'; };
+    }catch(e){ photo.style.display='block'; video.style.display='none'; }
     $('wBand1').style.display=$('wBand2').style.display='block';
   }else{
-    loadSceneAsset(sc).then(()=>{
-      const A=window.LITE_A[sc.akey]; if(!A) return;
-      tryPhoto(b64ToURL(getB64(A,sc.blob.replace('B64','')),'image/jpeg'));
-    }).catch(()=>{});
+    try{
+      await loadV3(sc.v3key);
+      if(!self.$R[sc.v3key]) throw 0;
+      photo.src=b64url($R[sc.v3key],'image/jpeg');
+      photo.style.display='block';
+    }catch(e){}
     if(STATE.scene==='fire'){ $('fireGlow').style.display='block'; }
     else if(STATE.scene==='forest'){ $('blob1').style.display=$('blob2').style.display='block'; }
   }
   startFx(STATE.scene);
   startWaveLoop();
-}
-function tryPhoto(src){
-  const photo=$('scenePhoto');
-  photo.onload=()=>{ photo.style.display='block'; };
-  photo.onerror=()=>{ photo.style.display='none'; };
-  photo.src=src;
 }
 
 /* ---- 动态粒子（每屏 ≤30） ---- */
@@ -816,7 +817,7 @@ function startWaveLoop(){
   const cv=$('breathWave');
   if(waveRAF) cancelAnimationFrame(waveRAF);
   const W=cv.width=cv.clientWidth, H=cv.height=cv.clientHeight;
-  const T_IN=4, T_OUT=6;
+  const T_IN=4, T_OUT=6; // 吸4 / 呼6
   let lastBreath='';
   function frame(now){
     const c=cv.getContext('2d');
@@ -840,6 +841,7 @@ function startWaveLoop(){
       x===0?c.moveTo(x,y):c.lineTo(x,y);
     }
     c.stroke();
+    // 第二层淡波
     c.lineWidth=1.5; c.strokeStyle='rgba(255,255,255,.22)';
     c.beginPath();
     for(let x=0;x<=W;x+=6){
@@ -854,11 +856,13 @@ function startWaveLoop(){
 
 /* ================= 事件绑定 ================= */
 function bind(){
+  // 开屏
   const splash=$('splash'); let gone=false;
   function hideSplash(){ if(gone) return; gone=true; splash.classList.add('hide'); setTimeout(()=>splash.remove(),1000); }
   splash.addEventListener('click',hideSplash);
   setTimeout(hideSplash,2800);
 
+  // 底部导航
   document.querySelectorAll('#tabbar button').forEach(b=>{
     b.addEventListener('click',()=>{
       if(b.dataset.tab==='meditate'){ go('view-home'); }
@@ -866,6 +870,7 @@ function bind(){
     });
   });
 
+  // 主页 / 准备页
   $('homeStartBtn').addEventListener('click',()=>go('view-prep'));
   $('prepBack').addEventListener('click',()=>go('view-home'));
   $('presetStartBtn').addEventListener('click',()=>{
@@ -874,24 +879,28 @@ function bind(){
   });
   $('prepStartBtn').addEventListener('click',()=>startSession());
 
+  // 弹层开关
   $('openDaySheet').addEventListener('click',()=>{ renderDayGrid(); openSheet('daySheet'); });
   $('openSoundSheet').addEventListener('click',()=>{ renderSoundSheet(); openSheet('soundSheet'); });
   $('inPlayerSoundBtn').addEventListener('click',()=>{ renderSoundSheet(); openSheet('soundSheet'); });
   document.querySelectorAll('.sheet-close').forEach(b=>b.addEventListener('click',()=>closeSheet(b.dataset.close)));
   document.querySelectorAll('.sheet-mask').forEach(m=>m.addEventListener('click',()=>closeSheet(m.dataset.sheet)));
 
+  // 选天
   $('dayGrid').addEventListener('click',e=>{
     const b=e.target.closest('button'); if(!b) return;
     STATE.day=+b.dataset.day; renderHomeCard(); renderDayGrid(); closeSheet('daySheet');
     toast('已选择第 '+STATE.day+' 天 · '+TITLES[STATE.day-1]);
   });
 
+  // 场景切换
   $('sceneList').addEventListener('click',e=>{
     const b=e.target.closest('.scene-btn'); if(!b) return;
     STATE.scene=b.dataset.scene;
     STATE.layers=SCENES[STATE.scene].def.slice();
     syncLayers(); renderSoundSheet(); renderHomeCard();
   });
+  // 次级音色 chips
   $('chipRow').addEventListener('click',e=>{
     const b=e.target.closest('.chip'); if(!b) return;
     const id=b.dataset.sound;
@@ -904,6 +913,7 @@ function bind(){
     ensureCtx(); syncLayers(); renderChips(); renderHomeCard();
   });
 
+  // 语音开关
   $('voiceSwitch').addEventListener('click',()=>{
     STATE.voiceOn=!STATE.voiceOn;
     $('voiceSwitch').classList.toggle('on',STATE.voiceOn);
@@ -911,6 +921,7 @@ function bind(){
     if(!STATE.voiceOn){ voiceAudio.pause(); duckGain=1; applyMaster(); }
   });
 
+  // 双滑条
   $('voiceVol').addEventListener('input',e=>{
     STATE.voiceVol=+e.target.value;
     voiceAudio.volume=STATE.voiceVol;
@@ -922,6 +933,7 @@ function bind(){
     applyMaster();
   });
 
+  // 播放页控制
   $('playPauseBtn').addEventListener('click',()=>{ STATE.playing?pauseSession():resumeSession(); });
   $('prevSeg').addEventListener('click',()=>{ voiceAudio.pause(); playQueueItem(Math.max(0,STATE.queueIdx-1)); });
   $('nextSeg').addEventListener('click',()=>{ voiceAudio.pause(); playQueueItem(Math.min(STATE.queue.length-1,STATE.queueIdx+1)); });
@@ -940,11 +952,13 @@ function bind(){
   $('doneHomeBtn').addEventListener('click',()=>{ stopAllLayers(); go('view-home'); $('doneOverlay').classList.remove('show'); });
   window.addEventListener('pagehide',()=>{ pauseSession(); stopAllLayers(); });
 
+  // PWA
   if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
     navigator.serviceWorker.register('lite-sw.js').catch(()=>{});
   }
 }
 
+/* ================= 初始化 ================= */
 renderHomeCard();
 renderTimbre();
 bind();

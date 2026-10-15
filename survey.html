@@ -49,12 +49,14 @@
   .opt.sel .box::after{opacity:1;}
   .opt .ot{flex:1;}
   .opt input.fillin{border:none;border-bottom:1px solid #cfd4c8;background:transparent;outline:none;font-size:13.5px;width:120px;color:var(--ink);}
+  /* scale */
   .scale{display:flex;justify-content:space-between;gap:6px;margin:8px 0 4px;}
   .scale .s{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;}
   .scale .n{width:38px;height:38px;border-radius:50%;border:1.5px solid #c9cec2;display:flex;align-items:center;justify-content:center;
     font-size:15px;font-weight:600;color:var(--sub);background:#fff;transition:.15s;}
   .scale .s.sel .n{background:var(--green);border-color:var(--green);color:#fff;}
   .scale-lbl{display:flex;justify-content:space-between;font-size:11px;color:var(--sub);margin-top:2px;}
+  /* matrix */
   .matrix{width:100%;border-collapse:collapse;font-size:13px;}
   .matrix th{font-weight:500;color:var(--sub);font-size:11px;padding:4px 2px;text-align:center;}
   .matrix th:first-child,.matrix td:first-child{text-align:left;}
@@ -67,6 +69,7 @@
   textarea{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:11px 13px;font-size:14px;font-family:inherit;
     background:#fff;resize:vertical;min-height:64px;outline:none;color:var(--ink);}
   textarea:focus{border-color:var(--green);}
+  .underline{border:none;border-bottom:1.5px solid #cfd4c8;background:transparent;outline:none;font-size:14px;min-width:100px;}
   .submitbar{position:fixed;left:0;right:0;bottom:0;background:rgba(251,250,244,.96);backdrop-filter:blur(8px);
     border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom));z-index:30;}
   .submit-inner{max-width:680px;margin:0 auto;display:flex;align-items:center;gap:14px;}
@@ -118,7 +121,14 @@
 </div>
 
 <script>
-const FORM_ENDPOINT = "";
+/* ============================================================
+ *  问卷结果收集配置
+ *  方式一（推荐，自动汇总到邮箱/后台）：去 https://formspree.io 用 GitHub 账号登录 → New Form
+ *           填收结果的邮箱 → 得到形如 https://formspree.io/f/abcdwxyz 的地址 → 粘到下方引号内
+ *  方式二（不配置，立即可用）：结果保存在「填写者本机浏览器」，提交页可一键复制；
+ *           适合面对面/小范围。研究者在链接后加 ?admin 可在本机查看所有提交。
+ * ============================================================ */
+const FORM_ENDPOINT = "https://formsubmit.co/ajax/2919142517@qq.com";  // 免注册收集：提交自动发往该邮箱
 
 const GENDER=["女","男","不愿透露"];
 const AGE=["18 岁以下","18–22 岁","23–28 岁","29–35 岁","36–45 岁","45 岁以上"];
@@ -232,6 +242,7 @@ b:{
 
 const state={a:{},b:{}};
 let current="a";
+const needFill=(o)=>o.includes("其他（请注明）")||o.includes("其他");
 
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 
@@ -258,7 +269,7 @@ function card(f,q,key){
   if(q.type==="single"||q.type==="multi"){
     const multi=q.type==="multi";
     body=`<div class="opts" data-q="${q.id}" data-form="${key}" data-multi="${multi}" data-max="${q.max||0}">`+
-      q.o.map((op)=>{
+      q.o.map((op,idx)=>{
         const fill=op.includes("其他（请注明）");
         return `<div class="opt" onclick="pick(this)" data-val="${esc(op)}">
           <span class="box ${multi?'sq':''}"></span>
@@ -304,6 +315,7 @@ function pick(el){
   updateProgress();
 }
 function fillOther(inp,qid,key){
+  // 把“其他”文本并入：用 __OTHER__ 记录
   const f=state[key]["__other__"]||{};
   f[qid]=inp.value; state[key]["__other__"]=f;
   collect(key);
@@ -343,9 +355,9 @@ function collect(key){
 }
 function progressOf(key){
   const f=FORMS[key]; let total=0,done=0;
-  collect(key);
   f.sections.forEach(sec=>sec.qs.forEach(q=>{
     if(q.req===false)return; total++;
+    collect(key);
     const d=state[key]["__data__"][q.id];
     if(Array.isArray(d)){
       if(q.type==="matrix"){ if(d.filter(x=>x!==undefined).length>=q.rows.length) done++; }
@@ -376,7 +388,7 @@ function findFirstMissing(key){
     if(q.req===false)continue;
     const d=state[key]["__data__"][q.id], card=document.getElementById("card-"+q.id);
     let miss=false;
-    if(Array.isArray(d)){ if(q.type==="matrix") miss=d.filter(x=>x!==undefined).length<q.rows.length; else miss=d.length===0; }
+    if(Array.isArray(d)){ if(q.type=="matrix") miss=d.filter(x=>x!==undefined).length<q.rows.length; else miss=d.length===0; }
     else miss=(d===undefined||d==="");
     if(miss){ card.classList.add("req-miss"); return card; } else card.classList.remove("req-miss");
   }
@@ -384,7 +396,7 @@ function findFirstMissing(key){
 }
 function textSummary(key){
   const f=FORMS[key], d=state[key]["__data__"];
-  let out=(key==="a"?"【问卷一·通用偏好】":"【问卷二·栖改版取舍】")+"\n提交时间："+new Date().toLocaleString()+"\n";
+  let out=(key==="a"?"【问卷一·通用偏好】":"【栖改版取舍】")+"\n提交时间："+new Date().toLocaleString()+"\n";
   f.sections.forEach(sec=>{
     out+="\n"+sec.h+"\n";
     sec.qs.forEach(q=>{
@@ -412,6 +424,7 @@ async function submitForm(){
   }
   const btn=document.getElementById("submitBtn"); btn.disabled=true; btn.textContent="提交中…";
   const payload={form:key, ts:new Date().toISOString(), answers:state[key]["__data__"]};
+  // 本地始终存一份
   try{
     const key2="roost_survey_"+key;
     const arr=JSON.parse(localStorage.getItem(key2)||"[]");
@@ -421,6 +434,8 @@ async function submitForm(){
   if(FORM_ENDPOINT){
     try{
       const fd=new FormData();
+      fd.append("_subject", key==="a"?"【栖ROOST】问卷一 · 通用偏好 · 新提交":"【栖ROOST】问卷二 · 栖改版取舍 · 新提交");
+      fd.append("_template","table");
       fd.append("问卷",key==="a"?"问卷一·通用偏好":"问卷二·栖改版");
       fd.append("提交时间",new Date().toLocaleString());
       const d=payload.answers;
@@ -430,7 +445,8 @@ async function submitForm(){
         fd.append(`${q.id} ${q.t}`, v===""? "（未填）":String(v));
       }));
       const res=await fetch(FORM_ENDPOINT,{method:"POST",body:fd,headers:{Accept:"application/json"}});
-      if(!res.ok) ok=false;
+      let j={}; try{j=await res.json();}catch(e){}
+      if(!(res.ok&&j.success==="true")) ok=false;
     }catch(e){ ok=false; }
   }
   state[key].__done=true;
@@ -464,12 +480,13 @@ function restart(key){
   document.getElementById("submitbar").style.display="block";
   switchForm(key);
 }
+// 研究者本机查看：?admin
 function adminView(){
   if(!location.search.includes("admin"))return;
   const a=JSON.parse(localStorage.getItem("roost_survey_a")||"[]");
   const b=JSON.parse(localStorage.getItem("roost_survey_b")||"[]");
-  let out=`<div class="form-intro"><b>本机收集到的提交</b><br>问卷一 ${a.length} 份 ｜ 问卷二 ${b.length} 份。
-   注意：这是「未配置在线收集」时的本机记录，仅限当前这台设备；跨设备统一收集请配置 Formspree。
+  let out=`<div class="form-intro"><b>当前设备本机备份</b><br>问卷一 ${a.length} 份 ｜ 问卷二 ${b.length} 份。
+   在线收集已配置：每次提交都会自动发送到你绑定的邮箱；这里是本机备份，可导出 CSV。
    <br><button class="btn ghost" style="margin-top:10px" onclick="exportAdmin()">导出台账 (CSV)</button>
    <button class="btn ghost" style="margin-top:10px" onclick="localStorage.clear();location.reload()">清空本机记录</button></div>`;
   document.querySelector(".tabs").insertAdjacentHTML("afterend",out);

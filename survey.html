@@ -272,7 +272,7 @@ function card(f,q,key){
       `</div><div class="scale-lbl"><span>${q.l}</span><span>${q.r}</span></div>`;
   } else if(q.type==="matrix"){
     body=`<div class="matrix-wrap"><table class="matrix"><thead><tr><th></th>${q.cols.map(c=>`<th>${c}</th>`).join("")}</tr></thead><tbody>`+
-      q.rows.map((row,ri)=>`<tr><td>${esc(row)}</td>${q.cols.map((c,ci)=>`<td><span class="mbtn" onclick="pickMtx(this,'${q.id}','${key}',${ri},${ci})"></span></td></tr>`).join("")}</tr>`).join("")+
+      q.rows.map((row,ri)=>`<tr><td>${esc(row)}</td>${q.cols.map((c,ci)=>`<td><span class="mbtn" onclick="pickMtx(this,'${q.id}','${key}',${ri},${ci})"></span></td>`).join("")}</tr>`).join("")+
       `</tbody></table></div>`;
   } else if(q.type==="open"){
     body=`<textarea data-q="${q.id}" data-form="${key}" oninput="state['${key}']['${q.id}']=this.value;updateProgress();" placeholder="请填写…"></textarea>`;
@@ -287,8 +287,7 @@ function card(f,q,key){
 function typeName(t){return {single:"单选",multi:"多选",scale:"评分",matrix:"矩阵单选",open:"填空"}[t]||"";}
 
 function pick(el){
-  const wrap=el.parentElement, multi=wrap.dataset.multi==="true", max=+wrap.dataset.max,
-        qid=wrap.dataset.q, key=wrap.dataset.form;
+  const wrap=el.parentElement, multi=wrap.dataset.multi==="true", max=+wrap.dataset.max;
   const fillIn=el.querySelector(".fillin");
   if(multi){
     const sel=wrap.querySelectorAll(".opt.sel");
@@ -300,7 +299,7 @@ function pick(el){
     });
     el.classList.add("sel"); if(fillIn)fillIn.style.display="inline-block";
   }
-  collect(key);
+  collect(wrap.dataset.form);
 }
 function fillOther(inp,qid,key){
   const f=state[key]["__other__"]||{};

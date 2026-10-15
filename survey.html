@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>栖 ROOST · 冥想App界面偏好调研</title>
+<style>
+  :root{
+    --bg:#f3f1e8; --card:#fbfaf4; --ink:#3a443c; --sub:#7a857c;
+    --green:#5c8766; --green-d:#4a6f53; --green-l:#e7efe8; --line:#e3e6dc;
+    --accent:#6e8f7b; --warn:#b0846a;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:linear-gradient(180deg,#eef0e6 0%,#f3f1e8 240px);color:var(--ink);line-height:1.6;}
+  .wrap{max-width:680px;margin:0 auto;padding:0 16px 120px;}
+  header.top{text-align:center;padding:34px 10px 18px;}
+  .logo{display:inline-flex;align-items:center;gap:8px;font-size:15px;color:var(--green-d);letter-spacing:2px;margin-bottom:10px;}
+  .logo .dot{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#a9c9b2,#5c8766);display:inline-block;}
+  h1{font-size:22px;margin:6px 0 8px;color:var(--green-d);font-weight:700;letter-spacing:1px;}
+  .lead{font-size:13.5px;color:var(--sub);margin:0 auto;max-width:520px;}
+  .tabs{display:flex;gap:10px;margin:18px 0 6px;position:sticky;top:0;z-index:20;padding:10px 0;
+    background:linear-gradient(180deg,rgba(243,241,232,.98),rgba(243,241,232,.9));backdrop-filter:blur(6px);}
+  .tab{flex:1;padding:13px 8px;border-radius:14px;background:var(--card);border:1.5px solid var(--line);
+    text-align:center;cursor:pointer;transition:.2s;font-size:14px;color:var(--sub);font-weight:600;}
+  .tab small{display:block;font-weight:400;font-size:11px;margin-top:2px;opacity:.8;}
+  .tab.active{background:var(--green);border-color:var(--green);color:#fff;box-shadow:0 6px 16px rgba(92,135,102,.3);}
+  .form-intro{background:var(--green-l);border:1px solid #d7e3d9;border-radius:16px;padding:16px 18px;margin:14px 0 20px;font-size:13.5px;color:#43524a;}
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0;}
+  .compare .cc{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:14px;font-size:12.5px;}
+  .compare .cc b{display:block;color:var(--green-d);font-size:14px;margin-bottom:6px;}
+  .qcard{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 18px 16px;margin-bottom:14px;
+    box-shadow:0 2px 10px rgba(90,110,90,.04);}
+  .qcard.req-miss{border-color:var(--warn);box-shadow:0 0 0 2px rgba(176,132,106,.15);}
+  .qtitle{font-size:15.5px;font-weight:600;margin-bottom:4px;line-height:1.55;}
+  .qno{color:var(--green);font-weight:700;margin-right:6px;}
+  .qmeta{font-size:11.5px;color:var(--sub);margin-bottom:12px;}
+  .qmeta .req{color:var(--warn);}
+  .opts{display:flex;flex-direction:column;gap:9px;}
+  .opt{display:flex;align-items:flex-start;gap:11px;padding:10px 13px;border:1.5px solid var(--line);border-radius:12px;
+    cursor:pointer;font-size:14px;transition:.15s;background:#fff;}
+  .opt:active{transform:scale(.99);}
+  .opt.sel{border-color:var(--green);background:var(--green-l);}
+  .box{width:20px;height:20px;border:2px solid #c2cbbc;border-radius:50%;flex:0 0 20px;margin-top:1px;position:relative;transition:.15s;}
+  .box.sq{border-radius:6px;}
+  .opt.sel .box{border-color:var(--green);background:var(--green);}
+  .box::after{content:"";position:absolute;left:5px;top:5px;width:8px;height:8px;border-radius:50%;background:#fff;opacity:0;transition:.15s;}
+  .box.sq::after{border-radius:2px;left:4px;top:4px;width:10px;height:10px;}
+  .opt.sel .box::after{opacity:1;}
+  .opt .ot{flex:1;}
+  .opt input.fillin{border:none;border-bottom:1px solid #cfd4c8;background:transparent;outline:none;font-size:13.5px;width:120px;color:var(--ink);}
+  .scale{display:flex;justify-content:space-between;gap:6px;margin:8px 0 4px;}
+  .scale .s{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;}
+  .scale .n{width:38px;height:38px;border-radius:50%;border:1.5px solid #c9cec2;display:flex;align-items:center;justify-content:center;
+    font-size:15px;font-weight:600;color:var(--sub);background:#fff;transition:.15s;}
+  .scale .s.sel .n{background:var(--green);border-color:var(--green);color:#fff;}
+  .scale-lbl{display:flex;justify-content:space-between;font-size:11px;color:var(--sub);margin-top:2px;}
+  .matrix{width:100%;border-collapse:collapse;font-size:13px;}
+  .matrix th{font-weight:500;color:var(--sub);font-size:11px;padding:4px 2px;text-align:center;}
+  .matrix th:first-child,.matrix td:first-child{text-align:left;}
+  .matrix td{padding:7px 2px;border-top:1px solid var(--line);text-align:center;}
+  .matrix td:first-child{font-size:13px;padding-right:6px;}
+  .mbtn{width:22px;height:22px;border-radius:50%;border:1.6px solid #c9cec2;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;background:#fff;}
+  .mbtn.sel{background:var(--green);border-color:var(--green);}
+  .mbtn.sel::after{content:"✓";color:#fff;font-size:12px;}
+  .matrix-wrap{overflow-x:auto;}
+  textarea{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:11px 13px;font-size:14px;font-family:inherit;
+    background:#fff;resize:vertical;min-height:64px;outline:none;color:var(--ink);}
+  textarea:focus{border-color:var(--green);}
+  .submitbar{position:fixed;left:0;right:0;bottom:0;background:rgba(251,250,244,.96);backdrop-filter:blur(8px);
+    border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom));z-index:30;}
+  .submit-inner{max-width:680px;margin:0 auto;display:flex;align-items:center;gap:14px;}
+  .pbar{flex:1;height:8px;background:#e4e7dd;border-radius:5px;overflow:hidden;}
+  .pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#7fa889,#5c8766);transition:width .3s;border-radius:5px;}
+  .ptext{font-size:12px;color:var(--sub);white-space:nowrap;}
+  .btn{background:var(--green);color:#fff;border:none;border-radius:13px;padding:13px 26px;font-size:15.5px;font-weight:600;cursor:pointer;
+    box-shadow:0 6px 16px rgba(92,135,102,.3);}
+  .btn:active{transform:scale(.97);}
+  .btn.ghost{background:#fff;color:var(--green-d);border:1.5px solid var(--green);box-shadow:none;}
+  .sec-h{font-size:13px;color:var(--green-d);font-weight:700;letter-spacing:1px;margin:22px 4px 10px;}
+  .thanks{text-align:center;padding:50px 20px;}
+  .thanks .big{font-size:52px;margin-bottom:10px;}
+  .thanks h2{color:var(--green-d);margin:8px 0;}
+  .thanks p{color:var(--sub);font-size:14px;}
+  .copybox{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;text-align:left;font-size:12px;
+    color:var(--sub);max-height:180px;overflow:auto;white-space:pre-wrap;margin:14px 0;word-break:break-all;}
+  .hidden{display:none;}
+  .tip{font-size:11.5px;color:var(--sub);margin-top:6px;}
+  .missing-tip{color:var(--warn);font-size:12.5px;text-align:center;margin:0 0 10px;display:none;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="logo"><span class="dot"></span>栖 ROOST</div>
+    <h1>冥想 App 界面偏好调研</h1>
+    <p class="lead">想了解你更偏好「极简」还是「功能丰富」的冥想 App。匿名填写，约 5–7 分钟，答案没有对错，凭真实感受即可。</p>
+  </header>
+
+  <div class="tabs">
+    <div class="tab active" data-form="a" onclick="switchForm('a')">问卷一<small>通用偏好</small></div>
+    <div class="tab" data-form="b" onclick="switchForm('b')">问卷二<small>「栖」改版取舍</small></div>
+  </div>
+
+  <div id="formA"></div>
+  <div id="formB" class="hidden"></div>
+  <div id="doneA" class="hidden"></div>
+  <div id="doneB" class="hidden"></div>
+</div>
+
+<div class="submitbar" id="submitbar">
+  <div class="missing-tip" id="missingTip">还有必答题未完成，已为你定位到最前面的一题</div>
+  <div class="submit-inner">
+    <div class="pbar"><i id="pbar"></i></div>
+    <div class="ptext" id="ptext">0%</div>
+    <button class="btn" id="submitBtn" onclick="submitForm()">提交</button>
+  </div>
+</div>
+
+<script>
+const FORM_ENDPOINT = "";
+
+const GENDER=["女","男","不愿透露"];
+const AGE=["18 岁以下","18–22 岁","23–28 岁","29–35 岁","36–45 岁","45 岁以上"];
+const IDENT=["学生","上班族","自由职业 / 创业者","其他（请注明）"];
+
+const FEATURES=["开屏问卷（了解你的状态后推荐）","首页「每日正念」一句话","30 天系统进阶课程","7 / 15 / 30 三档课程选择",
+ "声音花园（分类自然音）","混音工作台（多种声音自由叠加）","人声引导（ASMR 温柔女声）","多种引导音色选择",
+ "练习计时器 / 呼吸球","档案（练习记录与统计）","连续打卡 / 日历","AI 陪伴助手「小栖」","脑机耳机 / 硬件入口","会员 / 升级页面"];
+
+const FORMS={
+a:{
+ intro:"这是一份关于冥想、放松、助眠类 App 的通用偏好调研，全部匿名，数据仅用于产品研究，感谢你的支持。",
+ sections:[
+  {h:"一、使用情况",qs:[
+   {id:"A1",t:"你是否使用过冥想 / 放松 / 助眠 / 白噪音类 App（如潮汐、Now 冥想、小睡眠、Calm、Headspace、一念等）？",type:"single",
+    o:["经常使用（每周多次）","偶尔使用","用过几次","听说过但没怎么用过","完全没听说过"]},
+   {id:"A2",t:"你使用过以下哪些 App？",type:"multi",o:["潮汐","Now 冥想","小睡眠","Headspace","Calm","一念（OneZen）","都没用过","其他（请注明）"]},
+   {id:"A3",t:"你实际使用冥想 / 放松类 App 的频率是？",type:"single",o:["几乎每天","每周多次","每周 1 次左右","每月几次","很少 / 刚接触"]},
+   {id:"A4",t:"你每次练习的时长通常是？",type:"single",o:["5 分钟以内","5–10 分钟","11–20 分钟","21–30 分钟","30 分钟以上"]},
+   {id:"A5",t:"你使用这类 App 的主要目的是什么？",type:"multi",max:3,o:["帮助入睡","缓解压力 / 放松","提升专注（学习、工作）","缓解焦虑 / 调节情绪","培养规律习惯","好奇、想试试","其他（请注明）"]},
+   {id:"A6",t:"你最常在什么场景下使用？",type:"single",o:["睡前","工作 / 学习间隙","早晨起床时","通勤 / 移动途中","情绪波动或紧张时","其他（请注明）"]},
+  ]},
+  {h:"二、界面与功能偏好（核心）",qs:[
+   {id:"A7",t:"请对以下陈述的同意程度打分。",type:"matrix",cols:["非常不同意","不同意","一般","同意","非常同意"],
+    rows:["打开冥想 App 时，我希望能在 3 秒内一键开始，不想要太多选择",
+     "我喜欢 App 提供丰富的课程、推荐和内容供我探索",
+     "功能太多会让我产生选择困难、感到有压力",
+     "我希望界面上的功能入口越少越好",
+     "为了更专业的功能（系统课程、数据追踪、个性化），我可以接受更复杂的界面",
+     "我喜欢连续打卡、徽章、成长等级这类激励",
+     "打卡、任务、提醒会让我有负担，反而不想再用",
+     "我希望能自由调整时长、声音、背景等参数",
+     "界面好不好看、安不安静，会直接影响我能否坚持使用",
+     "我希望 App 记住我的偏好，主动给我个性化建议"]},
+   {id:"A8",t:"以下三种首页风格，你更偏好哪一种？",type:"single",
+    o:["A · 极简：打开后只有一个大的「开始」按钮和呼吸球，几乎没有别的入口",
+       "B · 标准：一个明显的开始按钮，外加少量入口（课程、声音）",
+       "C · 丰富：首页同时展示课程、推荐、声音、数据、活动等多个模块"]},
+   {id:"A9",t:"总体来说，你对冥想 App「功能数量」的偏好是？",type:"single",
+    o:["功能越少越好，专注核心体验","够用就好，不希望多余功能","功能多一些显得专业、可玩","无所谓，能用就行"]},
+   {id:"A10",t:"你认为一个冥想 App「必须有」的功能是？",type:"multi",
+    o:["冥想计时器 / 呼吸引导","人声引导课程","自然声音 / 白噪音","多种声音混合 / 自定义",
+       "成体系的多日课程（如 7 / 21 / 30 天）","练习记录 / 数据统计","连续打卡 / 徽章","AI 陪伴 / 答疑",
+       "社区 / 分享","睡前故事","智能硬件（脑机耳机 / 睡眠监测）","其他（请注明）"]},
+   {id:"A11",t:"以下哪些功能你会觉得「多余或反感」？",type:"multi",
+    o:["强制注册登录","开屏广告 / 弹窗","会员推销 / 付费墙过多","社交动态 / 信息流","积分任务 / 打卡压力",
+       "过于复杂的设置项","AI 助手 / 聊天机器人","智能硬件入口","都不反感","其他（请注明）"]},
+   {id:"A12",t:"你对「注册账号」的态度是？",type:"single",o:["最好免登录，打开就能用","可以先游客体验，需要时再登录","不介意注册登录"]},
+   {id:"A13",t:"你对「多日课程 / 打卡体系」的态度是？",type:"single",o:["喜欢，有体系和督促更容易坚持","可有可无","不喜欢，会让我有压力"]},
+   {id:"A14",t:"你对冥想 App 里「AI 陪伴 / 答疑助手」的态度是？",type:"single",o:["很期待，愿意尝试","中立","不太需要","比较反感"]},
+  ]},
+  {h:"三、整体偏好与付费",qs:[
+   {id:"A15",t:"你对「界面极简、功能克制」的冥想 App 的喜爱程度是？",type:"scale",l:"完全不喜欢",r:"非常喜欢"},
+   {id:"A16",t:"你对「功能丰富、内容全面」的冥想 App 的喜爱程度是？",type:"scale",l:"完全不喜欢",r:"非常喜欢"},
+   {id:"A17",t:"你对冥想 App 的付费意愿是？",type:"single",o:["愿意长期订阅（会员）","只接受一次性买断","只愿意为配套硬件付费","希望完全免费","看内容价值再决定"]},
+   {id:"A18",t:"你可接受的会员年费大概是？",type:"single",o:["不愿付费","50 元以内","50–100 元","101–200 元","200 元以上","看具体价值"]},
+  ]},
+  {h:"四、开放问题",qs:[
+   {id:"A19",t:"你最希望冥想 App 为你保留的一个核心体验是什么？（一句话即可）",type:"open",req:false},
+   {id:"A20",t:"你最不能忍受冥想 App 的哪一点？",type:"open",req:false},
+  ]},
+  {h:"五、基本信息",qs:[
+   {id:"A21",t:"你的性别？",type:"single",o:GENDER},
+   {id:"A22",t:"你的年龄段？",type:"single",o:AGE},
+   {id:"A23",t:"你目前的身份？",type:"single",o:IDENT},
+   {id:"A24",t:"你的冥想 / 正念练习经验？",type:"single",o:["零基础","不到 3 个月","3–12 个月","1–3 年","3 年以上"]},
+  ]},
+ ]
+},
+b:{
+ intro:"「栖 ROOST」是一款正念冥想 App，目前包含 30 天课程、声音花园、混音、AI 陪伴、练习记录等功能。我们在考虑界面是否应当更简洁。问卷完全匿名，约 6 分钟，你的真实偏好会直接帮助我们决定保留或精简哪些功能。",
+ compare:true,
+ sections:[
+  {h:"〇、两种方向对比（请先阅读）",qs:[
+   {id:"B1",t:"看完两种版本，你第一反应更喜欢哪一个？",type:"single",o:["A 极简方向","B 丰富方向","两者各有道理，说不好"]},
+   {id:"B2",t:"如果只能保留一个版本长期使用，你会选择？",type:"single",o:["A 极简方向","B 丰富方向"]},
+   {id:"B3",t:"你做出上述选择，最主要的一个原因是什么？",type:"open",req:true},
+   {id:"B4",t:"你希望「栖」最终的界面走向是？",type:"single",
+    o:["全面极简，只保留核心练习","以极简为主，高级功能收进二级页面","保持丰富，但首页做减法、分层更清晰","维持现状即可"]},
+   {id:"B5",t:"你希望打开 App 后，几步就能开始一次冥想？",type:"single",o:["1 步（打开即开始）","2 步","3 步","无所谓"]},
+  ]},
+  {h:"一、功能逐项取舍",qs:[
+   {id:"B6",t:"请对「栖」现有功能逐一表态。",type:"matrix",cols:["核心必备","可保留但弱化","无所谓","建议隐藏/删除"],rows:FEATURES},
+   {id:"B7",t:"如果只能保留 3 个功能，你会保留哪三个？",type:"multi",max:3,o:FEATURES.concat(["其他（请注明）"])},
+   {id:"B8",t:"你最希望砍掉，或收进二级页面（不在首页显示）的功能是？",type:"multi",o:FEATURES.concat(["其他（请注明）"])},
+  ]},
+  {h:"二、界面与具体模块",qs:[
+   {id:"B9",t:"你希望底部导航栏保留几个入口？",type:"single",o:["3 个以内","4–5 个","6 个也可以","无所谓"]},
+   {id:"B10",t:"你希望首页第一眼看到的是什么？",type:"single",o:["一个开始按钮 + 呼吸球","今日推荐课程","声音播放器","完整课程列表","我的练习数据"]},
+   {id:"B11",t:"你对 AI 陪伴助手「小栖」的期望是？",type:"single",o:["保留并强化，希望它更懂我、更有陪伴感","保留，但缩成一个小按钮即可","建议删除","不确定"]},
+   {id:"B12",t:"你对「脑机耳机 / 硬件」入口的态度是？",type:"single",o:["很感兴趣，希望放在显眼位置","可以有，但收进设置里","暂时不需要","反感 App 里出现硬件推销"]},
+   {id:"B13",t:"你对「30 天系统课程」的态度是？",type:"single",o:["是核心价值，应当保留","有压力，希望成为可选项","希望改成更短的（如 7 天）","不太需要"]},
+   {id:"B14",t:"你对「声音花园 / 混音工作台」的态度是？",type:"single",o:["是核心亮点，保留","锦上添花，可保留","偏复杂，希望更简单","基本不会用"]},
+   {id:"B15",t:"在背景音 / 声音上，你希望的自定义程度是？",type:"single",o:["越简单越好，给我默认的就行","提供几个精选预设即可","希望能自由混合、调节各种声音"]},
+  ]},
+  {h:"三、改版后的使用意愿",qs:[
+   {id:"B16",t:"如果「栖」的界面变得更简洁，你继续使用的可能性是？",type:"scale",l:"几乎不会",r:"一定会"},
+   {id:"B17",t:"如果「栖」保持现在的丰富程度，你继续使用的可能性是？",type:"scale",l:"几乎不会",r:"一定会"},
+   {id:"B18",t:"如果只允许改动一个地方，你最希望「栖」改哪里？",type:"open",req:false},
+   {id:"B19",t:"你觉得「栖」最打动你、最应该保留的是什么？",type:"open",req:false},
+  ]},
+  {h:"四、基本信息",qs:[
+   {id:"B20",t:"你是否使用过当前版本的「栖 ROOST」？",type:"single",o:["完整使用过","简单体验过","没有，只看了本问卷的介绍"]},
+   {id:"B21",t:"你的性别？",type:"single",o:GENDER},
+   {id:"B22",t:"你的年龄段？",type:"single",o:AGE},
+   {id:"B23",t:"你目前的身份？",type:"single",o:IDENT},
+  ]},
+ ]
+}
+};
+
+const state={a:{},b:{}};
+let current="a";
+
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+function renderForm(key){
+  const f=FORMS[key], root=document.getElementById("form"+key.toUpperCase());
+  let html=`<div class="form-intro">${f.intro}`;
+  if(f.compare){
+    html+=`<div class="compare">
+      <div class="cc"><b>版本 A · 极简</b>无需登录，打开只有一个呼吸球和「开始」按钮；仅保留计时、呼吸引导、人声引导、自然声音、本地记录；没有信息流、打卡、复杂任务，3 秒开始。</div>
+      <div class="cc"><b>版本 B · 丰富</b>保留完整体系：30 天课程、7/15/30 三档课程、声音花园、多音混音、AI 陪伴小栖、练习档案、每日正念、脑机耳机入口等，内容更全但入口更多。</div>
+    </div>`;
+  }
+  html+=`</div>`;
+  f.sections.forEach(sec=>{
+    html+=`<div class="sec-h">${sec.h}</div>`;
+    sec.qs.forEach((q,i)=>{ html+=card(f,q,key); });
+  });
+  root.innerHTML=html;
+}
+
+function card(f,q,key){
+  const required=q.req!==false;
+  let body="";
+  if(q.type==="single"||q.type==="multi"){
+    const multi=q.type==="multi";
+    body=`<div class="opts" data-q="${q.id}" data-form="${key}" data-multi="${multi}" data-max="${q.max||0}">`+
+      q.o.map((op)=>{
+        const fill=op.includes("其他（请注明）");
+        return `<div class="opt" onclick="pick(this)" data-val="${esc(op)}">
+          <span class="box ${multi?'sq':''}"></span>
+          <span class="ot">${esc(op.replace("（请注明）",""))}${fill?`<input class="fillin" style="display:none" placeholder="请填写" onclick="event.stopPropagation()" oninput="fillOther(this,'${q.id}','${key}')">`:""}</span>
+        </div>`;
+      }).join("")+`</div>`;
+    if(multi&&q.max) body+=`<div class="tip">最多选择 ${q.max} 项</div>`;
+  } else if(q.type==="scale"){
+    body=`<div class="scale" data-q="${q.id}" data-form="${key}">`+
+      [1,2,3,4,5].map(n=>`<div class="s" onclick="pickScale(this,'${q.id}','${key}',${n})"><span class="n">${n}</span></div>`).join("")+
+      `</div><div class="scale-lbl"><span>${q.l}</span><span>${q.r}</span></div>`;
+  } else if(q.type==="matrix"){
+    body=`<div class="matrix-wrap"><table class="matrix"><thead><tr><th></th>${q.cols.map(c=>`<th>${c}</th>`).join("")}</tr></thead><tbody>`+
+      q.rows.map((row,ri)=>`<tr><td>${esc(row)}</td>${q.cols.map((c,ci)=>`<td><span class="mbtn" onclick="pickMtx(this,'${q.id}','${key}',${ri},${ci})"></span></td></tr>`).join("")}</tr>`).join("")+
+      `</tbody></table></div>`;
+  } else if(q.type==="open"){
+    body=`<textarea data-q="${q.id}" data-form="${key}" oninput="state['${key}']['${q.id}']=this.value;updateProgress();" placeholder="请填写…"></textarea>`;
+  }
+  const gno=q.id.slice(1).replace(/^0+/,"");
+  return `<div class="qcard" id="card-${q.id}">
+    <div class="qtitle"><span class="qno">${gno}.</span>${q.t}</div>
+    <div class="qmeta">${typeName(q.type)} ${required?'· <span class="req">必答</span>':''}</div>
+    ${body}
+  </div>`;
+}
+function typeName(t){return {single:"单选",multi:"多选",scale:"评分",matrix:"矩阵单选",open:"填空"}[t]||"";}
+
+function pick(el){
+  const wrap=el.parentElement, multi=wrap.dataset.multi==="true", max=+wrap.dataset.max,
+        qid=wrap.dataset.q, key=wrap.dataset.form;
+  const fillIn=el.querySelector(".fillin");
+  if(multi){
+    const sel=wrap.querySelectorAll(".opt.sel");
+    if(el.classList.contains("sel")){ el.classList.remove("sel"); if(fillIn)fillIn.style.display="none"; }
+    else{ if(max&&sel.length>=max){alert("最多选择 "+max+" 项");return;} el.classList.add("sel"); if(fillIn){fillIn.style.display="inline-block";fillIn.focus();} }
+  }else{
+    wrap.querySelectorAll(".opt").forEach(o=>{
+      o.classList.remove("sel"); const fi=o.querySelector(".fillin"); if(fi){fi.style.display="none";fi.value="";}
+    });
+    el.classList.add("sel"); if(fillIn)fillIn.style.display="inline-block";
+  }
+  collect(key);
+}
+function fillOther(inp,qid,key){
+  const f=state[key]["__other__"]||{};
+  f[qid]=inp.value; state[key]["__other__"]=f;
+  collect(key);
+}
+function pickScale(el,qid,key,n){
+  el.parentElement.querySelectorAll(".s").forEach(s=>s.classList.remove("sel"));
+  el.classList.add("sel"); state[key][qid]=n; updateProgress();
+}
+function pickMtx(el,qid,key,ri,ci){
+  const tr=el.closest("tr");
+  tr.querySelectorAll(".mbtn").forEach(b=>b.classList.remove("sel"));
+  el.classList.add("sel");
+  const arr=state[key][qid]||[]; arr[ri]=ci; state[key][qid]=arr;
+  updateProgress();
+}
+function collect(key){
+  const f=FORMS[key];
+  const data={};
+  f.sections.forEach(sec=>sec.qs.forEach(q=>{
+    if(q.type==="single"||q.type==="multi"){
+      const wrap=document.querySelector(`.opts[data-q="${q.id}"]`); if(!wrap)return;
+      const vals=[...wrap.querySelectorAll(".opt.sel")].map(o=>o.dataset.val);
+      const otherF=(state[key]["__other__"]||{})[q.id];
+      let vals2=vals.map(v=> v==="其他（请注明）" && otherF? "其他："+otherF : v);
+      if(q.type==="single") data[q.id]=vals2[0]||"";
+      else data[q.id]=vals2;
+    } else if(q.type==="open"){
+      data[q.id]=state[key][q.id]||"";
+    } else if(q.type==="scale"){
+      data[q.id]=state[key][q.id]||"";
+    } else if(q.type==="matrix"){
+      data[q.id]=state[key][q.id]||[];
+    }
+  }));
+  state[key]["__data__"]=data;
+  updateProgress();
+}
+function progressOf(key){
+  const f=FORMS[key]; let total=0,done=0;
+  f.sections.forEach(sec=>sec.qs.forEach(q=>{
+    if(q.req===false)return; total++;
+    collect(key);
+    const d=state[key]["__data__"][q.id];
+    if(Array.isArray(d)){
+      if(q.type==="matrix"){ if(d.filter(x=>x!==undefined).length>=q.rows.length) done++; }
+      else if(d.length>0) done++;
+    } else if(d!==undefined&&d!=="") done++;
+  }));
+  return {done,total,pct:Math.round(done/total*100)};
+}
+function updateProgress(){
+  const p=progressOf(current);
+  document.getElementById("pbar").style.width=p.pct+"%";
+  document.getElementById("ptext").textContent=p.pct+"%";
+}
+function switchForm(key){
+  current=key;
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.form===key));
+  document.getElementById("formA").classList.toggle("hidden",key!=="a");
+  document.getElementById("formB").classList.toggle("hidden",key!=="b");
+  document.getElementById("doneA").classList.toggle("hidden",!(key==="a"&&state.a.__done));
+  document.getElementById("doneB").classList.toggle("hidden",!(key==="b"&&state.b.__done));
+  document.getElementById("submitbar").style.display=(state[key].__done)?"none":"block";
+  updateProgress();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function findFirstMissing(key){
+  const f=FORMS[key]; collect(key);
+  for(const sec of f.sections) for(const q of sec.qs){
+    if(q.req===false)continue;
+    const d=state[key]["__data__"][q.id], card=document.getElementById("card-"+q.id);
+    let miss=false;
+    if(Array.isArray(d)){ if(q.type==="matrix") miss=d.filter(x=>x!==undefined).length<q.rows.length; else miss=d.length===0; }
+    else miss=(d===undefined||d==="");
+    if(miss){ card.classList.add("req-miss"); return card; } else card.classList.remove("req-miss");
+  }
+  return null;
+}
+function textSummary(key){
+  const f=FORMS[key], d=state[key]["__data__"];
+  let out=(key==="a"?"【问卷一·通用偏好】":"【问卷二·栖改版取舍】")+"\n提交时间："+new Date().toLocaleString()+"\n";
+  f.sections.forEach(sec=>{
+    out+="\n"+sec.h+"\n";
+    sec.qs.forEach(q=>{
+      let v=d[q.id];
+      if(q.type==="matrix"){
+        v=(v||[]).map((ci,ri)=>`  · ${q.rows[ri]} → ${ci===undefined?"未选":q.cols[ci]}`).join("\n");
+        out+=`${q.id.slice(1)} ${q.t}\n${v}\n`;
+      } else if(Array.isArray(v)){
+        out+=`${q.id.slice(1)} ${q.t} ${v.join("、")||"（未填）"}\n`;
+      } else {
+        out+=`${q.id.slice(1)} ${q.t} ${v||"（未填）"}\n`;
+      }
+    });
+  });
+  return out;
+}
+async function submitForm(){
+  const key=current; collect(key);
+  const miss=findFirstMissing(key);
+  if(miss){
+    document.getElementById("missingTip").style.display="block";
+    miss.scrollIntoView({behavior:"smooth",block:"center"});
+    setTimeout(()=>document.getElementById("missingTip").style.display="none",4000);
+    return;
+  }
+  const btn=document.getElementById("submitBtn"); btn.disabled=true; btn.textContent="提交中…";
+  const payload={form:key, ts:new Date().toISOString(), answers:state[key]["__data__"]};
+  try{
+    const key2="roost_survey_"+key;
+    const arr=JSON.parse(localStorage.getItem(key2)||"[]");
+    arr.push(payload); localStorage.setItem(key2,JSON.stringify(arr));
+  }catch(e){}
+  let ok=true;
+  if(FORM_ENDPOINT){
+    try{
+      const fd=new FormData();
+      fd.append("问卷",key==="a"?"问卷一·通用偏好":"问卷二·栖改版");
+      fd.append("提交时间",new Date().toLocaleString());
+      const d=payload.answers;
+      FORMS[key].sections.forEach(sec=>sec.qs.forEach(q=>{
+        let v=d[q.id];
+        if(Array.isArray(v)){ v=q.type==="matrix"?v.map((ci,ri)=>`${q.rows[ri]}→${ci===undefined?"未选":q.cols[ci]}`).join("；"):v.join("、"); }
+        fd.append(`${q.id} ${q.t}`, v===""? "（未填）":String(v));
+      }));
+      const res=await fetch(FORM_ENDPOINT,{method:"POST",body:fd,headers:{Accept:"application/json"}});
+      if(!res.ok) ok=false;
+    }catch(e){ ok=false; }
+  }
+  state[key].__done=true;
+  showDone(key, ok);
+  btn.disabled=false; btn.textContent="提交";
+}
+function showDone(key,online){
+  document.getElementById("form"+key.toUpperCase()).classList.add("hidden");
+  document.getElementById("submitbar").style.display="none";
+  const box=document.getElementById("done"+key.toUpperCase());
+  const summary=textSummary(key);
+  box.classList.remove("hidden");
+  box.innerHTML=`<div class="thanks"><div class="big">🌿</div><h2>提交成功，感谢你的反馈</h2>
+    <p>${FORM_ENDPOINT?(online?"你的回答已记录，会帮助我们把产品做得更好。":"已保存。若网络未同步，可复制下面的内容发给发布者。"):"你的回答已保存到本机。小范围调研可点击下方按钮复制后发给发布者。"}</p>
+    <div class="copybox" id="copybox">${esc(summary)}</div>
+    <button class="btn ghost" onclick="copyResult('${key}')">复制我的作答</button>
+    <button class="btn" style="margin-left:10px" onclick="restart('${key}')">再填一次 / 切换问卷</button>
+  </div>`;
+  window.scrollTo(0,0);
+}
+function copyResult(key){
+  const t=textSummary(key);
+  if(navigator.clipboard){ navigator.clipboard.writeText(t).then(()=>alert("已复制，可粘贴发送")); }
+  else{ const ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove();alert("已复制"); }
+}
+function restart(key){
+  state[key]={};
+  renderForm(key);
+  document.getElementById("done"+key.toUpperCase()).classList.add("hidden");
+  document.getElementById("form"+key.toUpperCase()).classList.remove("hidden");
+  document.getElementById("submitbar").style.display="block";
+  switchForm(key);
+}
+function adminView(){
+  if(!location.search.includes("admin"))return;
+  const a=JSON.parse(localStorage.getItem("roost_survey_a")||"[]");
+  const b=JSON.parse(localStorage.getItem("roost_survey_b")||"[]");
+  let out=`<div class="form-intro"><b>本机收集到的提交</b><br>问卷一 ${a.length} 份 ｜ 问卷二 ${b.length} 份。
+   注意：这是「未配置在线收集」时的本机记录，仅限当前这台设备；跨设备统一收集请配置 Formspree。
+   <br><button class="btn ghost" style="margin-top:10px" onclick="exportAdmin()">导出台账 (CSV)</button>
+   <button class="btn ghost" style="margin-top:10px" onclick="localStorage.clear();location.reload()">清空本机记录</button></div>`;
+  document.querySelector(".tabs").insertAdjacentHTML("afterend",out);
+}
+function exportAdmin(){
+  const rows=[];
+  ["a","b"].forEach(k=>{
+    const arr=JSON.parse(localStorage.getItem("roost_survey_"+k)||"[]");
+    arr.forEach(p=>{
+      const r={问卷:k,时间:p.ts};
+      FORMS[k].sections.forEach(s=>s.qs.forEach(q=>{
+        let v=p.answers[q.id];
+        if(Array.isArray(v)) v=q.type==="matrix"?v.map((ci,ri)=>`${q.rows[ri]}→${q.cols[ci]}`).join("；"):v.join("、");
+        r[q.id+" "+q.t]=v;
+      }));
+      rows.push(r);
+    });
+  });
+  if(!rows.length){alert("本机暂无记录");return;}
+  const keys=Object.keys(rows[0]);
+  const csv="\ufeff"+keys.join(",")+"\n"+rows.map(r=>keys.map(k=>`"${String(r[k]??"").replace(/"/g,'""')}"`).join(",")).join("\n");
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));
+  a.download="冥想App调研台账.csv";a.click();
+}
+
+renderForm("a");renderForm("b");switchForm("a");adminView();
+</script>
+</body>
+</html>

@@ -1,17 +1,31 @@
-/* 栖 ROOST · lite service v2
- * 只对 lite 资源负责；旧版 index.html 等一律放行。
- * 壳（lite.html/manifest/icon.svg）预缓存 cache-first；音频与 a-*.js 首次用到后缓存。
+/* 栖 ROOST · lite service worker
+ * 设计原则：
+ *  1) 只对 lite 自己的资源负责；index.html / survey.html / 旧版 js/css 一律放行网络，绝不读写缓存。
+ *  2) 壳 + v3 分片（lite.html / manifest / 图标 / 全部 142 个 v3 base64 分片）：install 时预缓存。
+ *  3) 音频（audio/*.ogg、dayXX-Y.mp3、breath-intro.wav）：不预拉，首次播放后 cache-first + SWR 更新。
  */
 'use strict';
 
-const VERSION = 'lite-v2';
+const VERSION = 'lite-v3';
 const SHELL_CACHE = VERSION + '-shell';
 const AUDIO_CACHE = VERSION + '-audio';
 
+// 生成全部 v3 分片路径（142 片）
+const V3N = {'sea-poster':6,'rain':22,'forest':44,'fire':12,'music':7,'seavideo':51};
+const v3shards = [];
+for (const [key, n] of Object.entries(V3N)) {
+  for (let i = 0; i < n; i++) {
+    v3shards.push('./lite/v3/v3-' + key + '-p' + String(i).padStart(3, '0') + '.js');
+  }
+}
+
+// 壳资源：逐项写入，单个 404 不影响整体安装
 const SHELL_ASSETS = [
   './lite.html',
   './lite.webmanifest',
-  './lite/icon.svg'
+  './lite/icon.svg',
+  './lite/v3/manifest.json',
+  ...v3shards
 ];
 
 self.addEventListener('install', (event) => {
@@ -26,16 +40,18 @@ self.addEventListener('activate', (event) => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
     await Promise.all(
-      keys.filter((k) => k.indexOf('lite-v') !== 0).map((k) => caches.delete(k))
+      keys
+        .filter((k) => k.indexOf('lite-v') !== 0) // 只清理本 SW 自己的旧缓存
+        .map((k) => caches.delete(k))
     );
     await self.clients.claim();
   })());
 });
 
 function isLiteShellRequest(url) {
-  const p = url.pathname;
-  if (p.endsWith('/lite.html') || p.endsWith('/lite.webmanifest') || p.endsWith('/lite/icon.svg')) return true;
-  if (p.indexOf('/lite/a-') !== -1 && p.endsWith('.js')) return true;
+  const path = url.pathname;
+  if (path.endsWith('/lite.html') || path.endsWith('/lite.webmanifest')) return true;
+  if (path.indexOf('/lite/') !== -1) return true; // lite/v3/* 与 lite/icon.svg
   return false;
 }
 
@@ -49,9 +65,11 @@ self.addEventListener('fetch', (event) => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
 
+  // 旧版资源：完全放行，不碰缓存 —— 绝不污染 index.html 等
   if (!isLiteShellRequest(url) && !isAudioRequest(url)) return;
 
   if (isLiteShellRequest(url)) {
+    // 壳：cache-first
     event.respondWith((async () => {
       const hit = await caches.match(req, { ignoreSearch: true });
       if (hit) return hit;
@@ -65,15 +83,18 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  event.respondWith((async () => {
-    const cache = await caches.open(AUDIO_CACHE);
-    const hit = await cache.match(req);
-    const network = fetch(req)
-      .then((resp) => {
-        if (resp && resp.ok) cache.put(req, resp.clone());
-        return resp;
-      })
-      .catch(() => hit);
-    return hit || network;
-  })());
+  if (isAudioRequest(url)) {
+    // 音频：cache-first + stale-while-revalidate（首次播完后缓存，不预拉）
+    event.respondWith((async () => {
+      const cache = await caches.open(AUDIO_CACHE);
+      const hit = await cache.match(req);
+      const network = fetch(req)
+        .then((resp) => {
+          if (resp && resp.ok) cache.put(req, resp.clone());
+          return resp;
+        })
+        .catch(() => hit);
+      return hit || network;
+    })());
+  }
 });

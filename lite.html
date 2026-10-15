@@ -39,13 +39,9 @@ body{
 }
 button{font-family:inherit;font-size:inherit;color:inherit;background:none;border:none;cursor:pointer;}
 .serif{font-family:'Noto Serif SC','Songti SC',STSong,serif;}
-
-/* ============ 视图切换 ============ */
 .view{display:none;min-height:100vh;min-height:100dvh;}
 .view.on{display:block;animation:viewIn .55s ease;}
 @keyframes viewIn{from{opacity:0;transform:scale(1.015);}to{opacity:1;transform:scale(1);}}
-
-/* ============ 开屏 ============ */
 #splash{
   position:fixed;inset:0;z-index:200;background:var(--bg);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -74,8 +70,6 @@ button{font-family:inherit;font-size:inherit;color:inherit;background:none;borde
 .splash-by{font-size:12px;color:var(--ink-dim);margin-top:16px;letter-spacing:2px;animation:fadeUp 1.4s ease .6s both;}
 @keyframes breathe{0%,100%{transform:scale(.8);box-shadow:0 12px 36px rgba(140,170,150,.25);}50%{transform:scale(1.12);box-shadow:0 24px 70px rgba(140,170,150,.45);}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
-
-/* ============ 主页 ============ */
 #view-home{padding:calc(20px + var(--sat)) 20px calc(110px + var(--sab));}
 .home-head{padding:18px 6px 6px;}
 .home-head h1{font-family:'Noto Serif SC','Songti SC',serif;font-size:30px;font-weight:600;}
@@ -95,8 +89,6 @@ button{font-family:inherit;font-size:inherit;color:inherit;background:none;borde
 .big-start:active{transform:scale(.98);}
 .big-start small{display:block;font-size:15px;font-weight:300;opacity:.85;margin-top:4px;}
 .home-tip{text-align:center;color:var(--ink-faint);font-size:15px;margin-top:18px;}
-
-/* 底部导航 */
 #tabbar{
   position:fixed;left:0;right:0;bottom:0;z-index:90;
   background:var(--card);border-top:1px solid var(--line);
@@ -109,8 +101,6 @@ button{font-family:inherit;font-size:inherit;color:inherit;background:none;borde
 }
 #tabbar button .ico{font-size:26px;line-height:1;}
 #tabbar button.active{background:var(--sage-tint);color:var(--sage-deep);font-weight:500;}
-
-/* ============ 准备页 ============ */
 #view-prep{padding:calc(16px + var(--sat)) 18px calc(28px + var(--sab));}
 .prep-head{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
 .prep-head .back{
@@ -139,7 +129,6 @@ button{font-family:inherit;font-size:inherit;color:inherit;background:none;borde
   margin-top:14px;width:100%;min-height:60px;border-radius:var(--r-btn);
   background:var(--sage-deep);color:#fff;font-size:21px;
 }
-/* ============ 底部弹层 ============ */
 .sheet-mask{
   position:fixed;inset:0;z-index:120;background:rgba(20,28,24,.45);opacity:0;pointer-events:none;transition:opacity .3s;
 }
@@ -159,8 +148,6 @@ button{font-family:inherit;font-size:inherit;color:inherit;background:none;borde
   position:absolute;top:14px;right:14px;min-width:48px;min-height:48px;
   font-size:22px;color:var(--ink-dim);border-radius:12px;
 }
-
-/* 选天列表 */
 .day-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding-bottom:8px;}
 .day-grid button{
   min-height:56px;border-radius:14px;background:var(--bg);font-size:19px;
@@ -169,8 +156,6 @@ button{font-family:inherit;font-size:inherit;color:inherit;background:none;borde
 .day-grid button small{font-size:11px;color:var(--ink-dim);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .day-grid button.on{background:var(--sage-deep);color:#fff;}
 .day-grid button.on small{color:#EAF1EC;}
-
-/* 场景大按钮 */
 .scene-list{display:flex;flex-direction:column;gap:10px;padding-bottom:6px;}
 .scene-btn{
   min-height:88px;border-radius:18px;background:var(--bg);
@@ -180,8 +165,6 @@ button{font-family:inherit;font-size:inherit;color:inherit;background:none;borde
 .scene-btn .nm{font-size:21px;font-weight:500;}
 .scene-btn .ds{font-size:14px;color:var(--ink-dim);margin-top:2px;}
 .scene-btn.on{background:var(--sage-tint);outline:2px solid var(--sage);}
-
-/* 次级音色 chips */
 .chips-label{font-size:16px;color:var(--ink-dim);margin:16px 0 8px;}
 .chips{display:flex;flex-wrap:wrap;gap:10px;}
 .chip{
@@ -190,8 +173,6 @@ button{font-family:inherit;font-size:inherit;color:inherit;background:none;borde
 }
 .chip.on{background:var(--sage-deep);border-color:var(--sage-deep);color:#fff;}
 .chip.off-add{opacity:.5;}
-
-/* 语音引导 */
 .voice-row{display:flex;align-items:center;justify-content:space-between;min-height:60px;margin-top:14px;}
 .voice-row .t{font-size:19px;}
 .voice-row .d{font-size:14px;color:var(--ink-dim);}
@@ -209,8 +190,6 @@ button{font-family:inherit;font-size:inherit;color:inherit;background:none;borde
 .timbre.on{outline:2px solid var(--sage);}
 .timbre.disabled{opacity:.45;}
 .timbre .soon{font-size:13px;color:var(--ink-faint);}
-
-/* 滑条 */
 .vol-block{margin-top:18px;}
 .vol-block .cap{display:flex;justify-content:space-between;font-size:17px;margin-bottom:6px;}
 .vol-block .cap b{font-weight:500;}
@@ -225,8 +204,6 @@ input[type=range]::-webkit-slider-thumb{
 }
 input[type=range]::-moz-range-track{height:10px;border-radius:5px;background:var(--bg-soft);}
 input[type=range]::-moz-range-thumb{width:32px;height:32px;border:none;border-radius:50%;background:var(--sage-deep);}
-
-/* ============ 沉浸式播放页 ============ */
 #view-player{position:fixed;inset:0;z-index:100;background:var(--night);color:var(--night-ink);overflow:hidden;}
 #sceneLayer{position:absolute;inset:0;overflow:hidden;}
 .scene-photo,.scene-video{
@@ -235,32 +212,26 @@ input[type=range]::-moz-range-thumb{width:32px;height:32px;border:none;border-ra
 }
 @keyframes kenburns{from{transform:scale(1.0);}to{transform:scale(1.12);}}
 #sceneLayer .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,16,30,.35),rgba(10,16,30,.12) 40%,rgba(10,16,30,.55));}
-/* 各场景渐变占位（素材未接入时生效） */
 .bg-sea{background:linear-gradient(180deg,#2E4A5E 0%,#4A6E7C 45%,#6E8F8B 100%);}
 .bg-rain{background:linear-gradient(180deg,#1B2436 0%,#2B3756 60%,#3A465E 100%);}
 .bg-forest{background:linear-gradient(180deg,#1E3327 0%,#2E4A38 55%,#40604C 100%);}
 .bg-fire{background:linear-gradient(180deg,#2B1F1A 0%,#4A3020 55%,#6B4426 100%);}
 .bg-music{background:linear-gradient(180deg,#1C2640 0%,#2E3A5C 55%,#46587A 100%);}
-/* 海边波浪色带 */
 .wave-band{position:absolute;left:-20%;width:140%;border-radius:45%;opacity:.35;}
 .wave-band.b1{bottom:-6%;height:34%;background:radial-gradient(ellipse at 50% 0%,rgba(157,184,196,.55),transparent 70%);animation:waveMove 9s ease-in-out infinite alternate;}
 .wave-band.b2{bottom:-14%;height:40%;background:radial-gradient(ellipse at 50% 0%,rgba(143,174,154,.45),transparent 70%);animation:waveMove 12s ease-in-out infinite alternate-reverse;}
 @keyframes waveMove{from{transform:translateX(-3%) rotate(-1.2deg);}to{transform:translateX(3%) rotate(1.2deg);}}
-/* 炉火暖光 */
 .fire-glow{
   position:absolute;left:50%;bottom:-12%;width:130vmax;height:70vmax;transform:translateX(-50%);
   background:radial-gradient(circle at 50% 100%,rgba(212,169,140,.5),rgba(212,169,140,.12) 45%,transparent 70%);
   animation:fireBreathe 8s ease-in-out infinite;pointer-events:none;
 }
 @keyframes fireBreathe{0%,100%{opacity:.55;transform:translateX(-50%) scale(1);}50%{opacity:.95;transform:translateX(-50%) scale(1.08);}}
-/* 林间光斑 */
 .light-blob{position:absolute;border-radius:50%;filter:blur(46px);pointer-events:none;}
 .light-blob.l1{width:44vmin;height:44vmin;top:8%;left:-6%;background:rgba(190,220,170,.28);animation:blobDrift 16s ease-in-out infinite alternate;}
 .light-blob.l2{width:36vmin;height:36vmin;top:30%;right:-8%;background:rgba(210,230,190,.22);animation:blobDrift 20s ease-in-out infinite alternate-reverse;}
 @keyframes blobDrift{from{transform:translate(0,0);}to{transform:translate(10px,18px);}}
 #fxCanvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
-
-/* 播放页控件 */
 .p-top{position:absolute;top:calc(12px + var(--sat));left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 14px;z-index:5;}
 .quit-btn{
   min-height:48px;padding:0 16px;border-radius:14px;color:var(--night-ink);font-size:18px;
@@ -293,7 +264,6 @@ input[type=range]::-moz-range-thumb{width:32px;height:32px;border:none;border-ra
   display:flex;align-items:center;justify-content:center;
   box-shadow:0 8px 24px rgba(0,0,0,.3);font-size:26px;
 }
-/* 结束覆盖层 */
 #doneOverlay{
   position:absolute;inset:0;z-index:8;display:none;align-items:center;justify-content:center;
   background:rgba(15,22,38,.82);padding:30px;text-align:center;
@@ -305,7 +275,6 @@ input[type=range]::-moz-range-thumb{width:32px;height:32px;border:none;border-ra
   margin-top:26px;min-height:60px;padding:0 34px;border-radius:var(--r-pill);
   background:var(--sage);color:#fff;font-size:20px;
 }
-/* toast */
 #toast{
   position:fixed;left:50%;bottom:calc(120px + var(--sab));transform:translateX(-50%) translateY(20px);
   background:rgba(30,40,34,.92);color:#fff;font-size:17px;padding:14px 22px;border-radius:14px;
@@ -322,3 +291,564 @@ input[type=range]::-moz-range-thumb{width:32px;height:32px;border:none;border-ra
 }
 </style>
 </head>
+<body>
+<div id="splash">
+  <div class="splash-circle">栖</div>
+  <div class="splash-poem">充满劳绩，然而人<br>诗意地栖居在这片大地上</div>
+  <div class="splash-by">—— 荷尔德林</div>
+</div>
+<section id="view-home" class="view">
+  <div class="home-head">
+    <h1 class="serif">栖 ROOST</h1>
+    <p>每天 15 分钟，安静地和自己待一会儿</p>
+  </div>
+  <div class="today-card">
+    <span class="tag" id="homeDayTag">第 1 天</span>
+    <h2 class="serif" id="homeDayTitle">在这里安顿</h2>
+    <div class="meta">引导女声 · 海上钢琴音景 · 约 15 分钟</div>
+    <button class="big-start" id="homeStartBtn">开始今天的冥想<small>海上钢琴 · 点我开始</small></button>
+  </div>
+  <div class="home-tip">闭上眼睛，跟着声音慢慢呼吸</div>
+</section>
+<section id="view-prep" class="view">
+  <div class="prep-head">
+    <button class="back" id="prepBack" aria-label="返回">‹</button>
+    <h1 class="serif">冥想准备</h1>
+  </div>
+  <div class="prep-card">
+    <button class="prep-row" id="openDaySheet">
+      <span class="lbl">今天是第几天</span>
+      <span class="val" id="dayVal">第 1 天 · 在这里安顿</span>
+    </button>
+  </div>
+  <div class="preset-card">
+    <h3>推荐 · 海上钢琴</h3>
+    <p>轻柔钢琴配海浪声，最受欢迎的组合。直接点「一键开始」即可。</p>
+    <button class="go" id="presetStartBtn">海上钢琴 · 一键开始</button>
+  </div>
+  <div class="prep-card">
+    <button class="prep-row" id="openSoundSheet">
+      <span class="lbl">音景与音量</span>
+      <span class="val" id="soundVal">海边 · 2 层音</span>
+    </button>
+  </div>
+  <button class="big-start" id="prepStartBtn">开始冥想<small>按当前选择开始</small></button>
+</section>
+<section id="view-player" class="view">
+  <div id="sceneLayer">
+    <div class="bg-sea" id="sceneBg"></div>
+    <video id="sceneVideo" class="scene-video" muted loop playsinline autoplay style="display:none"></video>
+    <img id="scenePhoto" class="scene-photo" alt="" style="display:none">
+    <div class="wave-band b1" id="wBand1" style="display:none"></div>
+    <div class="wave-band b2" id="wBand2" style="display:none"></div>
+    <div class="fire-glow" id="fireGlow" style="display:none"></div>
+    <div class="light-blob l1" id="blob1" style="display:none"></div>
+    <div class="light-blob l2" id="blob2" style="display:none"></div>
+    <canvas id="fxCanvas"></canvas>
+    <div class="scrim"></div>
+  </div>
+  <div class="p-top">
+    <button class="quit-btn" id="quitBtn">‹ 退出</button>
+    <button class="sound-entry" id="inPlayerSoundBtn" aria-label="音景与音量">音景</button>
+  </div>
+  <div class="phase-tag" id="phaseTag">准备好了<small>点击下方播放，开始今天的练习</small></div>
+  <div id="breathHint"></div>
+  <canvas id="breathWave"></canvas>
+  <div class="p-bottom">
+    <div class="progress"><i id="progBar"></i></div>
+    <div class="p-time" id="pTime">00:00 / 15:00</div>
+    <div class="p-ctrl">
+      <button class="p-side" id="prevSeg" aria-label="上一段">‹‹</button>
+      <button class="p-main" id="playPauseBtn" aria-label="播放或暂停">▶</button>
+      <button class="p-side" id="nextSeg" aria-label="下一段">››</button>
+    </div>
+  </div>
+  <div id="doneOverlay">
+    <div>
+      <h2 class="serif">今天的练习完成了</h2>
+      <p>不必追求任何状态。你愿意坐下来，就已经很好了。</p>
+      <button class="back-home" id="doneHomeBtn">返回</button>
+    </div>
+  </div>
+</section>
+<nav id="tabbar">
+  <button class="active" data-tab="meditate"><span class="ico">🧘</span>冥想</button>
+  <button data-tab="sleep"><span class="ico">🌙</span>睡眠</button>
+  <button data-tab="self"><span class="ico">🌿</span>自我</button>
+  <button data-tab="relax"><span class="ico">🍵</span>放松</button>
+</nav>
+<div class="sheet-mask" id="dayMask" data-sheet="daySheet"></div>
+<div class="sheet" id="daySheet">
+  <div class="sheet-grab"></div>
+  <h3>选择今天第几天</h3>
+  <button class="sheet-close" data-close="daySheet" aria-label="关闭">✕</button>
+  <div class="sheet-scroll"><div class="day-grid" id="dayGrid"></div></div>
+</div>
+<div class="sheet-mask" id="soundMask" data-sheet="soundSheet"></div>
+<div class="sheet" id="soundSheet">
+  <div class="sheet-grab"></div>
+  <h3>音景与音量</h3>
+  <button class="sheet-close" data-close="soundSheet" aria-label="关闭">✕</button>
+  <div class="sheet-scroll">
+    <div class="scene-list" id="sceneList"></div>
+    <div class="chips-label" id="chipsLabel">当前场景的声音（可再叠 1 层）</div>
+    <div class="chips" id="chipRow"></div>
+    <div class="voice-row">
+      <div>
+        <div class="t">语音引导</div>
+        <div class="d">关掉则只听音景安静练习</div>
+      </div>
+      <div class="switch on" id="voiceSwitch" role="switch" aria-checked="true"></div>
+    </div>
+    <div class="timbre-list" id="timbreList"></div>
+    <div class="vol-block">
+      <div class="cap"><b>人声音量</b><span id="voiceVolVal">85%</span></div>
+      <input type="range" id="voiceVol" min="0" max="1" step="0.05" value="0.85" aria-label="人声音量">
+    </div>
+    <div class="vol-block">
+      <div class="cap"><b>音景音量</b><span id="ambientVolVal">35%</span></div>
+      <input type="range" id="ambientVol" min="0" max="1" step="0.05" value="0.35" aria-label="音景音量">
+    </div>
+  </div>
+</div>
+<div id="toast"></div>
+<script>
+'use strict';
+const SOUNDS = {
+  waves:{name:'潮汐海岸',file:'audio/waves.ogg'},
+  boat:{name:'湖面轻舟',file:'audio/boat.ogg'},
+  stream:{name:'山间溪流',file:'audio/stream.ogg'},
+  'forest-stream':{name:'林中潺潺',file:'audio/forest-stream.ogg'},
+  rain:{name:'细雨淅沥',file:'audio/rain.ogg'},
+  'heavy-rain':{name:'大雨滂沱',file:'audio/heavy-rain.ogg'},
+  'forest-rain':{name:'林间阵雨',file:'audio/forest-rain.ogg'},
+  'thunder-rain':{name:'远雷雨夜',file:'audio/thunder-rain.ogg'},
+  birds:{name:'林间鸟鸣',file:'audio/birds.ogg'},
+  wind:{name:'旷野微风',file:'audio/wind.ogg'},
+  night:{name:'夏夜虫鸣',file:'audio/night.ogg'},
+  fire:{name:'炉边暖火',file:'audio/fire.ogg'},
+  'crackle-fire':{name:'柴火噼啪',file:'audio/crackle-fire.ogg'},
+  cafe:{name:'午后咖啡馆',file:'audio/cafe.ogg'},
+  piano:{name:'微光钢琴',file:'audio/piano.ogg'},
+  harp:{name:'月下竖琴',file:'audio/harp.ogg'},
+  guitar:{name:'晚风木吉他',file:'audio/guitar.ogg'}
+};
+const SCENES = {
+  sea:{name:'海边',icon:'🌊',desc:'海浪 · 小船 · 溪流',sounds:['waves','boat','stream','forest-stream'],def:['waves'],bg:'bg-sea',photo:'lite/scenes/ocean-poster.jpg',video:'lite/scenes/ocean.mp4',poster:'lite/scenes/ocean-poster.jpg'},
+  rain:{name:'雨景',icon:'🌧️',desc:'细雨 · 大雨 · 远雷',sounds:['rain','heavy-rain','forest-rain','thunder-rain'],def:['rain'],bg:'bg-rain',photo:'lite/scenes/rain.jpg'},
+  forest:{name:'林间',icon:'🌲',desc:'鸟鸣 · 微风 · 虫鸣',sounds:['birds','wind','night'],def:['birds','wind'],bg:'bg-forest',photo:'lite/scenes/forest.jpg'},
+  fire:{name:'炉火',icon:'🔥',desc:'炉火 · 噼啪 · 咖啡馆',sounds:['fire','crackle-fire','cafe'],def:['fire','crackle-fire'],bg:'bg-fire',photo:'lite/scenes/fire.jpg'},
+  music:{name:'器乐空间',icon:'🎹',desc:'钢琴 · 竖琴 · 吉他',sounds:['piano','harp','guitar'],def:['piano'],bg:'bg-music',photo:'lite/scenes/music.jpg'}
+};
+const TITLES = [
+  '在这里安顿','一口气的来去','身体扫描初体验','和呼吸做朋友','看见念头来去',
+  '从肩膀开始放松','一周小结 · 善待自己','听一听周围的声音','脚下的支撑','第十天 · 温和回顾',
+  '情绪来了又走','手掌的触感','安静下来的勇气','两周小结 · 温柔回看','听一听心跳',
+  '和思绪坐在一起','身体的智慧','呼吸的节奏','暮色里的感谢','二十天 · 内心的家',
+  '和不舒服相处','行走中的觉察','对自己温柔一点','当焦虑升起','此刻的光亮',
+  '念头只是故事','把觉察带进日常','静坐的礼物','温柔地收尾','三十天 · 带着安静继续'
+];
+const $=id=>document.getElementById(id);
+const fmt=s=>{s=Math.max(0,Math.floor(s));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');};
+const STATE={
+  day:1, scene:'sea', layers:['waves','piano'],
+  voiceOn:true, voiceVol:0.85, ambientVol:0.35,
+  playing:false, sessionOn:false, queue:[], queueIdx:0,
+  inGap:false, gapTimer:null, gapEndsAt:0, gapRemaining:0,
+  elapsed:0, elapsedTimer:null
+};
+const MAX_LAYERS=2;
+let ac=null,master=null,duckGain=1;
+const bufferCache=new Map();
+const activeLayers=new Map();
+const voiceAudio=new Audio();
+voiceAudio.setAttribute('playsinline','');
+voiceAudio.setAttribute('preload','auto');
+function ensureCtx(){
+  if(!ac){
+    ac=new (window.AudioContext||window.webkitAudioContext)();
+    master=ac.createGain(); master.gain.value=STATE.ambientVol*duckGain;
+    const comp=ac.createDynamicsCompressor();
+    comp.threshold.value=-6; comp.knee.value=3; comp.ratio.value=20; comp.attack.value=.005; comp.release.value=.25;
+    master.connect(comp); comp.connect(ac.destination);
+  }
+  if(ac.state==='suspended') ac.resume();
+}
+function applyMaster(){ if(master&&ac) master.gain.setTargetAtTime(STATE.ambientVol*duckGain,ac.currentTime,.7); }
+voiceAudio.addEventListener('playing',()=>{ duckGain=.4; applyMaster(); });
+voiceAudio.addEventListener('ended',()=>{ duckGain=1; applyMaster(); });
+voiceAudio.addEventListener('error',()=>{ duckGain=1; applyMaster(); });
+async function decodeLayer(file){
+  ensureCtx();
+  if(!bufferCache.has(file)){
+    bufferCache.set(file, fetch(file).then(r=>{ if(!r.ok) throw new Error('音频加载失败'); return r.arrayBuffer(); }).then(b=>ac.decodeAudioData(b));
+  }
+  return bufferCache.get(file);
+}
+async function startLayer(id){
+  if(activeLayers.has(id)) return;
+  ensureCtx();
+  try{
+    const buf=await decodeLayer(SOUNDS[id].file);
+    const src=ac.createBufferSource(); src.buffer=buf; src.loop=true;
+    const g=ac.createGain(); g.gain.setValueAtTime(0,ac.currentTime);
+    src.connect(g); g.connect(master);
+    src.start();
+    g.gain.linearRampToValueAtTime(1,ac.currentTime+2);
+    activeLayers.set(id,{source:src,gain:g});
+  }catch(e){ toast(SOUNDS[id].name+' 加载失败，可稍后再试'); }
+}
+function stopLayer(id){
+  const r=activeLayers.get(id); if(!r) return;
+  activeLayers.delete(id);
+  if(ac){ r.gain.gain.cancelScheduledValues(ac.currentTime); r.gain.gain.setTargetAtTime(0,ac.currentTime,.2); r.source.stop(ac.currentTime+.3); }
+}
+function stopAllLayers(){ [...activeLayers.keys()].forEach(stopLayer); }
+function syncLayers(){
+  [...activeLayers.keys()].forEach(id=>{ if(!STATE.layers.includes(id)) stopLayer(id); });
+  STATE.layers.forEach(id=>{ if(!activeLayers.has(id)) startLayer(id); });
+}
+function buildQueue(day){
+  const pad=String(day).padStart(2,'0');
+  return [
+    {url:'breath-intro.wav',pauseAfter:60},
+    {url:'day'+pad+'-1.mp3',pauseAfter:100},
+    {url:'day'+pad+'-2.mp3',pauseAfter:100},
+    {url:'day'+pad+'-3.mp3',pauseAfter:100},
+    {url:'day'+pad+'-4.mp3',pauseAfter:120}
+  ];
+}
+function clearGap(){ if(STATE.gapTimer){ clearTimeout(STATE.gapTimer); STATE.gapTimer=null; } STATE.inGap=false; }
+function scheduleGap(sec){
+  STATE.inGap=true;
+  STATE.gapRemaining=sec;
+  STATE.gapEndsAt=performance.now()+sec*1000;
+  setPhase('留白');
+  STATE.gapTimer=setTimeout(()=>{ STATE.inGap=false; playQueueItem(STATE.queueIdx+1); }, sec*1000);
+}
+function playQueueItem(i){
+  clearGap();
+  if(i>=STATE.queue.length){ finishSession(); return; }
+  STATE.queueIdx=i;
+  const seg=STATE.queue[i];
+  setPhase(STATE.voiceOn? (i===0?'引导 · 呼吸调整':'引导 · 第'+i+'段') : '安静练习');
+  if(!STATE.voiceOn){ scheduleGap(seg.pauseAfter); return; }
+  voiceAudio.onended=()=>{ scheduleGap(seg.pauseAfter); };
+  voiceAudio.src=seg.url;
+  voiceAudio.volume=STATE.voiceVol;
+  voiceAudio.play().catch(()=>{ scheduleGap(seg.pauseAfter); });
+}
+function pauseSession(){
+  if(!STATE.playing) return;
+  STATE.playing=false;
+  if(STATE.inGap){ STATE.gapRemaining=Math.max(0,(STATE.gapEndsAt-performance.now())/1000); clearGap(); }
+  voiceAudio.pause();
+  if(ac) ac.suspend();
+  $('playPauseBtn').textContent='▶';
+  setPhase('已暂停');
+}
+function resumeSession(){
+  if(STATE.playing) return;
+  STATE.playing=true;
+  ensureCtx();
+  if(voiceAudio.src && voiceAudio.currentTime>0 && !voiceAudio.ended) voiceAudio.play().catch(()=>{});
+  if(STATE.inGap) STATE.gapTimer=setTimeout(()=>{ STATE.inGap=false; playQueueItem(STATE.queueIdx+1); }, STATE.gapRemaining*1000);
+  $('playPauseBtn').textContent='⏸';
+}
+function startSession(){
+  ensureCtx();
+  STATE.queue=buildQueue(STATE.day);
+  STATE.queueIdx=0; STATE.elapsed=0; STATE.playing=true; STATE.sessionOn=true;
+  $('doneOverlay').classList.remove('show');
+  setupSceneVisual();
+  go('view-player');
+  syncLayers();
+  playQueueItem(0);
+  $('playPauseBtn').textContent='⏸';
+  clearInterval(STATE.elapsedTimer);
+  STATE.elapsedTimer=setInterval(()=>{
+    if(!STATE.playing) return;
+    STATE.elapsed+=.5;
+    $('progBar').style.width=Math.min(100,STATE.elapsed/900*100)+'%';
+    $('pTime').textContent=fmt(STATE.elapsed)+' / 15:00';
+  },500);
+}
+function finishSession(){
+  STATE.playing=false; clearGap(); voiceAudio.pause();
+  $('playPauseBtn').textContent='▶';
+  $('progBar').style.width='100%';
+  $('pTime').textContent='15:00 / 15:00';
+  $('doneOverlay').classList.add('show');
+}
+function quitSession(){
+  pauseSession();
+  stopAllLayers();
+  voiceAudio.pause(); voiceAudio.removeAttribute('src'); voiceAudio.load();
+  STATE.sessionOn=false; STATE.playing=false;
+  clearInterval(STATE.elapsedTimer);
+  closeAllSheets();
+  go('view-prep');
+}
+function go(name){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+  $(name).classList.add('on');
+  $('tabbar').style.display=(name==='view-home')?'grid':'none';
+}
+const SHEETS={daySheet:'dayMask',soundSheet:'soundMask'};
+function openSheet(n){ $(SHEETS[n]).classList.add('open'); $(n).classList.add('open'); }
+function closeSheet(n){ $(SHEETS[n]).classList.remove('open'); $(n).classList.remove('open'); }
+function closeAllSheets(){ closeSheet('daySheet'); closeSheet('soundSheet'); }
+let toastTimer=null;
+function toast(msg){
+  const t=$('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
+}
+function renderHomeCard(){
+  $('homeDayTag').textContent='第 '+STATE.day+' 天';
+  $('homeDayTitle').textContent=TITLES[STATE.day-1];
+  $('dayVal').textContent='第 '+STATE.day+' 天 · '+TITLES[STATE.day-1];
+  $('soundVal').textContent=SCENES[STATE.scene].name+' · '+STATE.layers.length+' 层音';
+}
+function renderDayGrid(){
+  $('dayGrid').innerHTML=TITLES.map((t,i)=>{
+    const d=i+1;
+    return '<button class="'+(d===STATE.day?'on':'')+'" data-day="'+d+'">'+d+'<small>'+t.slice(0,5)+'</small></button>';
+  }).join('');
+}
+function renderSceneList(){
+  $('sceneList').innerHTML=Object.keys(SCENES).map(k=>{
+    const s=SCENES[k];
+    return '<button class="scene-btn '+(k===STATE.scene?'on':'')+'" data-scene="'+k+'">'+
+      '<span class="ico">'+s.icon+'</span><span><span class="nm">'+s.name+'</span><br><span class="ds">'+s.desc+'</span></span></button>';
+  }).join('');
+}
+function renderChips(){
+  const sc=SCENES[STATE.scene];
+  const external=STATE.layers.filter(id=>!sc.sounds.includes(id));
+  const all=[...external, ...sc.sounds];
+  $('chipsLabel').textContent='当前：'+sc.name+'（最多叠 '+MAX_LAYERS+' 层）';
+  $('chipRow').innerHTML=all.map(id=>{
+    const on=STATE.layers.includes(id);
+    return '<button class="chip '+(on?'on':'')+'" data-sound="'+id+'">'+(on?'✓ ':'')+SOUNDS[id].name+'</button>';
+  }).join('');
+}
+function renderTimbre(){
+  $('timbreList').innerHTML=
+    '<div class="timbre on"><span>ASMR 柔语 · 女声</span><span style="color:var(--sage-deep);font-size:15px">当前可用</span></div>'+
+    '<div class="timbre disabled"><span>暮云 · 沉稳男声</span><span class="soon">即将上线</span></div>'+
+    '<div class="timbre disabled"><span>清泉 · 轻柔童声</span><span class="soon">即将上线</span></div>';
+}
+function renderSoundSheet(){ renderSceneList(); renderChips(); }
+let fxRAF=null, waveRAF=null;
+function setupSceneVisual(){
+  const sc=SCENES[STATE.scene];
+  const bg=$('sceneBg');
+  bg.className=sc.bg;
+  const photo=$('scenePhoto'), video=$('sceneVideo');
+  photo.style.display='none'; video.style.display='none';
+  photo.onerror=null; video.onerror=null;
+  $('wBand1').style.display=$('wBand2').style.display='none';
+  $('fireGlow').style.display=$('blob1').style.display=$('blob2').style.display='none';
+  if(STATE.scene==='sea'){
+    if(sc.video){
+      video.src=sc.video; video.poster=sc.poster||''; video.style.display='block';
+      video.onerror=()=>{
+        video.style.display='none';
+        photo.onload=()=>{ photo.style.display='block'; };
+        photo.onerror=()=>{ photo.style.display='none'; };
+        photo.src=sc.poster||'';
+      };
+      video.play && video.play().catch(()=>{});
+    }
+    $('wBand1').style.display=$('wBand2').style.display='block';
+  }else if(STATE.scene==='fire'){
+    $('fireGlow').style.display='block';
+    if(sc.photo) tryPhoto(sc.photo);
+  }else if(STATE.scene==='forest'){
+    $('blob1').style.display=$('blob2').style.display='block';
+    if(sc.photo) tryPhoto(sc.photo);
+  }else if(sc.photo){
+    tryPhoto(sc.photo);
+  }
+  startFx(STATE.scene);
+  startWaveLoop();
+}
+function tryPhoto(src){
+  const photo=$('scenePhoto');
+  photo.onload=()=>{ photo.style.display='block'; };
+  photo.onerror=()=>{ photo.style.display='none'; };
+  photo.src=src;
+}
+function startFx(scene){
+  const cv=$('fxCanvas');
+  if(fxRAF){ cancelAnimationFrame(fxRAF); fxRAF=null; }
+  cv.getContext('2d').clearRect(0,0,cv.width,cv.height);
+  let parts=[];
+  const W=cv.width=cv.clientWidth, H=cv.height=cv.clientHeight;
+  if(scene==='rain'){
+    for(let i=0;i<26;i++) parts.push({x:Math.random()*W,y:Math.random()*H,l:14+Math.random()*18,v:6+Math.random()*4});
+  }else if(scene==='forest'){
+    for(let i=0;i<10;i++) parts.push({x:Math.random()*W,y:Math.random()*H,r:1.5+Math.random()*2,v:.2+Math.random()*.3,ph:Math.random()*6.28});
+  }else if(scene==='music'){
+    for(let i=0;i<12;i++) parts.push({x:Math.random()*W,y:H+Math.random()*H,r:2+Math.random()*3,v:.3+Math.random()*.4,ph:Math.random()*6.28});
+  }else if(scene==='fire'){
+    for(let i=0;i<10;i++) parts.push({x:W/2+(Math.random()-.5)*W*.7,y:H*.85+Math.random()*H*.15,r:2+Math.random()*3,v:.4+Math.random()*.5,ph:Math.random()*6.28});
+  }
+  function frame(){
+    const c=cv.getContext('2d');
+    c.clearRect(0,0,W,H);
+    if(scene==='rain'){
+      c.strokeStyle='rgba(200,215,235,.35)'; c.lineWidth=1;
+      parts.forEach(p=>{ c.beginPath(); c.moveTo(p.x,p.y); c.lineTo(p.x-2,p.y+p.l); c.stroke(); p.y+=p.v; p.x-=p.v*.15;
+        if(p.y>H){ p.y=-20; p.x=Math.random()*W; } });
+    }else if(scene==='forest'){
+      parts.forEach(p=>{ p.y-=p.v; p.ph+=.02; p.x+=Math.sin(p.ph)*.3;
+        if(p.y<0){ p.y=H; }
+        c.fillStyle='rgba(220,240,190,.5)'; c.beginPath(); c.arc(p.x,p.y,p.r,0,6.28); c.fill(); });
+    }else if(scene==='music'){
+      parts.forEach(p=>{ p.y-=p.v; p.ph+=.015; p.x+=Math.sin(p.ph)*.2;
+        if(p.y<-10){ p.y=H+10; p.x=Math.random()*W; }
+        c.fillStyle='rgba(210,225,245,.4)'; c.beginPath(); c.arc(p.x,p.y,p.r,0,6.28); c.fill(); });
+    }else if(scene==='fire'){
+      parts.forEach(p=>{ p.y-=p.v; p.ph+=.03; p.x+=Math.sin(p.ph)*.4;
+        if(p.y<H*.55){ p.y=H*.9; p.x=W/2+(Math.random()-.5)*W*.7; }
+        c.fillStyle='rgba(230,180,130,.45)'; c.beginPath(); c.arc(p.x,p.y,p.r,0,6.28); c.fill(); });
+    }
+    fxRAF=requestAnimationFrame(frame);
+  }
+  frame();
+}
+function setPhase(text){
+  const map={ '吸气':['轻轻吸气','吸 4 拍'], '呼气':['缓缓呼气','呼 6 拍'], '留白':['安静留白','保持自然呼吸'] };
+  if(map[text]){ $('phaseTag').innerHTML=map[text][0]+'<small>'+map[text][1]+'</small>'; }
+  else $('phaseTag').innerHTML=text;
+}
+function startWaveLoop(){
+  const cv=$('breathWave');
+  if(waveRAF) cancelAnimationFrame(waveRAF);
+  const W=cv.width=cv.clientWidth, H=cv.height=cv.clientHeight;
+  const T_IN=4, T_OUT=6;
+  let lastBreath='';
+  function frame(now){
+    const c=cv.getContext('2d');
+    c.clearRect(0,0,W,H);
+    let amp, phase;
+    if(STATE.playing && STATE.sessionOn){
+      const cyc=STATE.elapsed%(T_IN+T_OUT);
+      if(cyc<T_IN){ amp=.25+.75*(cyc/T_IN); phase=STATE.inGap?'留白':'吸气'; }
+      else { amp=1-.75*((cyc-T_IN)/T_OUT); phase=STATE.inGap?'留白':'呼气'; }
+    }else{ amp=.4; phase='暂停'; }
+    if(phase!==lastBreath){
+      lastBreath=phase;
+      $('breathHint').textContent = phase==='吸气'?'吸 · 4 拍':phase==='呼气'?'呼 · 6 拍':phase==='留白'?'安静留白':'已暂停';
+    }
+    const mid=H*.55, base=26+amp*34;
+    const t=now/1000;
+    c.lineWidth=2.5; c.strokeStyle='rgba(255,255,255,.55)';
+    c.beginPath();
+    for(let x=0;x<=W;x+=6){
+      const y=mid+base*Math.sin(x/90 - t*1.6)+base*.35*Math.sin(x/45 - t*2.3);
+      x===0?c.moveTo(x,y):c.lineTo(x,y);
+    }
+    c.stroke();
+    c.lineWidth=1.5; c.strokeStyle='rgba(255,255,255,.22)';
+    c.beginPath();
+    for(let x=0;x<=W;x+=6){
+      const y=mid+20+base*.5*Math.sin(x/120 - t*1.1+1.2);
+      x===0?c.moveTo(x,y):c.lineTo(x,y);
+    }
+    c.stroke();
+    waveRAF=requestAnimationFrame(frame);
+  }
+  waveRAF=requestAnimationFrame(frame);
+}
+function bind(){
+  const splash=$('splash'); let gone=false;
+  function hideSplash(){ if(gone) return; gone=true; splash.classList.add('hide'); setTimeout(()=>splash.remove(),1000); }
+  splash.addEventListener('click',hideSplash);
+  setTimeout(hideSplash,2800);
+  document.querySelectorAll('#tabbar button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      if(b.dataset.tab==='meditate'){ go('view-home'); }
+      else toast('「'+b.textContent.trim()+'」即将上线，敬请期待');
+    });
+  });
+  $('homeStartBtn').addEventListener('click',()=>go('view-prep'));
+  $('prepBack').addEventListener('click',()=>go('view-home'));
+  $('presetStartBtn').addEventListener('click',()=>{
+    STATE.scene='sea'; STATE.layers=['waves','piano'];
+    renderHomeCard(); startSession();
+  });
+  $('prepStartBtn').addEventListener('click',()=>startSession());
+  $('openDaySheet').addEventListener('click',()=>{ renderDayGrid(); openSheet('daySheet'); });
+  $('openSoundSheet').addEventListener('click',()=>{ renderSoundSheet(); openSheet('soundSheet'); });
+  $('inPlayerSoundBtn').addEventListener('click',()=>{ renderSoundSheet(); openSheet('soundSheet'); });
+  document.querySelectorAll('.sheet-close').forEach(b=>b.addEventListener('click',()=>closeSheet(b.dataset.close)));
+  document.querySelectorAll('.sheet-mask').forEach(m=>m.addEventListener('click',()=>closeSheet(m.dataset.sheet)));
+  $('dayGrid').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b) return;
+    STATE.day=+b.dataset.day; renderHomeCard(); renderDayGrid(); closeSheet('daySheet');
+    toast('已选择第 '+STATE.day+' 天 · '+TITLES[STATE.day-1]);
+  });
+  $('sceneList').addEventListener('click',e=>{
+    const b=e.target.closest('.scene-btn'); if(!b) return;
+    STATE.scene=b.dataset.scene;
+    STATE.layers=SCENES[STATE.scene].def.slice();
+    syncLayers(); renderSoundSheet(); renderHomeCard();
+  });
+  $('chipRow').addEventListener('click',e=>{
+    const b=e.target.closest('.chip'); if(!b) return;
+    const id=b.dataset.sound;
+    if(STATE.layers.includes(id)){
+      STATE.layers=STATE.layers.filter(x=>x!==id);
+    }else{
+      if(STATE.layers.length>=MAX_LAYERS){ toast('最多叠 2 层音景，可先关掉一个'); return; }
+      STATE.layers.push(id);
+    }
+    ensureCtx(); syncLayers(); renderChips(); renderHomeCard();
+  });
+  $('voiceSwitch').addEventListener('click',()=>{
+    STATE.voiceOn=!STATE.voiceOn;
+    $('voiceSwitch').classList.toggle('on',STATE.voiceOn);
+    $('voiceSwitch').setAttribute('aria-checked',STATE.voiceOn);
+    if(!STATE.voiceOn){ voiceAudio.pause(); duckGain=1; applyMaster(); }
+  });
+  $('voiceVol').addEventListener('input',e=>{
+    STATE.voiceVol=+e.target.value;
+    voiceAudio.volume=STATE.voiceVol;
+    $('voiceVolVal').textContent=Math.round(STATE.voiceVol*100)+'%';
+  });
+  $('ambientVol').addEventListener('input',e=>{
+    STATE.ambientVol=+e.target.value;
+    $('ambientVolVal').textContent=Math.round(STATE.ambientVol*100)+'%';
+    applyMaster();
+  });
+  $('playPauseBtn').addEventListener('click',()=>{ STATE.playing?pauseSession():resumeSession(); });
+  $('prevSeg').addEventListener('click',()=>{ voiceAudio.pause(); playQueueItem(Math.max(0,STATE.queueIdx-1)); });
+  $('nextSeg').addEventListener('click',()=>{ voiceAudio.pause(); playQueueItem(Math.min(STATE.queue.length-1,STATE.queueIdx+1)); });
+  let quitArmed=false,quitTimer=null;
+  $('quitBtn').addEventListener('click',()=>{
+    if(!quitArmed){
+      quitArmed=true;
+      $('quitBtn').classList.add('confirm');
+      $('quitBtn').textContent='再点一次退出';
+      quitTimer=setTimeout(()=>{ quitArmed=false; $('quitBtn').classList.remove('confirm'); $('quitBtn').textContent='‹ 退出'; },2500);
+    }else{
+      clearTimeout(quitTimer);
+      quitSession(); toast('已退出，随时可以再来');
+    }
+  });
+  $('doneHomeBtn').addEventListener('click',()=>{ stopAllLayers(); go('view-home'); $('doneOverlay').classList.remove('show'); });
+  window.addEventListener('pagehide',()=>{ pauseSession(); stopAllLayers(); });
+  if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
+    navigator.serviceWorker.register('lite-sw.js').catch(()=>{});
+  }
+}
+renderHomeCard();
+renderTimbre();
+bind();
+go('view-home');
+window.addEventListener('resize',()=>{ if(STATE.sessionOn){ setupSceneVisual(); } });
+</script>
+</body>
+</html>

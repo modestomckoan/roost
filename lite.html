@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>栖 ROOST · 极简冥想</title>
-<!-- iOS 全屏 / PWA -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -172,7 +171,6 @@ button{font-family:inherit;font-size:inherit;color:inherit;background:none;borde
   background:var(--bg);font-size:18px;border:1.5px solid var(--line);
 }
 .chip.on{background:var(--sage-deep);border-color:var(--sage-deep);color:#fff;}
-.chip.off-add{opacity:.5;}
 .voice-row{display:flex;align-items:center;justify-content:space-between;min-height:60px;margin-top:14px;}
 .voice-row .t{font-size:19px;}
 .voice-row .d{font-size:14px;color:var(--ink-dim);}
@@ -481,7 +479,7 @@ voiceAudio.addEventListener('error',()=>{ duckGain=1; applyMaster(); });
 async function decodeLayer(file){
   ensureCtx();
   if(!bufferCache.has(file)){
-    bufferCache.set(file, fetch(file).then(r=>{ if(!r.ok) throw new Error('音频加载失败'); return r.arrayBuffer(); }).then(b=>ac.decodeAudioData(b));
+    bufferCache.set(file, fetch(file).then(r=>{ if(!r.ok) throw new Error('音频加载失败'); return r.arrayBuffer(); }).then(b=>ac.decodeAudioData(b)));
   }
   return bufferCache.get(file);
 }

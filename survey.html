@@ -287,7 +287,8 @@ function card(f,q,key){
 function typeName(t){return {single:"单选",multi:"多选",scale:"评分",matrix:"矩阵单选",open:"填空"}[t]||"";}
 
 function pick(el){
-  const wrap=el.parentElement, multi=wrap.dataset.multi==="true", max=+wrap.dataset.max;
+  const wrap=el.parentElement, multi=wrap.dataset.multi==="true", max=+wrap.dataset.max,
+        qid=wrap.dataset.q, key=wrap.dataset.form;
   const fillIn=el.querySelector(".fillin");
   if(multi){
     const sel=wrap.querySelectorAll(".opt.sel");
@@ -299,12 +300,14 @@ function pick(el){
     });
     el.classList.add("sel"); if(fillIn)fillIn.style.display="inline-block";
   }
-  collect(wrap.dataset.form);
+  collect(key);
+  updateProgress();
 }
 function fillOther(inp,qid,key){
   const f=state[key]["__other__"]||{};
   f[qid]=inp.value; state[key]["__other__"]=f;
   collect(key);
+  updateProgress();
 }
 function pickScale(el,qid,key,n){
   el.parentElement.querySelectorAll(".s").forEach(s=>s.classList.remove("sel"));
@@ -337,13 +340,12 @@ function collect(key){
     }
   }));
   state[key]["__data__"]=data;
-  updateProgress();
 }
 function progressOf(key){
   const f=FORMS[key]; let total=0,done=0;
+  collect(key);
   f.sections.forEach(sec=>sec.qs.forEach(q=>{
     if(q.req===false)return; total++;
-    collect(key);
     const d=state[key]["__data__"][q.id];
     if(Array.isArray(d)){
       if(q.type==="matrix"){ if(d.filter(x=>x!==undefined).length>=q.rows.length) done++; }

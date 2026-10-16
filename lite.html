@@ -95,6 +95,70 @@ button{font-family:inherit;font-size:inherit;color:inherit;background:none;borde
 .big-start small{display:block;font-size:15px;font-weight:300;opacity:.85;margin-top:4px;}
 .home-tip{text-align:center;color:var(--ink-faint);font-size:15px;margin-top:18px;}
 
+/* ============ 极简首页（第二阶段重做） ============ */
+#view-home{padding:0;}
+.home-wrap{padding:calc(16px + var(--sat)) 14px calc(110px + var(--sab));}
+.home-hero{
+  position:relative;overflow:hidden;border-radius:26px;
+  background:linear-gradient(160deg,#EAF1EC 0%,#F3F1EB 55%,#F0E9E1 100%);
+  padding:22px 20px 28px;box-shadow:var(--shadow-soft);
+}
+.home-hero-glow{
+  position:absolute;top:-70px;right:-50px;width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,rgba(143,174,154,.30),transparent 70%);pointer-events:none;
+}
+.home-greet-row{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:1;}
+.home-greet{font-size:36px;font-weight:600;line-height:1.15;}
+.home-brand{font-size:15px;color:var(--ink-dim);margin-top:8px;}
+.home-me{
+  min-width:56px;min-height:56px;border-radius:50%;background:rgba(255,255,255,.75);
+  box-shadow:var(--shadow-soft);font-size:26px;display:flex;align-items:center;justify-content:center;flex:none;
+}
+.home-orb-wrap{display:flex;justify-content:center;margin:30px 0 16px;position:relative;z-index:1;}
+.home-orb{
+  position:relative;width:190px;height:190px;border-radius:50%;border:none;cursor:pointer;
+  background:radial-gradient(circle at 40% 35%,#fff,var(--sage-tint) 72%);
+  box-shadow:0 16px 44px rgba(92,125,104,.30);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+}
+.home-orb-ring{position:absolute;inset:-14px;border-radius:50%;border:1.5px solid rgba(143,174,154,.45);pointer-events:none;}
+.home-orb-ring::after{content:'';position:absolute;inset:-12px;border-radius:50%;border:1.5px solid rgba(143,174,154,.25);}
+@media (prefers-reduced-motion: no-preference){
+  .home-orb{animation:homeBreathe 6s ease-in-out infinite;}
+  .home-orb-ring{animation:homeRing 6s ease-out infinite;}
+}
+@keyframes homeBreathe{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+@keyframes homeRing{0%{transform:scale(.96);opacity:.8;}100%{transform:scale(1.28);opacity:0;}}
+.home-orb-play{font-size:42px;color:var(--sage-deep);line-height:1;margin-left:8px;}
+.home-orb-label{font-size:24px;color:var(--sage-deep);font-weight:500;}
+.home-day-sub{text-align:center;font-size:16px;color:var(--ink-dim);position:relative;z-index:1;}
+.home-prep-link{
+  display:block;margin:12px auto 0;min-height:48px;font-size:17px;color:var(--sage-deep);
+  text-decoration:underline;text-underline-offset:4px;
+}
+.rec-label{font-size:17px;color:var(--ink-dim);margin:22px 6px 10px;}
+.rec-scroll{display:flex;gap:12px;overflow-x:auto;padding:4px 2px 8px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.rec-scroll::-webkit-scrollbar{display:none;}
+.rec-card{
+  flex:0 0 150px;min-height:96px;border-radius:18px;padding:16px 14px;text-align:left;
+  background:rgba(255,255,255,.66);backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.85);box-shadow:var(--shadow-soft);
+  display:flex;flex-direction:column;justify-content:center;gap:6px;
+}
+.rec-card:active{transform:scale(.98);}
+.rec-card .rec-ico{font-size:26px;line-height:1;}
+.rec-card .rec-t{font-size:18px;font-weight:500;color:var(--ink);}
+.rec-card .rec-d{font-size:13px;color:var(--ink-dim);line-height:1.4;}
+.home-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;}
+.hstat{background:var(--card);border-radius:18px;box-shadow:var(--shadow-soft);padding:18px 12px;text-align:center;}
+.hstat-num{font-size:32px;color:var(--sage-deep);font-weight:600;line-height:1;}
+.hstat-lab{font-size:15px;color:var(--ink-dim);margin-top:8px;}
+.hstat-lab small{display:block;font-size:12px;color:var(--ink-faint);margin-top:3px;}
+.home-device{
+  width:100%;min-height:52px;margin-top:14px;border-radius:14px;background:var(--bg-soft);
+  font-size:15px;color:var(--ink-dim);
+}
+
 /* 底部导航 */
 #tabbar{
   position:fixed;left:0;right:0;bottom:0;z-index:90;
@@ -313,11 +377,223 @@ input[type=range]::-moz-range-thumb{width:32px;height:32px;border:none;border-ra
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 @media (min-width:768px){
   #view-home,#view-prep{max-width:560px;margin:0 auto;}
+  .home-wrap{max-width:560px;margin:0 auto;}
   .day-grid{grid-template-columns:repeat(6,1fr);}
 }
 @media (orientation:landscape) and (max-height:500px){
   #breathWave{bottom:120px;height:110px;}
   .phase-tag{top:calc(8px + var(--sat));}
+}
+
+/* ============================================================
+   ===== 睡眠 / 自我 / 放松（中老年简洁版新增） =====
+   ============================================================ */
+/* 通用页容器 */
+.sleep-wrap,.self-wrap,.relax-wrap{padding:calc(18px + var(--sat)) 18px calc(110px + var(--sab));}
+.sec-label{font-size:18px;color:var(--ink-dim);margin:26px 4px 12px;font-weight:500;}
+.sec-label small{display:block;font-size:14px;color:var(--ink-faint);font-weight:400;margin-top:2px;}
+/* 宫格小卡 */
+.preset-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.mini-card{
+  min-height:96px;border-radius:var(--r-card);background:var(--card);box-shadow:var(--shadow-soft);
+  padding:16px 14px;display:flex;flex-direction:column;justify-content:center;text-align:left;gap:4px;
+}
+.mini-card:active{transform:scale(.98);}
+.mini-card .mc-emoji{font-size:30px;line-height:1;}
+.mini-card .mc-name{font-size:19px;font-weight:500;margin-top:6px;}
+.mini-card .mc-sub{font-size:14px;color:var(--ink-dim);line-height:1.4;}
+/* 小按钮 */
+.mini-btn{
+  min-height:56px;margin-top:14px;width:100%;border-radius:var(--r-btn);
+  background:var(--sage-deep);color:#fff;font-size:19px;
+}
+input[type=text],textarea{
+  width:100%;min-height:56px;margin-top:12px;padding:12px 14px;border:1.5px solid var(--line);
+  border-radius:14px;font-size:17px;font-family:inherit;background:var(--bg);color:var(--ink);
+}
+textarea{min-height:76px;resize:vertical;}
+
+/* ---- 睡眠页（夜间深色） ---- */
+#view-sleep{background:linear-gradient(180deg,var(--night) 0%,var(--night-2) 100%);color:var(--night-ink);min-height:100vh;min-height:100dvh;}
+#view-sleep .home-head h1{color:var(--night-ink);}
+#view-sleep .home-head p{color:var(--night-dim);}
+#view-sleep .sec-label{color:var(--night-dim);}
+#view-sleep .sec-label small{color:var(--night-dim);opacity:.7;}
+.night-rec{
+  background:linear-gradient(135deg,rgba(255,255,255,.10),rgba(255,255,255,.04));
+  border:1px solid var(--night-line);border-radius:var(--r-card);padding:24px 20px;margin-top:18px;
+}
+.night-rec .tag{display:inline-block;background:rgba(143,174,154,.25);color:#C9DCCE;border-radius:var(--r-pill);padding:6px 16px;font-size:15px;}
+.night-rec h2{font-family:'Noto Serif SC','Songti SC',serif;font-size:28px;margin-top:14px;}
+.night-rec p{font-size:18px;line-height:1.7;color:var(--night-dim);margin-top:8px;}
+.night-rec .rec-sounds{margin-top:12px;font-size:16px;color:#C9DCCE;}
+.night-btn{background:var(--sage);color:#fff;}
+/* 睡眠预设卡 */
+#sleepPresets .mini-card{background:rgba(255,255,255,.08);border:1px solid var(--night-line);box-shadow:none;}
+#sleepPresets .mc-name{color:var(--night-ink);}
+#sleepPresets .mc-sub{color:var(--night-dim);}
+/* 声音花园 */
+.garden-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.garden-cell{
+  min-height:64px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid var(--night-line);
+  color:var(--night-ink);font-size:17px;padding:0 12px;display:flex;align-items:center;gap:8px;text-align:left;
+}
+.garden-cell.on{background:var(--sage);border-color:var(--sage);color:#fff;}
+.garden-cell .g-emoji{font-size:20px;}
+.garden-panel{
+  margin-top:16px;background:rgba(255,255,255,.08);border:1px solid var(--night-line);
+  border-radius:var(--r-card);padding:18px 16px;
+}
+.garden-panel .gp-title{font-size:17px;color:var(--night-ink);margin-bottom:6px;}
+.garden-panel .gp-empty{font-size:15px;color:var(--night-dim);padding:8px 0;}
+.garden-panel .gp-row{margin-top:10px;}
+.garden-panel .gp-row .cap{display:flex;justify-content:space-between;font-size:16px;color:var(--night-ink);margin-bottom:2px;}
+.garden-panel input[type=range]::-webkit-slider-runnable-track{background:var(--night-line);}
+.garden-panel input[type=range]::-moz-range-track{background:var(--night-line);}
+.garden-stop{
+  margin-top:14px;width:100%;min-height:56px;border-radius:var(--r-btn);
+  background:rgba(230,120,110,.85);color:#fff;font-size:19px;
+}
+
+/* ---- 自我页 ---- */
+.self-card{background:var(--card);border-radius:var(--r-card);box-shadow:var(--shadow);padding:20px;margin-top:16px;}
+.self-card-tag{font-size:16px;color:var(--sage-deep);font-weight:600;letter-spacing:1px;}
+.mood-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;}
+.mood-chip{
+  min-height:60px;padding:0 14px;border-radius:var(--r-pill);background:var(--bg);
+  font-size:17px;border:1.5px solid var(--line);display:flex;align-items:center;gap:6px;
+}
+.mood-chip.on{background:var(--sage-deep);border-color:var(--sage-deep);color:#fff;}
+.today-note{margin-top:14px;font-size:18px;color:var(--ink);line-height:1.6;}
+.today-note small{display:block;font-size:14px;color:var(--ink-faint);margin-bottom:4px;}
+.recent-title{margin-top:18px;font-size:15px;color:var(--ink-faint);}
+.mood-h-item{padding:10px 0;border-top:1px solid var(--line);font-size:16px;color:var(--ink-dim);line-height:1.5;}
+.mood-h-item b{color:var(--ink);font-weight:500;}
+.quote-card{background:linear-gradient(135deg,#F7EFE8,#EDF3EE);}
+.quote{font-family:'Noto Serif SC','Songti SC',serif;font-size:21px;line-height:1.8;margin-top:12px;}
+.quote-sub{font-size:14px;color:var(--ink-faint);margin-top:10px;}
+#idealChips .chip{font-size:16px;min-height:48px;}
+.ideal-shown{margin-top:14px;font-size:18px;line-height:1.7;}
+.ideal-shown .dom{color:var(--sage-deep);}
+.path-step{
+  display:flex;align-items:center;gap:12px;min-height:64px;padding:10px 4px;
+  border-top:1px solid var(--line);text-align:left;width:100%;
+}
+.path-step .num{
+  width:34px;height:34px;border-radius:50%;background:var(--bg-soft);color:var(--ink-dim);
+  display:flex;align-items:center;justify-content:center;font-size:16px;flex:none;
+}
+.path-step.done .num{background:var(--sage-deep);color:#fff;}
+.path-step .txt{font-size:16px;line-height:1.5;color:var(--ink);}
+.path-step.done .txt{color:var(--ink-faint);text-decoration:line-through;}
+.path-step.locked .txt{color:var(--ink-faint);}
+.path-step.next{outline:2px solid var(--sage);border-radius:12px;padding-left:8px;padding-right:8px;}
+#pathProgWrap{height:8px;border-radius:4px;background:var(--bg-soft);overflow:hidden;margin-top:12px;}
+#pathProg{display:block;height:100%;width:0%;background:var(--sage-deep);border-radius:4px;transition:width .4s;}
+#pathProgressText{font-size:15px;color:var(--ink-dim);margin-top:8px;}
+.self-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.self-grid3 .mini-card{padding:14px 8px;align-items:center;text-align:center;}
+.self-grid3 .mc-name{font-size:16px;}
+.self-grid3 .mc-sub{font-size:12px;}
+/* sheet 内 */
+.anchor-item{padding:12px 0;border-top:1px solid var(--line);}
+.anchor-item .anchor-date{font-size:13px;color:var(--ink-faint);}
+.anchor-item .anchor-text{font-size:17px;color:var(--ink);margin-top:4px;line-height:1.6;}
+.anchor-empty{padding:24px 0;text-align:center;color:var(--ink-faint);font-size:16px;line-height:1.8;}
+.stat-row{display:flex;justify-content:space-between;align-items:center;min-height:64px;border-top:1px solid var(--line);}
+.stat-row b{font-size:26px;color:var(--sage-deep);}
+.stat-row .k{font-size:17px;color:var(--ink-dim);}
+.device-body{font-size:17px;line-height:1.9;color:var(--ink);}
+.device-list{margin-top:14px;font-size:16px;line-height:2;color:var(--ink-dim);}
+
+/* ---- 呼吸 / 扫描 沉浸页 ---- */
+.relax-stage{
+  position:fixed;inset:0;z-index:100;background:linear-gradient(180deg,#F3F1EB,#E9EFEA);
+  color:var(--ink);overflow-y:auto;padding:calc(14px + var(--sat)) 20px calc(24px + var(--sab));
+}
+.rb-top{display:flex;align-items:center;gap:10px;}
+.rb-back{
+  min-width:56px;min-height:56px;display:flex;align-items:center;justify-content:center;
+  font-size:20px;border-radius:14px;background:var(--card);box-shadow:var(--shadow-soft);
+}
+.rb-top .rb-title{font-family:'Noto Serif SC','Songti SC',serif;font-size:22px;}
+.rb-dur-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;justify-content:center;}
+.rb-stage{display:flex;align-items:center;justify-content:center;min-height:260px;margin-top:10px;}
+.breath-orb{
+  width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle at 38% 32%,rgba(255,255,255,.95),rgba(196,217,203,.6) 55%,rgba(157,184,196,.38) 78%);
+  border:1.5px solid rgba(143,174,154,.45);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:transform 1.2s cubic-bezier(.4,0,.6,1);will-change:transform;
+  box-shadow:0 18px 50px rgba(120,150,130,.28);
+}
+.breath-orb .rb-phase{font-size:40px;color:#3C4A40;font-family:'Noto Serif SC','Songti SC',serif;line-height:1;}
+.breath-orb .rb-count{font-size:56px;color:var(--sage-deep);font-variant-numeric:tabular-nums;margin-top:6px;}
+.rb-bg-row{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:14px;flex-wrap:wrap;}
+.rb-bg-label{font-size:16px;color:var(--ink-dim);}
+.rb-time{text-align:center;font-size:30px;font-variant-numeric:tabular-nums;margin-top:18px;color:var(--ink);}
+.rb-start{margin-top:16px;}
+.relax-done{
+  position:absolute;inset:0;z-index:8;display:none;align-items:center;justify-content:center;
+  background:rgba(243,241,235,.94);padding:30px;text-align:center;
+}
+.relax-done.show{display:flex;}
+.relax-done h2{font-family:'Noto Serif SC','Songti SC',serif;font-size:28px;line-height:1.6;}
+.relax-done p{color:var(--ink-dim);font-size:18px;margin-top:14px;line-height:1.8;}
+.relax-done .back-home{
+  margin-top:26px;min-height:60px;padding:0 34px;border-radius:var(--r-pill);
+  background:var(--sage-deep);color:#fff;font-size:20px;
+}
+/* 夜间播放页 */
+#view-night{position:fixed;inset:0;z-index:100;overflow:hidden;}
+.np-bg{position:absolute;inset:0;}
+.np-bg.scrim::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,16,30,.35),rgba(10,16,30,.2) 40%,rgba(10,16,30,.6));}
+#view-night .p-top{position:absolute;top:calc(12px + var(--sat));left:0;right:0;display:flex;justify-content:space-between;padding:0 14px;z-index:5;}
+.np-title{
+  position:absolute;top:calc(78px + var(--sat));left:0;right:0;text-align:center;z-index:5;
+  font-family:'Noto Serif SC','Songti SC',serif;font-size:30px;color:var(--night-ink);
+}
+.np-time{
+  position:absolute;top:34%;left:0;right:0;text-align:center;z-index:5;
+  font-size:88px;color:var(--night-ink);font-variant-numeric:tabular-nums;font-weight:200;
+}
+.np-chips{position:absolute;bottom:200px;left:0;right:0;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;z-index:5;padding:0 16px;}
+.np-chip{background:rgba(255,255,255,.12);color:var(--night-ink);border-color:transparent;min-height:48px;font-size:16px;}
+.np-chip.on{background:#fff;color:var(--sage-deep);}
+.np-ball-row{position:absolute;bottom:140px;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:12px;z-index:5;color:var(--night-ink);font-size:17px;}
+.np-orb{
+  position:absolute;left:50%;top:50%;width:90px;height:90px;border-radius:50%;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(circle at 38% 32%,rgba(255,255,255,.9),rgba(196,217,203,.5) 60%,rgba(157,184,196,.3) 80%);
+  box-shadow:0 10px 30px rgba(150,180,200,.3);
+  animation:npBreathe 10s ease-in-out infinite;z-index:4;
+}
+@keyframes npBreathe{0%,100%{transform:translate(-50%,-50%) scale(.85);}40%{transform:translate(-50%,-50%) scale(1.15);}70%{transform:translate(-50%,-50%) scale(1.15);}}
+#view-night .p-bottom{position:absolute;left:0;right:0;bottom:calc(24px + var(--sab));z-index:5;}
+#view-night .p-main{margin:0 auto;}
+#nightDone{position:absolute;inset:0;z-index:8;display:none;align-items:center;justify-content:center;background:rgba(15,22,38,.85);padding:30px;text-align:center;}
+#nightDone.show{display:flex;}
+#nightDone h2{font-family:'Noto Serif SC','Songti SC',serif;font-size:28px;color:var(--night-ink);line-height:1.6;}
+#nightDone p{color:var(--night-dim);font-size:18px;margin-top:14px;line-height:1.8;}
+#nightDone .back-home{margin-top:26px;min-height:60px;padding:0 34px;border-radius:var(--r-pill);background:var(--sage);color:#fff;font-size:20px;}
+/* 身体扫描 */
+.scan-figure{width:110px;height:160px;margin:14px auto 0;}
+.scan-figure svg{width:100%;height:100%;overflow:visible;}
+.figure-line{fill:none;stroke:#C6CCBE;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.scan-dot{fill:#DDE0D5;transition:fill .6s ease;}
+.scan-dot.visited{fill:#B5CDBE;}
+.scan-dot.active{fill:var(--sage-deep);animation:dotPulse 2.6s ease-in-out infinite;}
+@keyframes dotPulse{0%,100%{filter:drop-shadow(0 0 1px rgba(110,143,123,.3));}50%{filter:drop-shadow(0 0 9px rgba(110,143,123,.95));}}
+.scan-part-big{text-align:center;font-family:'Noto Serif SC','Songti SC',serif;font-size:30px;margin-top:10px;}
+.scan-prog-big{text-align:center;font-size:16px;color:var(--ink-dim);margin-top:4px;}
+.scan-track{display:flex;gap:6px;justify-content:center;margin-top:12px;}
+.scan-track i{width:8px;height:8px;border-radius:50%;background:#E2E4DA;transition:background .5s;}
+.scan-track i.on{background:var(--sage-deep);}
+.scan-guide{text-align:center;font-size:18px;line-height:1.8;color:var(--ink-dim);margin-top:16px;padding:0 10px;}
+
+@media (min-width:768px){
+  .sleep-wrap,.self-wrap,.relax-wrap{max-width:560px;margin:0 auto;}
+  .preset-grid{grid-template-columns:repeat(2,1fr);}
 }
 </style>
 </head>
@@ -331,17 +607,43 @@ input[type=range]::-moz-range-thumb{width:32px;height:32px;border:none;border-ra
 
 <!-- ========== 主页 ========== -->
 <section id="view-home" class="view">
-  <div class="home-head">
-    <h1 class="serif">栖 ROOST</h1>
-    <p>每天 15 分钟，安静地和自己待一会儿</p>
+  <div class="home-wrap">
+    <div class="home-hero">
+      <div class="home-hero-glow"></div>
+      <div class="home-greet-row">
+        <div>
+          <h1 class="home-greet serif" id="homeGreet">晚上好</h1>
+          <p class="home-brand">栖 ROOST · 每天 15 分钟</p>
+        </div>
+        <button class="home-me" id="homeMe" aria-label="我的">🌿</button>
+      </div>
+      <div class="home-orb-wrap">
+        <button class="home-orb" id="homeStartBtn" aria-label="开始冥想">
+          <span class="home-orb-ring"></span>
+          <span class="home-orb-play">▶</span>
+          <span class="home-orb-label">开始</span>
+        </button>
+      </div>
+      <div class="home-day-sub" id="homeDaySub">第 1 天 · 在这里安顿 · 约 15 分钟</div>
+      <button class="home-prep-link" id="homePrepLink">选第几天 / 换音景 ›</button>
+    </div>
+
+    <div class="rec-label">✨ 此刻建议</div>
+    <div class="rec-scroll" id="recScroll"></div>
+
+    <div class="home-stats">
+      <div class="hstat">
+        <div class="hstat-num" id="homeStreak">0</div>
+        <div class="hstat-lab">连续练习（天）<small id="homeStreakSub">从今天开始</small></div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-num" id="homeMinutes">0</div>
+        <div class="hstat-lab">累计分钟<small id="homeMinSub">从今天开始</small></div>
+      </div>
+    </div>
+
+    <button class="home-device" id="homeDevice">🎧 脑机耳机 · 待接入</button>
   </div>
-  <div class="today-card">
-    <span class="tag" id="homeDayTag">第 1 天</span>
-    <h2 class="serif" id="homeDayTitle">在这里安顿</h2>
-    <div class="meta">引导女声 · 海上钢琴音景 · 约 15 分钟</div>
-    <button class="big-start" id="homeStartBtn">开始今天的冥想<small>海上钢琴 · 点我开始</small></button>
-  </div>
-  <div class="home-tip">闭上眼睛，跟着声音慢慢呼吸</div>
 </section>
 
 <!-- ========== 冥想准备页 ========== -->
@@ -416,6 +718,228 @@ input[type=range]::-moz-range-thumb{width:32px;height:32px;border:none;border-ra
   </div>
 </section>
 
+<!-- ========== 睡眠页 ========== -->
+<section id="view-sleep" class="view">
+  <div class="sleep-wrap">
+    <div class="home-head">
+      <h1 class="serif">夜晚好眠</h1>
+      <p>把白天的疲惫，慢慢交给声音</p>
+    </div>
+
+    <div class="night-rec">
+      <span class="tag" id="recTag">今晚推荐</span>
+      <h2 class="serif" id="recName">雨夜好眠</h2>
+      <p id="recDesc"></p>
+      <div class="rec-sounds" id="recSounds"></div>
+      <button class="big-start night-btn" id="recPlayBtn">一键播放</button>
+    </div>
+
+    <div class="sec-label">助眠预设</div>
+    <div class="preset-grid" id="sleepPresets"></div>
+
+    <div class="sec-label">声音花园<small>点一点，最多同时点亮两层</small></div>
+    <div class="garden-grid" id="gardenGrid"></div>
+    <div class="garden-panel" id="gardenPanel"></div>
+
+    <div class="sec-label">睡前引导</div>
+    <div class="preset-grid">
+      <button class="mini-card" id="goBreath478"><span class="mc-emoji">🌬️</span><span class="mc-name">4-7-8 安眠呼吸</span><span class="mc-sub">约 8 分钟 · 帮你入睡</span></button>
+      <button class="mini-card" id="goScanFull"><span class="mc-emoji">🤍</span><span class="mc-name">睡前身体放松</span><span class="mc-sub">从头到脚 · 约 4 分钟</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 自我页 ========== -->
+<section id="view-self" class="view">
+  <div class="self-wrap">
+    <div class="home-head">
+      <h1 class="serif">和自己待一会儿</h1>
+      <p>此刻的你，和想去的地方</p>
+    </div>
+
+    <div class="self-card">
+      <div class="self-card-tag">现在的我 · 心情打卡</div>
+      <div class="mood-row" id="moodRow"></div>
+      <div class="today-note" id="todayNote"></div>
+      <input type="text" id="moodNote" placeholder="此刻，想说点什么？（可留空）" maxlength="60">
+      <button class="mini-btn" id="moodSave">记录今天的心情</button>
+      <div class="recent-title">最近 5 次</div>
+      <div id="moodHistory"></div>
+    </div>
+
+    <div class="self-card">
+      <div class="self-card-tag">理想的我</div>
+      <div style="margin-top:10px;font-size:16px;color:var(--ink-dim)">选一个你想慢慢靠近的方向：</div>
+      <div class="chips" id="idealChips" style="margin-top:10px"></div>
+      <input type="text" id="idealSentence" placeholder="你理想中的自己，是什么样子？" maxlength="60">
+      <button class="mini-btn" id="idealSave">设定理想</button>
+      <div class="ideal-shown" id="idealShown" style="display:none"></div>
+    </div>
+
+    <div class="self-card" id="idealPathCard" style="display:none">
+      <div class="self-card-tag">一步步走向理想</div>
+      <div id="pathProgWrap"><i id="pathProg"></i></div>
+      <div id="pathProgressText">已走第 0 步 / 共 8 步</div>
+      <div id="pathSteps"></div>
+    </div>
+
+    <div class="self-card quote-card">
+      <div class="self-card-tag">来自理想的我</div>
+      <p class="quote serif" id="dailyQuoteSelf"></p>
+      <p class="quote-sub">这是为你准备好的一句话</p>
+    </div>
+
+    <div class="sec-label">我的</div>
+    <div class="self-grid3">
+      <button class="mini-card" id="openStatsSheet"><span class="mc-emoji">📖</span><span class="mc-name">练习记录</span><span class="mc-sub">天数 · 分钟</span></button>
+      <button class="mini-card" id="openAnchorSheet"><span class="mc-emoji">📍</span><span class="mc-name">舒适档案</span><span class="mc-sub">放松的瞬间</span></button>
+      <button class="mini-card" id="openDeviceSheet"><span class="mc-emoji">🎧</span><span class="mc-name">脑机耳机</span><span class="mc-sub">待接入</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 放松页 ========== -->
+<section id="view-relax" class="view">
+  <div class="relax-wrap">
+    <div class="home-head">
+      <h1 class="serif">松一口气</h1>
+      <p>随时可用的小片刻</p>
+    </div>
+
+    <div class="sec-label">呼吸训练</div>
+    <div class="preset-grid" id="breathGrid">
+      <button class="mini-card" data-breath="soft"><span class="mc-emoji">🌬️</span><span class="mc-name">舒缓呼吸</span><span class="mc-sub">吸 4 拍 · 呼 6 拍</span></button>
+      <button class="mini-card" data-breath="p478"><span class="mc-emoji">😴</span><span class="mc-name">4-7-8 安眠呼吸</span><span class="mc-sub">吸 4 · 屏 7 · 呼 8</span></button>
+      <button class="mini-card" data-breath="box"><span class="mc-emoji">📦</span><span class="mc-name">盒子呼吸</span><span class="mc-sub">四拍循环 · 专注</span></button>
+      <button class="mini-card" data-breath="panic"><span class="mc-emoji">⚡</span><span class="mc-name">60 秒紧急平复</span><span class="mc-sub">马上稳一下</span></button>
+    </div>
+
+    <div class="sec-label">快速放松</div>
+    <div class="preset-grid">
+      <button class="mini-card" id="quick3min"><span class="mc-emoji">⏱️</span><span class="mc-name">3 分钟即刻放松</span><span class="mc-sub">舒缓呼吸 · 固定时长</span></button>
+      <button class="mini-card" id="quickShoulder"><span class="mc-emoji">💆</span><span class="mc-name">肩颈松绑</span><span class="mc-sub">约 3 分钟 · 放松肩颈</span></button>
+    </div>
+
+    <div class="sec-label">自然音景</div>
+    <div class="preset-grid">
+      <button class="mini-card" id="goGarden"><span class="mc-emoji">🌳</span><span class="mc-name">去声音花园</span><span class="mc-sub">雨声 · 海浪 · 炉火</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 呼吸沉浸页 ========== -->
+<section id="view-breath" class="view relax-stage">
+  <div class="rb-top">
+    <button class="rb-back" id="breathQuit" aria-label="退出">‹</button>
+    <div class="rb-title serif" id="breathTitle">舒缓呼吸</div>
+  </div>
+  <div class="rb-dur-chips" id="breathDurChips"></div>
+  <div class="rb-stage">
+    <div class="breath-orb" id="breathOrb">
+      <span class="rb-phase" id="rbPhase">准备</span>
+      <span class="rb-count" id="rbCount"></span>
+    </div>
+  </div>
+  <div class="rb-bg-row">
+    <span class="rb-bg-label">背景音</span>
+    <div class="chips" id="rbBgChips">
+      <button class="chip rb-bg on" data-bg="">无</button>
+      <button class="chip rb-bg" data-bg="rain">细雨</button>
+      <button class="chip rb-bg" data-bg="waves">海浪</button>
+    </div>
+  </div>
+  <div class="rb-time" id="rbTime">03:00</div>
+  <button class="big-start rb-start" id="breathStartBtn">开始</button>
+  <div id="breathDone" class="relax-done">
+    <div>
+      <h2 class="serif">这一段呼吸完成了</h2>
+      <p id="breathDoneText"></p>
+      <button class="back-home" id="breathDoneHome">返回</button>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 身体扫描页 ========== -->
+<section id="view-scan" class="view relax-stage">
+  <div class="rb-top">
+    <button class="rb-back" id="scanQuit" aria-label="退出">‹</button>
+    <div class="rb-title serif" id="scanTitle">睡前身体放松</div>
+  </div>
+  <div class="scan-figure">
+    <svg viewBox="0 0 70 100" id="scanSvg">
+      <circle class="figure-line" cx="35" cy="8" r="5"/>
+      <path class="figure-line" d="M35 13 L35 58"/>
+      <path class="figure-line" d="M20 27 Q35 23 50 27"/>
+      <path class="figure-line" d="M20 27 L26 49"/>
+      <path class="figure-line" d="M50 27 L44 49"/>
+      <path class="figure-line" d="M35 58 Q24 66 19 77"/>
+      <path class="figure-line" d="M35 58 Q46 66 51 77"/>
+      <path class="figure-line" d="M19 77 L51 77"/>
+      <circle class="scan-dot" data-route="head" cx="35" cy="5" r="3.4"/>
+      <circle class="scan-dot" data-route="face" cx="35" cy="13" r="3.4"/>
+      <circle class="scan-dot" data-route="neck" cx="35" cy="23" r="3.4"/>
+      <circle class="scan-dot" data-route="shoulder" cx="35" cy="31" r="3.4"/>
+      <circle class="scan-dot" data-route="chest" cx="35" cy="39" r="3.4"/>
+      <circle class="scan-dot" data-route="heart" cx="35" cy="45" r="3.4"/>
+      <circle class="scan-dot" data-route="belly" cx="35" cy="53" r="3.4"/>
+      <circle class="scan-dot" data-route="hand" cx="35" cy="63" r="3.4"/>
+      <circle class="scan-dot" data-route="hip" cx="35" cy="72" r="3.4"/>
+      <circle class="scan-dot" data-route="foot" cx="35" cy="83" r="3.4"/>
+    </svg>
+  </div>
+  <div class="scan-part-big" id="scanPart">准备</div>
+  <div class="scan-prog-big" id="scanProg">扫描 0/10</div>
+  <div class="scan-track" id="scanTrack"></div>
+  <p class="scan-guide" id="scanGuide">坐下来，轻轻闭上眼，跟着光点慢慢放松。</p>
+  <div class="rb-bg-row">
+    <span class="rb-bg-label">背景音</span>
+    <div class="chips" id="scanBgChips">
+      <button class="chip rb-bg on" data-bg="">无</button>
+      <button class="chip rb-bg" data-bg="rain">细雨</button>
+    </div>
+  </div>
+  <button class="big-start rb-start" id="scanStartBtn">开始</button>
+  <div id="scanDone" class="relax-done">
+    <div>
+      <h2 class="serif">身体放松完成了</h2>
+      <p id="scanDoneText"></p>
+      <button class="back-home" id="scanDoneHome">返回</button>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 夜间纯音景播放页 ========== -->
+<section id="view-night" class="view">
+  <div class="np-bg bg-rain scrim" id="nightBg"></div>
+  <div class="p-top">
+    <button class="quit-btn" id="nightQuit">‹ 退出</button>
+    <span></span>
+  </div>
+  <div class="np-title serif" id="nightTitle">雨夜好眠</div>
+  <div class="np-time" id="nightTime">30:00</div>
+  <div class="np-orb" id="nightOrb" style="display:none"></div>
+  <div class="np-chips" id="nightChips">
+    <button class="chip np-chip" data-min="15">15 分钟</button>
+    <button class="chip np-chip on" data-min="30">30 分钟</button>
+    <button class="chip np-chip" data-min="60">60 分钟</button>
+    <button class="chip np-chip" data-min="0">持续播放</button>
+  </div>
+  <div class="np-ball-row">
+    <span>呼吸球</span>
+    <div class="switch" id="nightBallSwitch" role="switch" aria-checked="false"></div>
+  </div>
+  <div class="p-bottom">
+    <div class="p-ctrl"><button class="p-main" id="nightPlayPause" aria-label="播放或暂停">⏸</button></div>
+  </div>
+  <div id="nightDone">
+    <div>
+      <h2 class="serif">声音已停，晚安</h2>
+      <p>愿你这一夜睡得安稳。</p>
+      <button class="back-home" id="nightDoneHome">返回睡眠</button>
+    </div>
+  </div>
+</section>
+
 <!-- ========== 底部导航 ========== -->
 <nav id="tabbar">
   <button class="active" data-tab="meditate"><span class="ico">🧘</span>冥想</button>
@@ -460,6 +984,55 @@ input[type=range]::-moz-range-thumb{width:32px;height:32px;border:none;border-ra
     <div class="vol-block">
       <div class="cap"><b>音景音量</b><span id="ambientVolVal">35%</span></div>
       <input type="range" id="ambientVol" min="0" max="1" step="0.05" value="0.35" aria-label="音景音量">
+    </div>
+  </div>
+</div>
+
+<!-- ========== 练习记录弹层 ========== -->
+<div class="sheet-mask" id="statsMask" data-sheet="statsSheet"></div>
+<div class="sheet" id="statsSheet">
+  <div class="sheet-grab"></div>
+  <h3>练习记录</h3>
+  <button class="sheet-close" data-close="statsSheet" aria-label="关闭">✕</button>
+  <div class="sheet-scroll">
+    <div class="stat-row"><span class="k">连续练习</span><b><span id="statStreak">0</span> 天</b></div>
+    <div class="stat-row"><span class="k">累计时长</span><b><span id="statMin">0</span> 分钟</b></div>
+    <div class="stat-row"><span class="k">完成次数</span><b><span id="statCount">0</span> 次</b></div>
+    <p style="font-size:14px;color:var(--ink-faint);margin-top:14px;line-height:1.7">数据只保存在这台手机上，安心记录就好。</p>
+  </div>
+</div>
+
+<!-- ========== 舒适档案弹层 ========== -->
+<div class="sheet-mask" id="anchorMask" data-sheet="anchorSheet"></div>
+<div class="sheet" id="anchorSheet">
+  <div class="sheet-grab"></div>
+  <h3>舒适档案</h3>
+  <button class="sheet-close" data-close="anchorSheet" aria-label="关闭">✕</button>
+  <div class="sheet-scroll">
+    <input type="text" id="anchorInput" placeholder="记一句此刻让你放松的话" maxlength="60">
+    <button class="mini-btn" id="anchorAdd">存进档案</button>
+    <div id="anchorList" style="margin-top:10px"></div>
+  </div>
+</div>
+
+<!-- ========== 脑机耳机弹层 ========== -->
+<div class="sheet-mask" id="deviceMask" data-sheet="deviceSheet"></div>
+<div class="sheet" id="deviceSheet">
+  <div class="sheet-grab"></div>
+  <h3>脑机接口 · 设备</h3>
+  <button class="sheet-close" data-close="deviceSheet" aria-label="关闭">✕</button>
+  <div class="sheet-scroll">
+    <div class="device-body">
+      <b style="font-size:20px">耳机待接入</b>
+      <p style="margin-top:12px;line-height:1.9">你的脑机接口耳机还在开发中。此版本先用模拟脑电数据走通完整闭环。</p>
+      <p style="margin-top:10px;line-height:1.9">硬件就绪后，通过蓝牙连接，实时读取 α / θ / β 频段功率，还需要验证信号质量与个体校准；当前不能判断真实放松程度。</p>
+    </div>
+    <div class="device-list">
+      <div style="color:var(--sage-deep);font-size:15px;letter-spacing:1px;margin-bottom:6px">硬件就绪后将解锁</div>
+      · 经验证的脑电特征与个体化基线<br>
+      · 信号质量与伪迹检测<br>
+      · 在你允许的范围内调整音景音量<br>
+      · 原始信号与主观感受分开记录
     </div>
   </div>
 </div>
@@ -519,6 +1092,7 @@ const MAX_LAYERS=2;
 let ac=null,master=null,duckGain=1;
 const bufferCache=new Map();
 const activeLayers=new Map(); // id -> {source,gain}
+const LAYER_VOL={};           // id -> 0..1 独立层音量（睡眠花园/呼吸背景音用，不影响冥想配置）
 const voiceAudio=new Audio();
 voiceAudio.setAttribute('playsinline','');
 voiceAudio.setAttribute('preload','auto');
@@ -554,9 +1128,14 @@ async function startLayer(id){
     const g=ac.createGain(); g.gain.setValueAtTime(0,ac.currentTime);
     src.connect(g); g.connect(master);
     src.start();
-    g.gain.linearRampToValueAtTime(1,ac.currentTime+2); // 2s 淡入
+    g.gain.linearRampToValueAtTime(LAYER_VOL[id]??1,ac.currentTime+2); // 2s 淡入到层音量
     activeLayers.set(id,{source:src,gain:g});
   }catch(e){ toast(SOUNDS[id].name+' 加载失败，可稍后再试'); }
+}
+function setLayerVol(id,v){
+  LAYER_VOL[id]=v;
+  const r=activeLayers.get(id);
+  if(r&&ac) r.gain.gain.setTargetAtTime(v,ac.currentTime,.15);
 }
 function stopLayer(id){
   const r=activeLayers.get(id); if(!r) return;
@@ -641,6 +1220,7 @@ function finishSession(){
   $('progBar').style.width='100%';
   $('pTime').textContent='15:00 / 15:00';
   $('doneOverlay').classList.add('show');
+  logPractice(15,'meditation');
 }
 function quitSession(){
   pauseSession();
@@ -653,15 +1233,20 @@ function quitSession(){
 }
 
 /* ================= 视图与弹层 ================= */
+const ROOT_TAB={'view-home':'meditate','view-sleep':'sleep','view-self':'self','view-relax':'relax'};
 function go(name){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
   $(name).classList.add('on');
-  $('tabbar').style.display=(name==='view-home')?'grid':'none';
+  const isRoot=!!ROOT_TAB[name];
+  $('tabbar').style.display=isRoot?'grid':'none';
+  document.querySelectorAll('#tabbar button').forEach(b=>b.classList.toggle('active',b.dataset.tab===ROOT_TAB[name]));
+  window.scrollTo(0,0);
+  if(name==='view-home'){ renderGreet(); renderRecs(); renderHomeStats(); }
 }
-const SHEETS={daySheet:'dayMask',soundSheet:'soundMask'};
+const SHEETS={daySheet:'dayMask',soundSheet:'soundMask',statsSheet:'statsMask',anchorSheet:'anchorMask',deviceSheet:'deviceMask'};
 function openSheet(n){ $(SHEETS[n]).classList.add('open'); $(n).classList.add('open'); }
 function closeSheet(n){ $(SHEETS[n]).classList.remove('open'); $(n).classList.remove('open'); }
-function closeAllSheets(){ closeSheet('daySheet'); closeSheet('soundSheet'); }
+function closeAllSheets(){ Object.keys(SHEETS).forEach(closeSheet); }
 let toastTimer=null;
 function toast(msg){
   const t=$('toast'); t.textContent=msg; t.classList.add('show');
@@ -670,10 +1255,62 @@ function toast(msg){
 
 /* ================= 渲染 ================= */
 function renderHomeCard(){
-  $('homeDayTag').textContent='第 '+STATE.day+' 天';
-  $('homeDayTitle').textContent=TITLES[STATE.day-1];
+  $('homeDaySub').textContent='第 '+STATE.day+' 天 · '+TITLES[STATE.day-1]+' · 约 15 分钟';
   $('dayVal').textContent='第 '+STATE.day+' 天 · '+TITLES[STATE.day-1];
   $('soundVal').textContent=SCENES[STATE.scene].name+' · '+STATE.layers.length+' 层音';
+}
+function greetHour(){
+  const h=new Date().getHours();
+  if(h>=5&&h<11) return '早上好';
+  if(h>=11&&h<13) return '中午好';
+  if(h>=13&&h<18) return '下午好';
+  if(h>=18&&h<21) return '晚上好';
+  return '夜深了';
+}
+function renderGreet(){ $('homeGreet').textContent=greetHour(); }
+let CURRENT_RECS=[];
+function recCards(){
+  const h=new Date().getHours();
+  if(h>=5&&h<11) return [
+    {emoji:'🌅',t:'晨间唤醒呼吸',d:'先舒缓一下身体',fn:()=>openBreath('soft',{from:'view-home'})},
+    {emoji:'⏱️',t:'3分钟放松',d:'马上松一点',fn:()=>openBreath('soft',{dur:180,from:'view-home'})},
+    {emoji:'🌳',t:'自然音景',d:'去声音花园',fn:()=>go('view-sleep')}
+  ];
+  if(h>=11&&h<14) return [
+    {emoji:'🌊',t:'小憩一下',d:'海浪音景 · 15分钟',fn:()=>startNight(SLEEP_COMBOS[1],15)},
+    {emoji:'🌬️',t:'舒缓呼吸',d:'吸4呼6',fn:()=>openBreath('soft',{from:'view-home'})},
+    {emoji:'🎵',t:'声音花园',d:'选一层自然声',fn:()=>go('view-sleep')}
+  ];
+  if(h>=14&&h<18) return [
+    {emoji:'💆',t:'肩颈松绑',d:'约3分钟',fn:()=>openScan(SCAN_SHOULDER,{from:'view-home'})},
+    {emoji:'⚡',t:'60秒平复',d:'马上稳一下',fn:()=>openBreath('panic',{from:'view-home'})},
+    {emoji:'⏱️',t:'3分钟放松',d:'舒缓呼吸',fn:()=>openBreath('soft',{dur:180,from:'view-home'})}
+  ];
+  if(h>=18&&h<21) return [
+    {emoji:'🤍',t:'睡前身体放松',d:'从头到脚',fn:()=>openScan(SCAN_FULL,{from:'view-home'})},
+    {emoji:'😴',t:'4-7-8呼吸',d:'帮你入睡',fn:()=>openBreath('p478',{from:'view-home'})},
+    {emoji:'🌧️',t:'安眠音景',d:'雨夜好眠',fn:()=>startNight(SLEEP_COMBOS[0],30)}
+  ];
+  return [
+    {emoji:'🌧️',t:'雨夜好眠',d:'30分钟雨声',fn:()=>startNight(SLEEP_COMBOS[0],30)},
+    {emoji:'😴',t:'4-7-8呼吸',d:'安眠节律',fn:()=>openBreath('p478',{from:'view-home'})},
+    {emoji:'🎹',t:'晚安钢琴',d:'钢琴竖琴',fn:()=>startNight(SLEEP_COMBOS[3],30)}
+  ];
+}
+function renderRecs(){
+  CURRENT_RECS=recCards();
+  $('recScroll').innerHTML=CURRENT_RECS.map((c,i)=>
+    '<button class="rec-card" data-rec="'+i+'"><span class="rec-ico">'+c.emoji+'</span>'+
+    '<span class="rec-t">'+c.t+'</span><span class="rec-d">'+c.d+'</span></button>'
+  ).join('');
+}
+function renderHomeStats(){
+  const s=getStats();
+  const st=streakDays();
+  $('homeStreak').textContent=st;
+  $('homeStreakSub').textContent=st>0?('已连续 '+st+' 天'):'从今天开始';
+  $('homeMinutes').textContent=s.minutes||0;
+  $('homeMinSub').textContent=(s.minutes||0)>0?'继续保持':'从今天开始';
 }
 function renderDayGrid(){
   $('dayGrid').innerHTML=TITLES.map((t,i)=>{
@@ -765,6 +1402,12 @@ async function setupSceneVisual(){
   startFx(STATE.scene);
   startWaveLoop();
 }
+function tryPhoto(src){
+  const photo=$('scenePhoto');
+  photo.onload=()=>{ photo.style.display='block'; };
+  photo.onerror=()=>{ photo.style.display='none'; };
+  photo.src=src;
+}
 
 /* ---- 动态粒子（每屏 ≤30） ---- */
 function startFx(scene){
@@ -854,6 +1497,499 @@ function startWaveLoop(){
   waveRAF=requestAnimationFrame(frame);
 }
 
+/* ============================================================
+   ===== 睡眠 / 自我 / 放松 新增逻辑 =====
+   ============================================================ */
+function dayOfYear(){ const d=new Date(); return Math.floor((d-new Date(d.getFullYear(),0,0))/86400000); }
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* ---- 练习统计（localStorage） ---- */
+function getStats(){ try{ return JSON.parse(localStorage.getItem('lite_stats'))||{days:{},minutes:0,count:0}; }catch(e){ return {days:{},minutes:0,count:0}; } }
+function saveStats(s){ try{ localStorage.setItem('lite_stats',JSON.stringify(s)); }catch(e){} }
+function logPractice(minutes,type){
+  const s=getStats();
+  s.days=s.days||{}; s.days[new Date().toDateString()]=true;
+  s.minutes=(s.minutes||0)+minutes;
+  s.count=(s.count||0)+1;
+  saveStats(s);
+}
+function streakDays(){
+  const days=(getStats().days)||{};
+  let n=0; const c=new Date();
+  for(let i=0;i<365;i++){
+    if(days[c.toDateString()]) n++; else if(i>0) break;
+    c.setDate(c.getDate()-1);
+  }
+  return n;
+}
+
+/* ---- 睡眠数据 ---- */
+const SLEEP_COMBOS=[
+  {name:'雨夜好眠',emoji:'🌧️',desc:'细雨伴着远雷，把烦恼一点点淋走。',layers:['rain','thunder-rain'],bg:'bg-rain'},
+  {name:'海浪轻摇',emoji:'🌊',desc:'像躺在小船上，随海浪慢慢晃着入睡。',layers:['waves','boat'],bg:'bg-sea'},
+  {name:'炉火暖夜',emoji:'🔥',desc:'炉火噼啪作响，屋子里暖和又安心。',layers:['fire','crackle-fire'],bg:'bg-fire'},
+  {name:'晚安钢琴',emoji:'🎹',desc:'钢琴与竖琴轻轻和鸣，陪你说晚安。',layers:['piano','harp'],bg:'bg-music'}
+];
+const GARDEN={layers:[]}; // 声音花园当前层（与冥想 STATE.layers 互不干扰）
+
+function toggleGarden(id){
+  ensureCtx();
+  if(GARDEN.layers.includes(id)){
+    GARDEN.layers=GARDEN.layers.filter(x=>x!==id);
+    stopLayer(id);
+  }else{
+    if(GARDEN.layers.length>=2){ toast('最多同时两层声音，先关掉一个吧'); return; }
+    GARDEN.layers.push(id);
+    startLayer(id);
+  }
+  renderGarden();
+}
+function stopGardenAll(){
+  GARDEN.layers.slice().forEach(stopLayer);
+  GARDEN.layers=[];
+  renderGarden();
+}
+function renderSleepHome(){
+  const combo=SLEEP_COMBOS[dayOfYear()%SLEEP_COMBOS.length];
+  $('recName').textContent=combo.emoji+' '+combo.name;
+  $('recDesc').textContent=combo.desc;
+  $('recSounds').textContent='包含：'+combo.layers.map(id=>SOUNDS[id].name).join(' · ');
+  $('recPlayBtn').onclick=()=>startNight(combo);
+  $('sleepPresets').innerHTML=SLEEP_COMBOS.map(c=>{
+    return '<button class="mini-card" data-combo="'+c.name+'"><span class="mc-emoji">'+c.emoji+'</span>'+
+      '<span class="mc-name">'+c.name+'</span>'+
+      '<span class="mc-sub">'+c.layers.map(id=>SOUNDS[id].name).join(' · ')+'</span></button>';
+  }).join('');
+  renderGarden();
+}
+function renderGarden(){
+  $('gardenGrid').innerHTML=Object.keys(SOUNDS).map(id=>{
+    const s=SOUNDS[id]; const on=GARDEN.layers.includes(id);
+    return '<button class="garden-cell '+(on?'on':'')+'" data-g="'+id+'">'+
+      '<span class="g-emoji">'+(on?'✓':'＋')+'</span><span>'+s.name+'</span></button>';
+  }).join('');
+  const p=$('gardenPanel');
+  if(!GARDEN.layers.length){
+    p.innerHTML='<div class="gp-empty">还没选声音。点上面的小格，点亮一层试试。</div>';
+    return;
+  }
+  let h='<div class="gp-title">已选声音</div>';
+  GARDEN.layers.forEach(id=>{
+    const v=LAYER_VOL[id]??1;
+    h+='<div class="gp-row"><div class="cap"><span>'+SOUNDS[id].name+'</span><span>'+Math.round(v*100)+'%</span></div>'+
+      '<input type="range" data-gvol="'+id+'" min="0" max="1" step="0.05" value="'+v+'" aria-label="'+SOUNDS[id].name+'音量"></div>';
+  });
+  h+='<div class="gp-row"><div class="cap"><span>总音量</span><span>'+Math.round(STATE.ambientVol*100)+'%</span></div>'+
+    '<input type="range" id="gardenMaster" min="0" max="1" step="0.05" value="'+STATE.ambientVol+'" aria-label="总音量"></div>';
+  h+='<button class="garden-stop" id="gardenStopBtn">停止全部声音</button>';
+  p.innerHTML=h;
+}
+
+/* ---- 夜间纯音景播放页 ---- */
+const NIGHT={combo:null,timerMin:30,played:0,playing:false,tickIv:null};
+function startNight(combo,timerMin){
+  stopGardenAll();
+  NIGHT.combo=combo;
+  NIGHT.timerMin=(timerMin||30); NIGHT.played=0; NIGHT.playing=true;
+  $('nightBg').className='np-bg '+combo.bg+' scrim';
+  $('nightTitle').textContent=combo.emoji+' '+combo.name;
+  $('nightTime').textContent=fmt(NIGHT.timerMin*60);
+  $('nightDone').classList.remove('show');
+  $('nightOrb').style.display='none';
+  $('nightBallSwitch').classList.remove('on'); $('nightBallSwitch').setAttribute('aria-checked','false');
+  document.querySelectorAll('#nightChips .np-chip').forEach(c=>c.classList.toggle('on',+c.dataset.min===NIGHT.timerMin));
+  $('nightPlayPause').textContent='⏸';
+  go('view-night');
+  ensureCtx();
+  combo.layers.forEach(id=>startLayer(id));
+  clearInterval(NIGHT.tickIv);
+  NIGHT.tickIv=setInterval(nightTick,1000);
+}
+function nightTick(){
+  if(!NIGHT.playing) return;
+  NIGHT.played++;
+  if(NIGHT.timerMin>0){
+    const rem=NIGHT.timerMin*60-NIGHT.played;
+    $('nightTime').textContent=fmt(Math.max(0,rem));
+    if(rem<=0){ nightFinish(); }
+  }else{
+    $('nightTime').textContent=fmt(NIGHT.played);
+  }
+}
+function nightFinish(){
+  NIGHT.playing=false; clearInterval(NIGHT.tickIv);
+  stopAllLayers();
+  $('nightDone').classList.add('show');
+}
+function nightToggle(){
+  ensureCtx();
+  if(NIGHT.playing){ NIGHT.playing=false; if(ac) ac.suspend(); $('nightPlayPause').textContent='▶'; }
+  else { ensureCtx(); NIGHT.playing=true; $('nightPlayPause').textContent='⏸'; }
+}
+function nightExit(){
+  NIGHT.playing=false; clearInterval(NIGHT.tickIv); NIGHT.tickIv=null;
+  stopAllLayers();
+  GARDEN.layers=[];
+  go('view-sleep');
+}
+
+/* ---- 自我页数据 ---- */
+const MOODS=[['平静','😌'],['疲惫','😪'],['焦虑','😟'],['低落','🌧'],['烦躁','😖'],['安心','🌿'],['开心','🙂']];
+const IDEAL_DOMAINS={
+  calm:{name:'情绪更平和',steps:[
+    '每天早上做 3 次缓慢呼吸，并说出此刻的心情',
+    '情绪上来时，先停 10 秒再开口回应',
+    '每天写一件让自己微微心安的小事',
+    '感到烦躁时，把手放在胸口，跟着呼吸起伏',
+    '每天给自己 10 分钟什么都不做的时间',
+    '练习对自己说一句温和的话，像对好朋友那样',
+    '把担心的事写下来，分清楚哪些能做、哪些先放着',
+    '回顾这八周，找出两个让自己更平和的小习惯'],
+    quotes:[
+      '平和不是没有风浪，而是学会了在水上安稳地坐。',
+      '你不需要立刻变好，先深呼吸，就已经在变好。',
+      '情绪像云，来的时候轻轻看它一眼，它会自己走。',
+      '把速度放慢一点，心就会跟上。',
+      '对自己温柔，是你能给自己最稳的安全感。',
+      '今天不必解决所有事，呼吸之间就有一片安静。',
+      '你已经很努力了，剩下的，交给时间和呼吸。',
+      '平静不是一天练成的，是一次次把心领回来。']},
+  sleep:{name:'睡得更好',steps:[
+    '每天固定比平时早睡 15 分钟',
+    '睡前一小时把手机放到够不着的地方',
+    '睡前做 3 分钟缓慢呼吸再躺下',
+    '睡前写下明天最重要的一件事，把脑里的事清空',
+    '卧室调暗，保持安静凉爽',
+    '躺着时从脚趾到头顶逐步放松身体',
+    '醒来不赖床，起床后拉开窗帘见见光',
+    '回顾哪一晚睡得最好，记下那时做对了什么'],
+    quotes:[
+      '今晚把烦心事留在门外，床是用来休息的。',
+      '你值得一个踏踏实实的好觉。',
+      '黑暗不是结束，是身体在悄悄修复你。',
+      '慢慢呼气，像把一天轻轻放下。',
+      '睡个好觉，不是奖励，是你应得的。',
+      '今晚不做任何人，只做安睡的自己。',
+      '闭上眼睛，呼吸会带你慢慢沉下去。',
+      '好好睡一觉，很多事明天就不一样了。']},
+  focus:{name:'更专注',steps:[
+    '每天选一件事，专心做 10 分钟，不看手机',
+    '做事时把无关的通知先关掉',
+    '走神时温柔地把注意力拉回来，不责怪自己',
+    '把一件大事拆成三个小步骤',
+    '专心 20 分钟后，起身活动 3 分钟',
+    '每天记录一次今天最专注的时刻',
+    '给自己留一段不被打扰的独处时间',
+    '回顾哪件事让你最投入，多安排类似的事'],
+    quotes:[
+      '一次只做一件事，本身就是力量。',
+      '走神没关系，发现走神的那一刻，你又回来了。',
+      '专注不是逼自己，是温柔地把注意力放回来。',
+      '把一件小事做透，比忙十件事更踏实。',
+      '此刻这一件事，就够了。',
+      '安静下来，你要的答案会慢慢浮出来。',
+      '不被打扰的十分钟，是送给自己的礼物。',
+      '你比自己以为的更能专心。']},
+  confident:{name:'更自信',steps:[
+    '每天写下一件自己做得还不错的小事',
+    '照镜子时，对自己说一句肯定的话',
+    '做一件一直想做却不敢做的小事',
+    '不和别人比较，只和上周的自己比',
+    '练习看着别人的眼睛说话',
+    '把“我不行”换成“我可以先试试”',
+    '记下别人夸过你的地方',
+    '回顾八周，找出你比想象中勇敢的证据'],
+    quotes:[
+      '你不需要完美，真实就已经很有力量。',
+      '每一次小小尝试，都在为自信存一点本钱。',
+      '相信自己这件事，从相信一个小小的念头开始。',
+      '你敢站出来的样子，比你想象中好看。',
+      '别人可以有别人的光，你也有你的。',
+      '允许自己不确定，不确定也可以往前走。',
+      '你的存在，本身就值得被认真对待。',
+      '再试一次，这次的你比上次多了一点经验。']},
+  lessanx:{name:'更少焦虑',steps:[
+    '感到担心时，做 4 次缓慢呼吸再想这件事',
+    '把最担心的结果写下来，看看它真的有多大概率',
+    '每天出门前做 3 次深呼吸',
+    '焦虑上来时，说出眼前能看见的 5 样东西',
+    '安排一段固定的“担心时间”，其他时间先放下',
+    '和信任的人说说你的担心',
+    '做一件让身体动起来的小事，比如散步 10 分钟',
+    '回顾八周，焦虑来临时你学会了哪些应对办法'],
+    quotes:[
+      '担心的事，大多没有今天想的那么糟。',
+      '你能呼吸，就已经能应对眼前这一刻。',
+      '慢下来，焦虑追不上稳稳呼吸的人。',
+      '把注意力放回脚踩在地上的感觉。',
+      '此刻你是安全的，过去和未来都不在这间屋子里。',
+      '慌的时候，先呼一口气，再呼一口气。',
+      '你不是一个人在扛，很多人都这样过来了。',
+      '担心不会让明天更坏，但呼吸能让现在更好受。']},
+  social:{name:'人际更从容',steps:[
+    '每天和一个人说一句真诚的问候',
+    '说话时放慢语速，听别人把话说完',
+    '练习温和地拒绝一件不想做的事',
+    '聚会前做 2 次深呼吸，告诉自己做你自己就好',
+    '给一个久未联系的人发句问候',
+    '感到不自在时，允许自己安静地待一会儿',
+    '赞美一个身边的人，说出具体的一件事',
+    '回顾八周，哪一次交流让你觉得轻松又自在'],
+    quotes:[
+      '做你自己，就会遇到喜欢你本来样子的人。',
+      '从容不是话多，是敢安静地待着。',
+      '真诚比完美更让人舒服。',
+      '你不需要让所有人都满意。',
+      '温和而清楚地表达，是一种力量。',
+      '一段好的关系，是可以做回自己的关系。',
+      '慢半拍回应，往往比立刻反应更自在。',
+      '你值得被人认真倾听，也值得先认真听自己。']}
+};
+let moodSel=null, idealSelDomain=null;
+function getMoods(){ try{ return JSON.parse(localStorage.getItem('lite_mood'))||[]; }catch(e){ return []; } }
+function getIdeal(){ try{ return JSON.parse(localStorage.getItem('lite_ideal'))||null; }catch(e){ return null; } }
+function getIdealSteps(){ try{ return JSON.parse(localStorage.getItem('lite_ideal_steps'))||{done:0}; }catch(e){ return {done:0}; } }
+function getAnchors(){ try{ return JSON.parse(localStorage.getItem('lite_anchors'))||[]; }catch(e){ return []; } }
+function renderAnchors(){
+  const list=getAnchors();
+  const el=$('anchorList');
+  if(!list.length){ el.innerHTML='<div class="anchor-empty">还没有档案。<br>下次放松下来时，记一句给以后的自己。</div>'; return; }
+  el.innerHTML=list.slice().reverse().map(a=>'<div class="anchor-item"><div class="anchor-date">'+escapeHtml(a.date)+'</div><div class="anchor-text">'+escapeHtml(a.text)+'</div></div>').join('');
+}
+function renderStatsSheet(){
+  $('statStreak').textContent=streakDays();
+  $('statMin').textContent=getStats().minutes||0;
+  $('statCount').textContent=getStats().count||0;
+}
+
+function renderSelf(){
+  // 心情打卡
+  const moods=getMoods();
+  const today=moods.find(m=>m.date===new Date().toDateString());
+  moodSel = today? today.mood : null;
+  $('moodRow').innerHTML=MOODS.map(m=>{
+    const on=today&&today.mood===m[0];
+    return '<button class="mood-chip '+(on?'on':'')+'" data-mood="'+m[0]+'">'+m[1]+' '+m[0]+'</button>';
+  }).join('');
+  if(today){
+    $('todayNote').innerHTML='<small>今天已打卡</small>'+today.emoji+' '+escapeHtml(today.mood)+(today.note?' · '+escapeHtml(today.note):'');
+    $('moodNote').value=today.note||'';
+  }else{
+    $('todayNote').innerHTML='<small>今天还没打卡</small>选一个最贴近现在的心情';
+    $('moodNote').value='';
+  }
+  const recent=moods.slice(-5).reverse();
+  $('moodHistory').innerHTML=recent.length?recent.map(m=>'<div class="mood-h-item"><b>'+escapeHtml(m.dateLabel)+'</b> · '+m.emoji+' '+escapeHtml(m.mood)+(m.note?' — '+escapeHtml(m.note):'')+'</div>').join(''):'<div class="mood-h-item" style="border:none">还没有记录</div>';
+  // 理想
+  const ideal=getIdeal();
+  idealSelDomain=ideal?ideal.domain:null;
+  $('idealChips').innerHTML=Object.keys(IDEAL_DOMAINS).map(k=>{
+    const d=IDEAL_DOMAINS[k];
+    return '<button class="chip '+(k===idealSelDomain?'on':'')+'" data-idom="'+k+'">'+d.name+'</button>';
+  }).join('');
+  $('idealSentence').value=ideal?ideal.sentence:'';
+  if(ideal){
+    $('idealShown').style.display='block';
+    $('idealShown').innerHTML='<div class="dom">方向：'+IDEAL_DOMAINS[ideal.domain].name+'</div><div style="margin-top:6px">理想状态：'+escapeHtml(ideal.sentence)+'</div><button class="mini-btn" id="idealReset" style="min-height:48px;font-size:16px">重新设定</button>';
+  }else{
+    $('idealShown').style.display='none';
+  }
+  // 寄语
+  const qDom=ideal?ideal.domain:'calm';
+  const quotes=IDEAL_DOMAINS[qDom].quotes;
+  $('dailyQuoteSelf').textContent=quotes[dayOfYear()%quotes.length];
+  renderPath();
+}
+function renderPath(){
+  const ideal=getIdeal();
+  const card=$('idealPathCard');
+  if(!ideal){ card.style.display='none'; return; }
+  card.style.display='block';
+  const dom=IDEAL_DOMAINS[ideal.domain];
+  const done=Math.min(8,getIdealSteps().done||0);
+  $('pathProgressText').textContent='已走第 '+done+' 步 / 共 8 步 · '+dom.name;
+  $('pathProg').style.width=(done/8*100)+'%';
+  $('pathSteps').innerHTML=dom.steps.map((s,i)=>{
+    const n=i+1;
+    const cls=n<=done?'done':(n===done+1?'next':'locked');
+    return '<button class="path-step '+cls+'" data-step="'+n+'"><span class="num">'+(n<=done?'✓':n)+'</span><span class="txt">'+escapeHtml(s)+'</span></button>';
+  }).join('');
+}
+
+/* ---- 呼吸训练 ---- */
+const BREATH_PRESETS={
+  soft:{name:'舒缓呼吸',phases:[{t:'吸气',s:4},{t:'呼气',s:6}],dur:180},
+  p478:{name:'4-7-8 安眠呼吸',phases:[{t:'吸气',s:4},{t:'屏息',s:7},{t:'呼气',s:8}],dur:480},
+  box:{name:'盒子呼吸',phases:[{t:'吸气',s:4},{t:'屏息',s:4},{t:'呼气',s:4},{t:'屏息',s:4}],dur:180},
+  panic:{name:'60 秒紧急平复',phases:[{t:'吸气',s:4},{t:'呼气',s:6}],dur:60,fixed:true}
+};
+const RB_DURS=[{label:'1 分钟',sec:60},{label:'3 分钟',sec:180},{label:'5 分钟',sec:300},{label:'8 分钟',sec:480},{label:'10 分钟',sec:600}];
+const RB={preset:null,dur:180,phaseIdx:0,secInPhase:0,totalLeft:0,playing:false,started:false,tickIv:null,bg:'',from:'view-relax',quitArmed:false};
+function openBreath(key,opts){
+  opts=opts||{};
+  stopBreathAll();
+  RB.preset=BREATH_PRESETS[key];
+  RB.from=opts.from||'view-relax';
+  RB.dur=opts.dur||RB.preset.dur;
+  if(RB.preset.fixed) RB.dur=RB.preset.dur;
+  RB.phaseIdx=0; RB.secInPhase=0; RB.totalLeft=RB.dur;
+  RB.playing=false; RB.started=false; RB.bg=''; RB.quitArmed=false;
+  $('breathQuit').classList.remove('confirm2'); $('breathQuit').textContent='‹ 退出';
+  $('breathTitle').textContent=RB.preset.name;
+  $('rbPhase').textContent='准备'; $('rbCount').textContent='';
+  $('rbTime').textContent=fmt(RB.dur);
+  $('breathStartBtn').textContent='开始';
+  $('breathDone').classList.remove('show');
+  $('breathOrb').style.transform='scale(1)';
+  document.querySelectorAll('#rbBgChips .rb-bg').forEach(b=>b.classList.toggle('on',b.dataset.bg===''));
+  renderRbDurChips();
+  go('view-breath');
+}
+function renderRbDurChips(){
+  if(RB.preset.fixed){ $('breathDurChips').style.display='none'; return; }
+  $('breathDurChips').style.display='flex';
+  $('breathDurChips').innerHTML=RB_DURS.map(d=>{
+    return '<button class="chip rb-dur '+(d.sec===RB.dur?'on':'')+'" data-sec="'+d.sec+'">'+d.label+'</button>';
+  }).join('');
+}
+function rbApplyPhase(){
+  const ph=RB.preset.phases[RB.phaseIdx];
+  RB.secInPhase=ph.s;
+  $('rbPhase').textContent=ph.t;
+  $('rbCount').textContent=ph.s;
+  const orb=$('breathOrb');
+  if(ph.t==='吸气'){ orb.style.transitionDuration=(ph.s)+'s'; orb.style.transform='scale(1.18)'; }
+  else if(ph.t==='呼气'){ orb.style.transitionDuration=(ph.s)+'s'; orb.style.transform='scale(.82)'; }
+  else { orb.style.transitionDuration='300ms'; }
+}
+function rbTick(){
+  if(!RB.playing) return;
+  RB.secInPhase--;
+  if(RB.secInPhase<=0){ RB.phaseIdx=(RB.phaseIdx+1)%RB.preset.phases.length; rbApplyPhase(); }
+  else { $('rbCount').textContent=RB.secInPhase; }
+  RB.totalLeft--;
+  $('rbTime').textContent=fmt(Math.max(0,RB.totalLeft));
+  if(RB.totalLeft<=0) rbFinish();
+}
+function rbToggle(){
+  ensureCtx();
+  if(!RB.started){
+    RB.started=true; RB.playing=true;
+    rbApplyPhase();
+    if(RB.bg) startLayer(RB.bg);
+    $('breathStartBtn').textContent='暂停';
+    clearInterval(RB.tickIv);
+    RB.tickIv=setInterval(rbTick,1000);
+  }else if(RB.playing){
+    RB.playing=false; if(ac) ac.suspend();
+    $('breathStartBtn').textContent='继续';
+  }else{
+    ensureCtx(); RB.playing=true;
+    $('breathStartBtn').textContent='暂停';
+  }
+}
+function rbFinish(){
+  RB.playing=false; clearInterval(RB.tickIv); RB.tickIv=null;
+  if(RB.bg) stopLayer(RB.bg);
+  const mins=Math.max(1,Math.round(RB.dur/60));
+  logPractice(mins,'breath');
+  $('breathDoneText').textContent='你认真呼吸了约 '+mins+' 分钟，身体松下来了一点。';
+  $('breathDone').classList.add('show');
+}
+function stopBreathAll(){
+  RB.playing=false;
+  if(RB.tickIv){ clearInterval(RB.tickIv); RB.tickIv=null; }
+  if(RB.bg) stopLayer(RB.bg);
+}
+
+/* ---- 身体扫描 ---- */
+const SCAN_FULL={title:'睡前身体放松',perSec:20,parts:[
+  {id:'head',name:'头顶',guide:'把注意力轻轻放到头顶，感受头皮一点点放松下来。'},
+  {id:'face',name:'面部',guide:'松开皱着的眉，松开咬紧的牙，让脸软软的。'},
+  {id:'neck',name:'后颈',guide:'后颈不再绷着，头自然地微微下垂。'},
+  {id:'shoulder',name:'肩颈',guide:'把肩膀往下放，那里的紧绷正一点点散开。'},
+  {id:'chest',name:'胸口',guide:'胸口随着呼吸自然起伏，不刻意，不着急。'},
+  {id:'heart',name:'心口',guide:'在心口停一下，温柔地对待自己。'},
+  {id:'belly',name:'腹部',guide:'肚子跟着呼吸轻轻鼓起来、落下去。'},
+  {id:'hand',name:'双手',guide:'松开攥着的手，手指一根一根变软。'},
+  {id:'hip',name:'臀部',guide:'臀部稳稳坐着，被椅子或地面轻轻托住。'},
+  {id:'foot',name:'双脚',guide:'感受脚踩在地上的重量，整个人被稳稳接住。'}
+]};
+const SCAN_SHOULDER={title:'肩颈松绑',perSec:36,parts:[
+  {id:'neck',name:'后颈',guide:'轻轻活动后颈，让僵硬一点点化掉。'},
+  {id:'shoulder',name:'肩膀',guide:'把肩膀向上提，再一下子松开，重复三次。'},
+  {id:'chest',name:'上背',guide:'肩胛骨向内向下，后背慢慢舒展打开。'},
+  {id:'hand',name:'手臂',guide:'双手握拳再张开，手臂酸酸地放松。'},
+  {id:'heart',name:'回到呼吸',guide:'回到自然呼吸，感受肩颈已经轻了很多。'}
+]};
+const SC={mode:null,step:0,playing:false,started:false,timerIv:null,bg:'',from:'view-relax'};
+function openScan(mode,opts){
+  opts=opts||{};
+  stopScanAll();
+  SC.mode=mode; SC.from=opts.from||'view-relax';
+  SC.step=0; SC.playing=false; SC.started=false; SC.bg='';
+  $('scanTitle').textContent=mode.title;
+  $('scanPart').textContent='准备';
+  $('scanProg').textContent='扫描 0/'+mode.parts.length;
+  $('scanGuide').textContent='坐下来，轻轻闭上眼，跟着光点慢慢放松。';
+  $('scanStartBtn').textContent='开始';
+  $('scanDone').classList.remove('show');
+  document.querySelectorAll('.scan-dot').forEach(d=>d.classList.remove('active','visited'));
+  document.querySelectorAll('#scanBgChips .rb-bg').forEach(b=>b.classList.toggle('on',b.dataset.bg===''));
+  $('scanTrack').innerHTML=mode.parts.map(()=>'<i></i>').join('');
+  go('view-scan');
+}
+function scHighlight(){
+  const parts=SC.mode.parts;
+  const p=parts[SC.step];
+  $('scanPart').textContent=p.name;
+  $('scanProg').textContent='扫描 '+(SC.step+1)+'/'+parts.length;
+  $('scanGuide').textContent=p.guide;
+  document.querySelectorAll('.scan-dot').forEach(d=>{
+    const route=d.dataset.route;
+    d.classList.toggle('visited',parts.slice(0,SC.step).some(x=>x.id===route));
+    d.classList.toggle('active',route===p.id);
+  });
+  document.querySelectorAll('#scanTrack i').forEach((el,i)=>el.classList.toggle('on',i<=SC.step));
+}
+function scTick(){
+  if(!SC.playing) return;
+  SC.step++;
+  if(SC.step>=SC.mode.parts.length){ scFinish(); return; }
+  scHighlight();
+}
+function scToggle(){
+  ensureCtx();
+  if(!SC.started){
+    SC.started=true; SC.playing=true;
+    scHighlight();
+    if(SC.bg) startLayer(SC.bg);
+    $('scanStartBtn').textContent='暂停';
+    clearInterval(SC.timerIv);
+    SC.timerIv=setInterval(scTick,SC.mode.perSec*1000);
+  }else if(SC.playing){
+    SC.playing=false; if(ac) ac.suspend();
+    $('scanStartBtn').textContent='继续';
+  }else{
+    ensureCtx(); SC.playing=true;
+    $('scanStartBtn').textContent='暂停';
+  }
+}
+function scFinish(){
+  SC.playing=false; clearInterval(SC.timerIv); SC.timerIv=null;
+  if(SC.bg) stopLayer(SC.bg);
+  const totalSec=SC.mode.parts.length*SC.mode.perSec;
+  const mins=Math.max(1,Math.round(totalSec/60));
+  logPractice(mins,'scan');
+  $('scanDoneText').textContent='从头到脚放松了约 '+mins+' 分钟，现在的你是松的。';
+  $('scanDone').classList.add('show');
+}
+function stopScanAll(){
+  SC.playing=false;
+  if(SC.timerIv){ clearInterval(SC.timerIv); SC.timerIv=null; }
+  if(SC.bg) stopLayer(SC.bg);
+}
+
 /* ================= 事件绑定 ================= */
 function bind(){
   // 开屏
@@ -865,13 +2001,25 @@ function bind(){
   // 底部导航
   document.querySelectorAll('#tabbar button').forEach(b=>{
     b.addEventListener('click',()=>{
-      if(b.dataset.tab==='meditate'){ go('view-home'); }
-      else toast('「'+b.textContent.trim()+'」即将上线，敬请期待');
+      ensureCtx();
+      const tab=b.dataset.tab;
+      if(tab==='meditate') go('view-home');
+      else if(tab==='sleep') go('view-sleep');
+      else if(tab==='self') go('view-self');
+      else if(tab==='relax') go('view-relax');
     });
   });
 
   // 主页 / 准备页
   $('homeStartBtn').addEventListener('click',()=>go('view-prep'));
+  $('homeMe').addEventListener('click',()=>go('view-self'));
+  $('homePrepLink').addEventListener('click',()=>go('view-prep'));
+  $('homeDevice').addEventListener('click',()=>{ go('view-self'); setTimeout(()=>openSheet('deviceSheet'),300); });
+  $('recScroll').addEventListener('click',e=>{
+    const b=e.target.closest('[data-rec]'); if(!b) return;
+    const fn=CURRENT_RECS[+b.dataset.rec].fn;
+    if(fn){ ensureCtx(); fn(); }
+  });
   $('prepBack').addEventListener('click',()=>go('view-home'));
   $('presetStartBtn').addEventListener('click',()=>{
     STATE.scene='sea'; STATE.layers=['waves','piano'];
@@ -952,6 +2100,194 @@ function bind(){
   $('doneHomeBtn').addEventListener('click',()=>{ stopAllLayers(); go('view-home'); $('doneOverlay').classList.remove('show'); });
   window.addEventListener('pagehide',()=>{ pauseSession(); stopAllLayers(); });
 
+  /* ===== 睡眠页绑定 ===== */
+  $('sleepPresets').addEventListener('click',e=>{
+    const b=e.target.closest('[data-combo]'); if(!b) return;
+    const c=SLEEP_COMBOS.find(x=>x.name===b.dataset.combo); if(c) startNight(c);
+  });
+  $('gardenGrid').addEventListener('click',e=>{
+    const b=e.target.closest('[data-g]'); if(!b) return;
+    toggleGarden(b.dataset.g);
+  });
+  $('gardenPanel').addEventListener('click',e=>{
+    if(e.target.closest('#gardenStopBtn')){ stopGardenAll(); toast('声音都停了'); return; }
+  });
+  $('gardenPanel').addEventListener('input',e=>{
+    const gv=e.target.closest('[data-gvol]');
+    if(gv){ setLayerVol(gv.dataset.gvol,+e.target.value);
+      e.target.previousElementSibling.querySelector('span').textContent=Math.round(e.target.value*100)+'%'; return; }
+    if(e.target.id==='gardenMaster'){
+      STATE.ambientVol=+e.target.value;
+      e.target.previousElementSibling.querySelector('span').textContent=Math.round(e.target.value*100)+'%';
+      applyMaster();
+    }
+  });
+  $('goBreath478').addEventListener('click',()=>openBreath('p478',{from:'view-sleep'}));
+  $('goScanFull').addEventListener('click',()=>openScan(SCAN_FULL,{from:'view-sleep'}));
+
+  /* ===== 夜间播放页绑定 ===== */
+  $('nightChips').addEventListener('click',e=>{
+    const c=e.target.closest('[data-min]'); if(!c) return;
+    NIGHT.timerMin=+c.dataset.min; NIGHT.played=0;
+    document.querySelectorAll('#nightChips .np-chip').forEach(x=>x.classList.toggle('on',x===c));
+    $('nightTime').textContent=NIGHT.timerMin>0?fmt(NIGHT.timerMin*60):fmt(0);
+  });
+  $('nightBallSwitch').addEventListener('click',()=>{
+    const on=!$('nightBallSwitch').classList.contains('on');
+    $('nightBallSwitch').classList.toggle('on',on);
+    $('nightBallSwitch').setAttribute('aria-checked',on?'true':'false');
+    $('nightOrb').style.display=on?'block':'none';
+  });
+  $('nightPlayPause').addEventListener('click',nightToggle);
+  $('nightDoneHome').addEventListener('click',()=>{ $('nightDone').classList.remove('show'); nightExit(); });
+  let nightQuitArmed=false,nightQuitTimer=null;
+  $('nightQuit').addEventListener('click',()=>{
+    if(!nightQuitArmed){
+      nightQuitArmed=true; $('nightQuit').classList.add('confirm'); $('nightQuit').textContent='再点一次退出';
+      nightQuitTimer=setTimeout(()=>{ nightQuitArmed=false; $('nightQuit').classList.remove('confirm'); $('nightQuit').textContent='‹ 退出'; },2500);
+    }else{
+      clearTimeout(nightQuitTimer); nightExit(); toast('已退出，随时可以再来');
+    }
+  });
+
+  /* ===== 自我页绑定 ===== */
+  $('moodRow').addEventListener('click',e=>{
+    const b=e.target.closest('[data-mood]'); if(!b) return;
+    moodSel=b.dataset.mood;
+    document.querySelectorAll('#moodRow .mood-chip').forEach(c=>c.classList.toggle('on',c===b));
+  });
+  $('moodSave').addEventListener('click',()=>{
+    if(!moodSel){ toast('先选一个最贴近现在的心情'); return; }
+    const m=MOODS.find(x=>x[0]===moodSel);
+    const list=getMoods();
+    const note=$('moodNote').value.trim();
+    const now=new Date();
+    const rec={date:now.toDateString(),dateLabel:(now.getMonth()+1)+'月'+now.getDate()+'日',mood:m[0],emoji:m[1],note:note};
+    const idx=list.findIndex(x=>x.date===rec.date);
+    if(idx>=0) list[idx]=rec; else list.push(rec);
+    try{ localStorage.setItem('lite_mood',JSON.stringify(list)); }catch(err){}
+    toast('已记录今天的心情');
+    renderSelf();
+  });
+  $('idealChips').addEventListener('click',e=>{
+    const b=e.target.closest('[data-idom]'); if(!b) return;
+    idealSelDomain=b.dataset.idom;
+    document.querySelectorAll('#idealChips .chip').forEach(c=>c.classList.toggle('on',c===b));
+  });
+  $('idealSave').addEventListener('click',()=>{
+    if(!idealSelDomain){ toast('先选一个方向'); return; }
+    const sent=$('idealSentence').value.trim();
+    if(!sent){ toast('写一句你理想中的自己'); return; }
+    const rec={domain:idealSelDomain,sentence:sent,createdAt:Date.now()};
+    try{
+      localStorage.setItem('lite_ideal',JSON.stringify(rec));
+      if(!localStorage.getItem('lite_ideal_steps')) localStorage.setItem('lite_ideal_steps',JSON.stringify({done:0}));
+    }catch(err){}
+    toast('理想已设定，一步一步来');
+    renderSelf();
+  });
+  $('idealShown').addEventListener('click',e=>{
+    if(e.target.closest('#idealReset')){
+      localStorage.removeItem('lite_ideal');
+      localStorage.removeItem('lite_ideal_steps');
+      renderSelf();
+      toast('已清空，可重新设定');
+    }
+  });
+  $('pathSteps').addEventListener('click',e=>{
+    const b=e.target.closest('.path-step'); if(!b) return;
+    const n=+b.dataset.step;
+    const done=getIdealSteps().done||0;
+    if(n===done+1){
+      const s=getIdealSteps(); s.done=n;
+      try{ localStorage.setItem('lite_ideal_steps',JSON.stringify(s)); }catch(err){}
+      renderPath();
+      toast('很好，下一步已为你打开');
+    }else if(n<=done){ toast('这一步已经走过啦'); }
+    else { toast('先完成上一步，再往下走'); }
+  });
+  $('openStatsSheet').addEventListener('click',()=>{ renderStatsSheet(); openSheet('statsSheet'); });
+  $('openAnchorSheet').addEventListener('click',()=>{ renderAnchors(); openSheet('anchorSheet'); });
+  $('openDeviceSheet').addEventListener('click',()=>openSheet('deviceSheet'));
+  $('anchorAdd').addEventListener('click',()=>{
+    const txt=$('anchorInput').value.trim();
+    if(!txt){ toast('先写一句话'); return; }
+    const list=getAnchors();
+    const now=new Date();
+    list.push({text:txt,date:(now.getMonth()+1)+'月'+now.getDate()+'日'});
+    try{ localStorage.setItem('lite_anchors',JSON.stringify(list)); }catch(err){}
+    $('anchorInput').value='';
+    renderAnchors();
+    toast('已存进舒适档案');
+  });
+
+  /* ===== 放松页绑定 ===== */
+  $('breathGrid').addEventListener('click',e=>{
+    const b=e.target.closest('[data-breath]'); if(!b) return;
+    openBreath(b.dataset.breath);
+  });
+  $('quick3min').addEventListener('click',()=>openBreath('soft',{dur:180}));
+  $('quickShoulder').addEventListener('click',()=>openScan(SCAN_SHOULDER));
+  $('goGarden').addEventListener('click',()=>{ go('view-sleep'); toast('已为你打开声音花园'); });
+
+  /* ===== 呼吸页绑定 ===== */
+  $('breathDurChips').addEventListener('click',e=>{
+    const c=e.target.closest('[data-sec]'); if(!c) return;
+    if(RB.started){ toast('练习开始后不能改时长'); return; }
+    RB.dur=+c.dataset.sec; RB.totalLeft=RB.dur;
+    $('rbTime').textContent=fmt(RB.dur);
+    document.querySelectorAll('#breathDurChips .rb-dur').forEach(x=>x.classList.toggle('on',x===c));
+  });
+  $('rbBgChips').addEventListener('click',e=>{
+    const c=e.target.closest('.rb-bg'); if(!c) return;
+    if(RB.started){ toast('练习开始后不能换背景音'); return; }
+    if(RB.bg) stopLayer(RB.bg);
+    RB.bg=c.dataset.bg||'';
+    document.querySelectorAll('#rbBgChips .rb-bg').forEach(x=>x.classList.toggle('on',x===c));
+  });
+  $('breathStartBtn').addEventListener('click',rbToggle);
+  $('breathDoneHome').addEventListener('click',()=>{ $('breathDone').classList.remove('show'); go(RB.from); });
+  let rbQuitArmed=false,rbQuitTimer=null;
+  $('breathQuit').addEventListener('click',()=>{
+    if(RB.started && !rbQuitArmed){
+      rbQuitArmed=true; $('breathQuit').style.background='rgba(196,90,80,.2)'; $('breathQuit').textContent='再点一次';
+      rbQuitTimer=setTimeout(()=>{ rbQuitArmed=false; $('breathQuit').style.background=''; $('breathQuit').textContent='‹ 退出'; },2500);
+      return;
+    }
+    clearTimeout(rbQuitTimer);
+    stopBreathAll();
+    go(RB.from);
+  });
+
+  /* ===== 扫描页绑定 ===== */
+  $('scanBgChips').addEventListener('click',e=>{
+    const c=e.target.closest('.rb-bg'); if(!c) return;
+    if(SC.started){ toast('练习开始后不能换背景音'); return; }
+    if(SC.bg) stopLayer(SC.bg);
+    SC.bg=c.dataset.bg||'';
+    document.querySelectorAll('#scanBgChips .rb-bg').forEach(x=>x.classList.toggle('on',x===c));
+  });
+  $('scanStartBtn').addEventListener('click',scToggle);
+  $('scanDoneHome').addEventListener('click',()=>{ $('scanDone').classList.remove('show'); go(SC.from); });
+  let scQuitArmed=false,scQuitTimer=null;
+  $('scanQuit').addEventListener('click',()=>{
+    if(SC.started && !scQuitArmed){
+      scQuitArmed=true; $('scanQuit').style.background='rgba(196,90,80,.2)'; $('scanQuit').textContent='再点一次';
+      scQuitTimer=setTimeout(()=>{ scQuitArmed=false; $('scanQuit').style.background=''; $('scanQuit').textContent='‹ 退出'; },2500);
+      return;
+    }
+    clearTimeout(scQuitTimer);
+    stopScanAll();
+    go(SC.from);
+  });
+
+  // 页面隐藏时停掉新页面的所有声音与定时器
+  window.addEventListener('pagehide',()=>{
+    stopBreathAll(); stopScanAll();
+    if(NIGHT.tickIv) clearInterval(NIGHT.tickIv);
+    stopAllLayers();
+  });
+
   // PWA
   if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
     navigator.serviceWorker.register('lite-sw.js').catch(()=>{});
@@ -962,6 +2298,8 @@ function bind(){
 renderHomeCard();
 renderTimbre();
 bind();
+renderSleepHome();
+renderSelf();
 go('view-home');
 window.addEventListener('resize',()=>{ if(STATE.sessionOn){ setupSceneVisual(); } });
 </script>

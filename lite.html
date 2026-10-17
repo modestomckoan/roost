@@ -114,7 +114,7 @@ button{font-family:inherit;font-size:inherit;color:inherit;background:none;borde
   min-width:56px;min-height:56px;border-radius:50%;background:rgba(255,255,255,.75);
   box-shadow:var(--shadow-soft);font-size:26px;display:flex;align-items:center;justify-content:center;flex:none;
 }
-.home-orb-wrap{display:flex;justify-content:center;margin:30px 0 16px;position:relative;z-index:1;}
+.home-orb-wrap{display:flex;flex-direction:column;align-items:center;margin:30px 0 16px;position:relative;z-index:1;}
 .home-orb{
   position:relative;width:190px;height:190px;border-radius:50%;border:none;cursor:pointer;
   background:radial-gradient(circle at 40% 35%,#fff,var(--sage-tint) 72%);
@@ -420,13 +420,21 @@ textarea{min-height:76px;resize:vertical;}
 #view-sleep .sec-label{color:var(--night-dim);}
 #view-sleep .sec-label small{color:var(--night-dim);opacity:.7;}
 .night-rec{
+  position:relative;overflow:hidden;isolation:isolate;
   background:linear-gradient(135deg,rgba(255,255,255,.10),rgba(255,255,255,.04));
   border:1px solid var(--night-line);border-radius:var(--r-card);padding:24px 20px;margin-top:18px;
 }
-.night-rec .tag{display:inline-block;background:rgba(143,174,154,.25);color:#C9DCCE;border-radius:var(--r-pill);padding:6px 16px;font-size:15px;}
-.night-rec h2{font-family:'Noto Serif SC','Songti SC',serif;font-size:28px;margin-top:14px;}
-.night-rec p{font-size:18px;line-height:1.7;color:var(--night-dim);margin-top:8px;}
-.night-rec .rec-sounds{margin-top:12px;font-size:16px;color:#C9DCCE;}
+.night-rec::before{
+  content:'';position:absolute;inset:0;z-index:-2;background-size:cover;background-position:center;
+}
+.night-rec::after{
+  content:'';position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(180deg,rgba(10,16,30,.25) 0%,rgba(10,16,30,.15) 35%,rgba(10,16,30,.78) 100%);
+}
+.night-rec .tag{display:inline-block;background:rgba(92,125,104,.85);color:#fff;border-radius:var(--r-pill);padding:6px 16px;font-size:15px;}
+.night-rec h2{font-family:'Noto Serif SC','Songti SC',serif;font-size:28px;margin-top:14px;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.4);}
+.night-rec p{font-size:18px;line-height:1.7;color:rgba(255,255,255,.9);margin-top:8px;}
+.night-rec .rec-sounds{margin-top:12px;font-size:16px;color:#DCE8DF;}
 .night-btn{background:var(--sage);color:#fff;}
 /* 睡眠预设卡 */
 #sleepPresets .mini-card{background:rgba(255,255,255,.08);border:1px solid var(--night-line);box-shadow:none;}
@@ -591,6 +599,85 @@ textarea{min-height:76px;resize:vertical;}
 .scan-track i.on{background:var(--sage-deep);}
 .scan-guide{text-align:center;font-size:18px;line-height:1.8;color:var(--ink-dim);margin-top:16px;padding:0 10px;}
 
+/* ============================================================
+   ===== 第三轮：统一 SVG 图标 + 真实场景图 =====
+   ============================================================ */
+.icn{width:24px;height:24px;flex:none;display:inline-block;vertical-align:middle;}
+.tabbar-icn{width:26px;height:26px;}
+.home-me .icn{width:28px;height:28px;color:var(--sage-deep);}
+.rec-label .icn{width:18px;height:18px;vertical-align:-3px;margin-right:4px;color:var(--sage);}
+.home-device .icn{width:20px;height:20px;vertical-align:-4px;margin-right:6px;}
+.mc-ic{color:var(--sage-deep);}
+.mc-ic .icn{width:30px;height:30px;}
+.garden-cell .g-ic{width:22px;height:22px;color:var(--night-dim);flex:none;}
+.garden-cell.on .g-ic{color:#fff;}
+.scene-btn .ico .icn{width:34px;height:34px;color:var(--sage-deep);}
+.chip .icn,.np-chip .icn{width:18px;height:18px;vertical-align:-3px;margin-right:4px;}
+.p-main .icn{width:28px;height:28px;}
+.quit-btn .icn{width:20px;height:20px;vertical-align:-3px;}
+.rb-back .icn,.sheet-close .icn{width:24px;height:24px;}
+
+/* 首页呼吸灯：多层光圈 */
+.home-orb-wrap{position:relative;}
+.home-orb{width:200px;height:200px;}
+.home-orb .home-orb-core{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;}
+.home-orb-ring{inset:0;}
+.home-orb-ring.r2{inset:-30px;border-color:rgba(143,174,154,.18);animation-duration:7.5s;}
+@media (prefers-reduced-motion: no-preference){
+  .home-orb{animation:homeBreathe 10s ease-in-out infinite;}
+  .home-orb-ring{animation:homeRing 10s ease-out infinite;}
+  .home-orb-ring.r2{animation:homeRing 10s ease-out infinite;animation-delay:2.5s;}
+}
+@keyframes homeBreathe{0%,100%{transform:scale(.96);}40%{transform:scale(1.08);}60%{transform:scale(1.08);}}
+@keyframes homeRing{0%{transform:scale(.95);opacity:.7;}100%{transform:scale(1.35);opacity:0;}}
+.home-orb-wave{display:block;width:260px;max-width:100%;height:54px;margin:8px auto 0;}
+.home-hero{background:
+  linear-gradient(160deg,rgba(234,241,236,.92) 0%,rgba(243,241,235,.94) 55%,rgba(240,233,225,.92) 100%),
+  url('lite/scenes/forest.jpg') center/cover no-repeat;}
+
+/* 场景图卡（助眠预设 / 此刻建议） */
+.scene-card{
+  position:relative;overflow:hidden;min-height:120px;border-radius:var(--r-card);
+  padding:14px;display:flex;flex-direction:column;justify-content:flex-end;text-align:left;
+  color:#fff;box-shadow:var(--shadow-soft);isolation:isolate;
+}
+.scene-card::before{
+  content:'';position:absolute;inset:0;background-size:cover;background-position:center;z-index:-1;
+  transition:transform .6s ease;
+}
+.scene-card.s-rain::before{background-image:url('lite/scenes/rain.jpg');}
+.scene-card.s-ocean::before{background-image:url('lite/scenes/ocean-poster.jpg');}
+.scene-card.s-fire::before{background-image:url('lite/scenes/fire.jpg');}
+.scene-card.s-music::before{background-image:url('lite/scenes/music.jpg');}
+.scene-card::after{
+  content:'';position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(180deg,rgba(10,16,30,0) 30%,rgba(10,16,30,.62) 100%);
+}
+.scene-card:active::before{transform:scale(1.04);}
+.scene-card .sc-name{font-size:19px;font-weight:600;text-shadow:0 1px 6px rgba(0,0,0,.35);}
+.scene-card .sc-sub{font-size:13px;opacity:.92;margin-top:2px;text-shadow:0 1px 4px rgba(0,0,0,.4);}
+
+/* 此刻建议玻璃卡：场景类带图 */
+.rec-card{position:relative;overflow:hidden;isolation:isolate;}
+.rec-card.has-img::before{content:'';position:absolute;inset:0;background-size:cover;background-position:center;z-index:-1;}
+.rec-card.has-img::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,.78) 70%);}
+.rec-card.has-img.s-rain::before{background-image:url('lite/scenes/rain.jpg');}
+.rec-card.has-img.s-ocean::before{background-image:url('lite/scenes/ocean-poster.jpg');}
+.rec-card.has-img.s-fire::before{background-image:url('lite/scenes/fire.jpg');}
+.rec-card.has-img.s-music::before{background-image:url('lite/scenes/music.jpg');}
+.rec-card.has-img.s-forest::before{background-image:url('lite/scenes/forest.jpg');}
+.rec-card .rec-ico{color:var(--sage-deep);}
+
+/* 心情小脸 chip */
+.mood-chip .m-face{width:34px;height:34px;color:var(--sage-deep);}
+.mood-chip.on .m-face{color:#fff;}
+
+/* 夜间播放页真实背景 */
+#view-night .np-bg-media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+#nightFx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;}
+#view-night .p-top,#view-night .np-title,#view-night .np-time,#view-night .np-chips,
+#view-night .np-ball-row,#view-night .p-bottom,#nightDone,#view-night .np-orb{z-index:5;}
+
 @media (min-width:768px){
   .sleep-wrap,.self-wrap,.relax-wrap{max-width:560px;margin:0 auto;}
   .preset-grid{grid-template-columns:repeat(2,1fr);}
@@ -615,20 +702,24 @@ textarea{min-height:76px;resize:vertical;}
           <h1 class="home-greet serif" id="homeGreet">晚上好</h1>
           <p class="home-brand">栖 ROOST · 每天 15 分钟</p>
         </div>
-        <button class="home-me" id="homeMe" aria-label="我的">🌿</button>
+        <button class="home-me" id="homeMe" aria-label="我的"><span data-ic="self"></span></button>
       </div>
       <div class="home-orb-wrap">
         <button class="home-orb" id="homeStartBtn" aria-label="开始冥想">
           <span class="home-orb-ring"></span>
-          <span class="home-orb-play">▶</span>
-          <span class="home-orb-label">开始</span>
+          <span class="home-orb-ring r2"></span>
+          <span class="home-orb-core">
+            <span class="home-orb-play" data-ic="play"></span>
+            <span class="home-orb-label">开始</span>
+          </span>
         </button>
+        <canvas class="home-orb-wave" id="homeWave"></canvas>
       </div>
       <div class="home-day-sub" id="homeDaySub">第 1 天 · 在这里安顿 · 约 15 分钟</div>
       <button class="home-prep-link" id="homePrepLink">选第几天 / 换音景 ›</button>
     </div>
 
-    <div class="rec-label">✨ 此刻建议</div>
+    <div class="rec-label"><span data-ic="spark"></span>此刻建议</div>
     <div class="rec-scroll" id="recScroll"></div>
 
     <div class="home-stats">
@@ -642,14 +733,14 @@ textarea{min-height:76px;resize:vertical;}
       </div>
     </div>
 
-    <button class="home-device" id="homeDevice">🎧 脑机耳机 · 待接入</button>
+    <button class="home-device" id="homeDevice"><span data-ic="device"></span>脑机耳机 · 待接入</button>
   </div>
 </section>
 
 <!-- ========== 冥想准备页 ========== -->
 <section id="view-prep" class="view">
   <div class="prep-head">
-    <button class="back" id="prepBack" aria-label="返回">‹</button>
+    <button class="back" id="prepBack" aria-label="返回"><span data-ic="back"></span></button>
     <h1 class="serif">冥想准备</h1>
   </div>
 
@@ -692,7 +783,7 @@ textarea{min-height:76px;resize:vertical;}
   </div>
 
   <div class="p-top">
-    <button class="quit-btn" id="quitBtn">‹ 退出</button>
+    <button class="quit-btn" id="quitBtn"><span data-ic="back"></span><span id="quitBtnTxt">退出</span></button>
     <button class="sound-entry" id="inPlayerSoundBtn" aria-label="音景与音量">音景</button>
   </div>
   <div class="phase-tag" id="phaseTag">准备好了<small>点击下方播放，开始今天的练习</small></div>
@@ -704,7 +795,7 @@ textarea{min-height:76px;resize:vertical;}
     <div class="p-time" id="pTime">00:00 / 15:00</div>
     <div class="p-ctrl">
       <button class="p-side" id="prevSeg" aria-label="上一段">‹‹</button>
-      <button class="p-main" id="playPauseBtn" aria-label="播放或暂停">▶</button>
+      <button class="p-main" id="playPauseBtn" aria-label="播放或暂停"></button>
       <button class="p-side" id="nextSeg" aria-label="下一段">››</button>
     </div>
   </div>
@@ -743,8 +834,8 @@ textarea{min-height:76px;resize:vertical;}
 
     <div class="sec-label">睡前引导</div>
     <div class="preset-grid">
-      <button class="mini-card" id="goBreath478"><span class="mc-emoji">🌬️</span><span class="mc-name">4-7-8 安眠呼吸</span><span class="mc-sub">约 8 分钟 · 帮你入睡</span></button>
-      <button class="mini-card" id="goScanFull"><span class="mc-emoji">🤍</span><span class="mc-name">睡前身体放松</span><span class="mc-sub">从头到脚 · 约 4 分钟</span></button>
+      <button class="mini-card" id="goBreath478"><span class="mc-ic" data-ic="moonz"></span><span class="mc-name">4-7-8 安眠呼吸</span><span class="mc-sub">约 8 分钟 · 帮你入睡</span></button>
+      <button class="mini-card" id="goScanFull"><span class="mc-ic" data-ic="body"></span><span class="mc-name">睡前身体放松</span><span class="mc-sub">从头到脚 · 约 4 分钟</span></button>
     </div>
   </div>
 </section>
@@ -791,9 +882,9 @@ textarea{min-height:76px;resize:vertical;}
 
     <div class="sec-label">我的</div>
     <div class="self-grid3">
-      <button class="mini-card" id="openStatsSheet"><span class="mc-emoji">📖</span><span class="mc-name">练习记录</span><span class="mc-sub">天数 · 分钟</span></button>
-      <button class="mini-card" id="openAnchorSheet"><span class="mc-emoji">📍</span><span class="mc-name">舒适档案</span><span class="mc-sub">放松的瞬间</span></button>
-      <button class="mini-card" id="openDeviceSheet"><span class="mc-emoji">🎧</span><span class="mc-name">脑机耳机</span><span class="mc-sub">待接入</span></button>
+      <button class="mini-card" id="openStatsSheet"><span class="mc-ic" data-ic="book"></span><span class="mc-name">练习记录</span><span class="mc-sub">天数 · 分钟</span></button>
+      <button class="mini-card" id="openAnchorSheet"><span class="mc-ic" data-ic="pin"></span><span class="mc-name">舒适档案</span><span class="mc-sub">放松的瞬间</span></button>
+      <button class="mini-card" id="openDeviceSheet"><span class="mc-ic" data-ic="device"></span><span class="mc-name">脑机耳机</span><span class="mc-sub">待接入</span></button>
     </div>
   </div>
 </section>
@@ -808,21 +899,21 @@ textarea{min-height:76px;resize:vertical;}
 
     <div class="sec-label">呼吸训练</div>
     <div class="preset-grid" id="breathGrid">
-      <button class="mini-card" data-breath="soft"><span class="mc-emoji">🌬️</span><span class="mc-name">舒缓呼吸</span><span class="mc-sub">吸 4 拍 · 呼 6 拍</span></button>
-      <button class="mini-card" data-breath="p478"><span class="mc-emoji">😴</span><span class="mc-name">4-7-8 安眠呼吸</span><span class="mc-sub">吸 4 · 屏 7 · 呼 8</span></button>
-      <button class="mini-card" data-breath="box"><span class="mc-emoji">📦</span><span class="mc-name">盒子呼吸</span><span class="mc-sub">四拍循环 · 专注</span></button>
-      <button class="mini-card" data-breath="panic"><span class="mc-emoji">⚡</span><span class="mc-name">60 秒紧急平复</span><span class="mc-sub">马上稳一下</span></button>
+      <button class="mini-card" data-breath="soft"><span class="mc-ic" data-ic="breath"></span><span class="mc-name">舒缓呼吸</span><span class="mc-sub">吸 4 拍 · 呼 6 拍</span></button>
+      <button class="mini-card" data-breath="p478"><span class="mc-ic" data-ic="moonz"></span><span class="mc-name">4-7-8 安眠呼吸</span><span class="mc-sub">吸 4 · 屏 7 · 呼 8</span></button>
+      <button class="mini-card" data-breath="box"><span class="mc-ic" data-ic="box"></span><span class="mc-name">盒子呼吸</span><span class="mc-sub">四拍循环 · 专注</span></button>
+      <button class="mini-card" data-breath="panic"><span class="mc-ic" data-ic="bolt"></span><span class="mc-name">60 秒紧急平复</span><span class="mc-sub">马上稳一下</span></button>
     </div>
 
     <div class="sec-label">快速放松</div>
     <div class="preset-grid">
-      <button class="mini-card" id="quick3min"><span class="mc-emoji">⏱️</span><span class="mc-name">3 分钟即刻放松</span><span class="mc-sub">舒缓呼吸 · 固定时长</span></button>
-      <button class="mini-card" id="quickShoulder"><span class="mc-emoji">💆</span><span class="mc-name">肩颈松绑</span><span class="mc-sub">约 3 分钟 · 放松肩颈</span></button>
+      <button class="mini-card" id="quick3min"><span class="mc-ic" data-ic="timer"></span><span class="mc-name">3 分钟即刻放松</span><span class="mc-sub">舒缓呼吸 · 固定时长</span></button>
+      <button class="mini-card" id="quickShoulder"><span class="mc-ic" data-ic="shoulder"></span><span class="mc-name">肩颈松绑</span><span class="mc-sub">约 3 分钟 · 放松肩颈</span></button>
     </div>
 
     <div class="sec-label">自然音景</div>
     <div class="preset-grid">
-      <button class="mini-card" id="goGarden"><span class="mc-emoji">🌳</span><span class="mc-name">去声音花园</span><span class="mc-sub">雨声 · 海浪 · 炉火</span></button>
+      <button class="mini-card" id="goGarden"><span class="mc-ic" data-ic="tree"></span><span class="mc-name">去声音花园</span><span class="mc-sub">雨声 · 海浪 · 炉火</span></button>
     </div>
   </div>
 </section>
@@ -830,7 +921,7 @@ textarea{min-height:76px;resize:vertical;}
 <!-- ========== 呼吸沉浸页 ========== -->
 <section id="view-breath" class="view relax-stage">
   <div class="rb-top">
-    <button class="rb-back" id="breathQuit" aria-label="退出">‹</button>
+    <button class="rb-back" id="breathQuit" aria-label="退出"><span data-ic="back"></span><span id="breathQuitTxt">退出</span></button>
     <div class="rb-title serif" id="breathTitle">舒缓呼吸</div>
   </div>
   <div class="rb-dur-chips" id="breathDurChips"></div>
@@ -862,7 +953,7 @@ textarea{min-height:76px;resize:vertical;}
 <!-- ========== 身体扫描页 ========== -->
 <section id="view-scan" class="view relax-stage">
   <div class="rb-top">
-    <button class="rb-back" id="scanQuit" aria-label="退出">‹</button>
+    <button class="rb-back" id="scanQuit" aria-label="退出"><span data-ic="back"></span><span id="scanQuitTxt">退出</span></button>
     <div class="rb-title serif" id="scanTitle">睡前身体放松</div>
   </div>
   <div class="scan-figure">
@@ -910,9 +1001,13 @@ textarea{min-height:76px;resize:vertical;}
 
 <!-- ========== 夜间纯音景播放页 ========== -->
 <section id="view-night" class="view">
-  <div class="np-bg bg-rain scrim" id="nightBg"></div>
+  <div class="np-bg bg-rain" id="nightBg"></div>
+  <img id="nightPhoto" class="np-bg-media" alt="" style="display:none">
+  <video id="nightVideo" class="np-bg-media" muted loop playsinline preload="metadata" style="display:none"></video>
+  <canvas id="nightFx"></canvas>
+  <div class="np-bg scrim" style="background:linear-gradient(180deg,rgba(10,16,30,.35),rgba(10,16,30,.18) 40%,rgba(10,16,30,.62));position:absolute;inset:0;z-index:2;pointer-events:none"></div>
   <div class="p-top">
-    <button class="quit-btn" id="nightQuit">‹ 退出</button>
+    <button class="quit-btn" id="nightQuit"><span data-ic="back"></span><span id="nightQuitTxt">退出</span></button>
     <span></span>
   </div>
   <div class="np-title serif" id="nightTitle">雨夜好眠</div>
@@ -929,7 +1024,7 @@ textarea{min-height:76px;resize:vertical;}
     <div class="switch" id="nightBallSwitch" role="switch" aria-checked="false"></div>
   </div>
   <div class="p-bottom">
-    <div class="p-ctrl"><button class="p-main" id="nightPlayPause" aria-label="播放或暂停">⏸</button></div>
+    <div class="p-ctrl"><button class="p-main" id="nightPlayPause" aria-label="播放或暂停"></button></div>
   </div>
   <div id="nightDone">
     <div>
@@ -942,10 +1037,10 @@ textarea{min-height:76px;resize:vertical;}
 
 <!-- ========== 底部导航 ========== -->
 <nav id="tabbar">
-  <button class="active" data-tab="meditate"><span class="ico">🧘</span>冥想</button>
-  <button data-tab="sleep"><span class="ico">🌙</span>睡眠</button>
-  <button data-tab="self"><span class="ico">🌿</span>自我</button>
-  <button data-tab="relax"><span class="ico">🍵</span>放松</button>
+  <button class="active" data-tab="meditate"><span class="ico"><span data-ic="meditate"></span></span>冥想</button>
+  <button data-tab="sleep"><span class="ico"><span data-ic="sleep"></span></span>睡眠</button>
+  <button data-tab="self"><span class="ico"><span data-ic="self"></span></span>自我</button>
+  <button data-tab="relax"><span class="ico"><span data-ic="relax"></span></span>放松</button>
 </nav>
 
 <!-- ========== 选天弹层 ========== -->
@@ -953,7 +1048,7 @@ textarea{min-height:76px;resize:vertical;}
 <div class="sheet" id="daySheet">
   <div class="sheet-grab"></div>
   <h3>选择今天第几天</h3>
-  <button class="sheet-close" data-close="daySheet" aria-label="关闭">✕</button>
+  <button class="sheet-close" data-close="daySheet" aria-label="关闭"><span data-ic="close"></span></button>
   <div class="sheet-scroll"><div class="day-grid" id="dayGrid"></div></div>
 </div>
 
@@ -962,7 +1057,7 @@ textarea{min-height:76px;resize:vertical;}
 <div class="sheet" id="soundSheet">
   <div class="sheet-grab"></div>
   <h3>音景与音量</h3>
-  <button class="sheet-close" data-close="soundSheet" aria-label="关闭">✕</button>
+  <button class="sheet-close" data-close="soundSheet" aria-label="关闭"><span data-ic="close"></span></button>
   <div class="sheet-scroll">
     <div class="scene-list" id="sceneList"></div>
     <div class="chips-label" id="chipsLabel">当前场景的声音（可再叠 1 层）</div>
@@ -993,7 +1088,7 @@ textarea{min-height:76px;resize:vertical;}
 <div class="sheet" id="statsSheet">
   <div class="sheet-grab"></div>
   <h3>练习记录</h3>
-  <button class="sheet-close" data-close="statsSheet" aria-label="关闭">✕</button>
+  <button class="sheet-close" data-close="statsSheet" aria-label="关闭"><span data-ic="close"></span></button>
   <div class="sheet-scroll">
     <div class="stat-row"><span class="k">连续练习</span><b><span id="statStreak">0</span> 天</b></div>
     <div class="stat-row"><span class="k">累计时长</span><b><span id="statMin">0</span> 分钟</b></div>
@@ -1007,7 +1102,7 @@ textarea{min-height:76px;resize:vertical;}
 <div class="sheet" id="anchorSheet">
   <div class="sheet-grab"></div>
   <h3>舒适档案</h3>
-  <button class="sheet-close" data-close="anchorSheet" aria-label="关闭">✕</button>
+  <button class="sheet-close" data-close="anchorSheet" aria-label="关闭"><span data-ic="close"></span></button>
   <div class="sheet-scroll">
     <input type="text" id="anchorInput" placeholder="记一句此刻让你放松的话" maxlength="60">
     <button class="mini-btn" id="anchorAdd">存进档案</button>
@@ -1020,7 +1115,7 @@ textarea{min-height:76px;resize:vertical;}
 <div class="sheet" id="deviceSheet">
   <div class="sheet-grab"></div>
   <h3>脑机接口 · 设备</h3>
-  <button class="sheet-close" data-close="deviceSheet" aria-label="关闭">✕</button>
+  <button class="sheet-close" data-close="deviceSheet" aria-label="关闭"><span data-ic="close"></span></button>
   <div class="sheet-scroll">
     <div class="device-body">
       <b style="font-size:20px">耳机待接入</b>
@@ -1061,11 +1156,11 @@ const SOUNDS = {
   guitar:{name:'晚风木吉他',file:'audio/guitar.ogg'}
 };
 const SCENES = {
-  sea:{name:'海边',icon:'🌊',desc:'海浪 · 钢琴 · 呼吸',sounds:['waves','boat','stream','forest-stream'],def:['waves','piano'],bg:'bg-sea',v3key:'sea-poster'},
-  rain:{name:'雨景',icon:'🌧️',desc:'细雨 · 大雨 · 远雷',sounds:['rain','heavy-rain','forest-rain','thunder-rain'],def:['rain'],bg:'bg-rain',v3key:'rain'},
-  forest:{name:'林间',icon:'🌲',desc:'鸟鸣 · 微风 · 虫鸣',sounds:['birds','wind','night'],def:['birds','wind'],bg:'bg-forest',v3key:'forest'},
-  fire:{name:'炉火',icon:'🔥',desc:'炉火 · 噼啪 · 咖啡馆',sounds:['fire','crackle-fire','cafe'],def:['fire','crackle-fire'],bg:'bg-fire',v3key:'fire'},
-  music:{name:'器乐空间',icon:'🎹',desc:'钢琴 · 竖琴 · 吉他',sounds:['piano','harp','guitar'],def:['piano'],bg:'bg-music',v3key:'music'}
+  sea:{name:'海边',icon:'wave',desc:'海浪 · 钢琴 · 呼吸',sounds:['waves','boat','stream','forest-stream'],def:['waves','piano'],bg:'bg-sea',v3key:'sea-poster'},
+  rain:{name:'雨景',icon:'rain',desc:'细雨 · 大雨 · 远雷',sounds:['rain','heavy-rain','forest-rain','thunder-rain'],def:['rain'],bg:'bg-rain',v3key:'rain'},
+  forest:{name:'林间',icon:'tree',desc:'鸟鸣 · 微风 · 虫鸣',sounds:['birds','wind','night'],def:['birds','wind'],bg:'bg-forest',v3key:'forest'},
+  fire:{name:'炉火',icon:'flame',desc:'炉火 · 噼啪 · 咖啡馆',sounds:['fire','crackle-fire','cafe'],def:['fire','crackle-fire'],bg:'bg-fire',v3key:'fire'},
+  music:{name:'器乐空间',icon:'note',desc:'钢琴 · 竖琴 · 吉他',sounds:['piano','harp','guitar'],def:['piano'],bg:'bg-music',v3key:'music'}
 };
 const TITLES = [
   '在这里安顿','一口气的来去','身体扫描初体验','和呼吸做朋友','看见念头来去',
@@ -1077,6 +1172,54 @@ const TITLES = [
 ];
 const $=id=>document.getElementById(id);
 const fmt=s=>{s=Math.max(0,Math.floor(s));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');};
+
+/* ================= 统一线性 SVG 图标 ================= */
+const ICONS={
+  meditate:'<circle cx="12" cy="5" r="2"/><path d="M4 20c2.2-3.2 5.3-4.2 8-4.2s5.8 1 8 4.2"/><path d="M8.5 14.5C10 13 10.6 11.6 10.6 10"/><path d="M15.5 14.5C14 13 13.4 11.6 13.4 10"/><path d="M3.5 18.5h17"/>',
+  sleep:'<path d="M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11z"/>',
+  self:'<circle cx="12" cy="8" r="3.2"/><path d="M5.5 20.5c1-3.6 3.8-5.4 6.5-5.4s5.5 1.8 6.5 5.4"/>',
+  relax:'<path d="M5 11h11v3.5a5.5 5.5 0 0 1-5.5 5.5h0A5.5 5.5 0 0 1 5 14.5z"/><path d="M16 12h1.6a2.6 2.6 0 0 1 0 5.2H16"/><path d="M8.5 3.2c0 1-.7 1.4-.7 2.4s.7 1.4.7 2.4M12.5 3.2c0 1-.7 1.4-.7 2.4s.7 1.4.7 2.4"/>',
+  spark:'<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/>',
+  device:'<path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="3" y="13" width="4" height="7" rx="2"/><rect x="17" y="13" width="4" height="7" rx="2"/>',
+  play:'<path d="M8 5.5v13l11-6.5z"/>',
+  pause:'<rect x="7" y="5" width="3.4" height="14" rx="1.2"/><rect x="13.6" y="5" width="3.4" height="14" rx="1.2"/>',
+  close:'<path d="M6 6l12 12M18 6L6 18"/>',
+  check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  back:'<path d="M14.5 5.5L8 12l6.5 6.5"/>',
+  wave:'<path d="M3 8c2-2.5 4-2.5 6 0s4 2.5 6 0 4-2.5 6 0"/><path d="M3 14c2-2.5 4-2.5 6 0s4 2.5 6 0 4-2.5 6 0"/>',
+  rain:'<path d="M7 14.5a4.5 4.5 0 1 1 .8-8.9 5.5 5.5 0 0 1 10.7 1.4A3.8 3.8 0 0 1 17.5 14.5z"/><path d="M8 18l-1 2.5M12 18l-1 2.5M16 18l-1 2.5"/>',
+  tree:'<path d="M12 3l5 6.5H7z"/><path d="M8.5 10.5h7L19 16H5z"/><path d="M12 16v5"/>',
+  flame:'<path d="M12 3c1 3-2 4.5-2 7a4 4 0 0 0 8 0c0-1.5-.5-2.8-1.5-4 .2 1.5-.5 2.3-1.5 2.5.3-2.3-.8-4.5-3-5.5z"/><path d="M12 21a4.5 4.5 0 0 1-4.5-4.5c0-2 1.2-3.3 2.3-4.6.4 1.2 1.2 1.9 2.2 1.9s1.8-.7 2.2-1.9c1.1 1.3 2.3 2.6 2.3 4.6A4.5 4.5 0 0 1 12 21z"/>',
+  note:'<path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/>',
+  breath:'<path d="M4 9a8 8 0 0 1 16 0"/><path d="M6.5 13.5a5 5 0 0 1 11 0"/><path d="M9 18a2 2 0 0 1 6 0"/>',
+  moonz:'<path d="M18 13.5A7.5 7.5 0 1 1 8.5 4a6 6 0 0 0 9.5 9.5z"/><path d="M19 4l1 1.8 2 .3-1.5 1.4.4 2-1.9-1-1.9 1 .4-2L17 5.8l2-.3z"/>',
+  box:'<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9.5h16M9.5 9.5V20"/>',
+  bolt:'<path d="M13 3L5 13.5h5L10 21l8-10.5h-5z"/>',
+  timer:'<circle cx="12" cy="13.5" r="7"/><path d="M12 10v3.5l2.5 1.5"/><path d="M9 3h6"/>',
+  shoulder:'<circle cx="12" cy="5" r="2.2"/><path d="M12 7.5v5"/><path d="M6 11c2-1.5 4-2 6-2s4 .5 6 2"/><path d="M8 13l-1.5 4M16 13l1.5 4"/>',
+  book:'<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 5.5V20.5"/>',
+  pin:'<path d="M12 21s-6-5.3-6-10a6 6 0 1 1 12 0c0 4.7-6 10-6 10z"/><circle cx="12" cy="11" r="2.2"/>',
+  body:'<circle cx="12" cy="5" r="2.4"/><path d="M12 8v6"/><path d="M7 11c1.5-1.2 3-1.6 5-1.6s3.5.4 5 1.6"/><path d="M12 14c-1 2-3 3-5 3.5M12 14c1 2 3 3 5 3.5"/>',
+  wrain:'<path d="M5 8a4 4 0 1 1 .8-7.9A4.8 4.8 0 0 1 15 1.5 3.4 3.4 0 0 1 14.5 8z"/><path d="M6 12l-1 2.5M10 12l-1 2.5M14 12l-1 2.5"/>',
+  wwater:'<path d="M12 4.5c-1.8 2.4-3 4.3-3 6.2a3 3 0 0 0 6 0c0-1.9-1.2-3.8-3-6.2z"/>',
+  wforest:'<path d="M12 3l4.5 6h-9z"/><path d="M8 9.5h8L19 15H5z"/><path d="M12 15v6"/>',
+  wfire:'<path d="M12 3c1 3-2 4.5-2 7a4 4 0 0 0 8 0c0-1.5-.5-2.8-1.5-4 .2 1.5-.5 2.3-1.5 2.5.3-2.3-.8-4.5-3-5.5z"/>',
+  wmusic:'<path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/>',
+  face_calm:'<circle cx="12" cy="12" r="8.5"/><path d="M8 11c.6.6 1.4.6 2 0M14 11c.6.6 1.4.6 2 0"/><path d="M9.5 15.5c1.5 1 3.5 1 5 0"/>',
+  face_tired:'<circle cx="12" cy="12" r="8.5"/><path d="M8 11h2M14 11h2"/><path d="M9.5 16c1.5-1 3.5-1 5 0"/><path d="M9 5.5l1 1M15 5.5l1 1"/>',
+  face_anxious:'<circle cx="12" cy="12" r="8.5"/><path d="M8 9.5l2 .8M16 9.5l-2 .8"/><circle cx="9" cy="12" r=".6" fill="currentColor"/><circle cx="15" cy="12" r=".6" fill="currentColor"/><path d="M9.5 16q1-1 1.7 0t1.6 0q1-.9 1.7 0"/>',
+  face_low:'<circle cx="12" cy="12" r="8.5"/><path d="M8 10.5v1.5M16 10.5v1.5"/><path d="M9.5 16.5c1.5-1.5 3.5-1.5 5 0"/>',
+  face_irritable:'<circle cx="12" cy="12" r="8.5"/><path d="M8 9l2 1M16 9l-2 1"/><circle cx="9" cy="12" r=".6" fill="currentColor"/><circle cx="15" cy="12" r=".6" fill="currentColor"/><path d="M9.5 16.5h5"/>',
+  face_peace:'<circle cx="12" cy="12" r="8.5"/><path d="M8 11c.6.6 1.4.6 2 0M14 11c.6.6 1.4.6 2 0"/><path d="M9.5 15c1.5 1.2 3.5 1.2 5 0"/>',
+  face_happy:'<circle cx="12" cy="12" r="8.5"/><path d="M8 10.5c.6.6 1.4.6 2 0M14 10.5c.6.6 1.4.6 2 0"/><path d="M8.5 14.5c1 2.2 6 2.2 7 0"/>'
+};
+function svg(name,cls){
+  return '<svg class="icn '+(cls||'')+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(ICONS[name]||'')+'</svg>';
+}
+function mountIcons(){
+  document.querySelectorAll('[data-ic]').forEach(el=>{ el.innerHTML=svg(el.dataset.ic); });
+}
 
 /* ================= 状态 ================= */
 const STATE={
@@ -1185,7 +1328,7 @@ function pauseSession(){
   if(STATE.inGap){ STATE.gapRemaining=Math.max(0,(STATE.gapEndsAt-performance.now())/1000); clearGap(); }
   voiceAudio.pause();
   if(ac) ac.suspend();
-  $('playPauseBtn').textContent='▶';
+  $('playPauseBtn').innerHTML=svg('play');
   setPhase('已暂停');
 }
 function resumeSession(){
@@ -1194,7 +1337,7 @@ function resumeSession(){
   ensureCtx();
   if(voiceAudio.src && voiceAudio.currentTime>0 && !voiceAudio.ended) voiceAudio.play().catch(()=>{});
   if(STATE.inGap) STATE.gapTimer=setTimeout(()=>{ STATE.inGap=false; playQueueItem(STATE.queueIdx+1); }, STATE.gapRemaining*1000);
-  $('playPauseBtn').textContent='⏸';
+  $('playPauseBtn').innerHTML=svg('pause');
 }
 function startSession(){
   ensureCtx();
@@ -1205,7 +1348,7 @@ function startSession(){
   go('view-player');
   syncLayers();
   playQueueItem(0);
-  $('playPauseBtn').textContent='⏸';
+  $('playPauseBtn').innerHTML=svg('pause');
   clearInterval(STATE.elapsedTimer);
   STATE.elapsedTimer=setInterval(()=>{
     if(!STATE.playing) return;
@@ -1216,7 +1359,7 @@ function startSession(){
 }
 function finishSession(){
   STATE.playing=false; clearGap(); voiceAudio.pause();
-  $('playPauseBtn').textContent='▶';
+  $('playPauseBtn').innerHTML=svg('play');
   $('progBar').style.width='100%';
   $('pTime').textContent='15:00 / 15:00';
   $('doneOverlay').classList.add('show');
@@ -1272,35 +1415,35 @@ let CURRENT_RECS=[];
 function recCards(){
   const h=new Date().getHours();
   if(h>=5&&h<11) return [
-    {emoji:'🌅',t:'晨间唤醒呼吸',d:'先舒缓一下身体',fn:()=>openBreath('soft',{from:'view-home'})},
-    {emoji:'⏱️',t:'3分钟放松',d:'马上松一点',fn:()=>openBreath('soft',{dur:180,from:'view-home'})},
-    {emoji:'🌳',t:'自然音景',d:'去声音花园',fn:()=>go('view-sleep')}
+    {icon:'breath',t:'晨间唤醒呼吸',d:'先舒缓一下身体',fn:()=>openBreath('soft',{from:'view-home'})},
+    {icon:'timer',t:'3分钟放松',d:'马上松一点',fn:()=>openBreath('soft',{dur:180,from:'view-home'})},
+    {icon:'tree',t:'自然音景',d:'去声音花园',img:'s-forest',fn:()=>go('view-sleep')}
   ];
   if(h>=11&&h<14) return [
-    {emoji:'🌊',t:'小憩一下',d:'海浪音景 · 15分钟',fn:()=>startNight(SLEEP_COMBOS[1],15)},
-    {emoji:'🌬️',t:'舒缓呼吸',d:'吸4呼6',fn:()=>openBreath('soft',{from:'view-home'})},
-    {emoji:'🎵',t:'声音花园',d:'选一层自然声',fn:()=>go('view-sleep')}
+    {icon:'wave',t:'小憩一下',d:'海浪音景 · 15分钟',img:'s-ocean',fn:()=>startNight(SLEEP_COMBOS[1],15)},
+    {icon:'breath',t:'舒缓呼吸',d:'吸4呼6',fn:()=>openBreath('soft',{from:'view-home'})},
+    {icon:'note',t:'声音花园',d:'选一层自然声',fn:()=>go('view-sleep')}
   ];
   if(h>=14&&h<18) return [
-    {emoji:'💆',t:'肩颈松绑',d:'约3分钟',fn:()=>openScan(SCAN_SHOULDER,{from:'view-home'})},
-    {emoji:'⚡',t:'60秒平复',d:'马上稳一下',fn:()=>openBreath('panic',{from:'view-home'})},
-    {emoji:'⏱️',t:'3分钟放松',d:'舒缓呼吸',fn:()=>openBreath('soft',{dur:180,from:'view-home'})}
+    {icon:'shoulder',t:'肩颈松绑',d:'约3分钟',fn:()=>openScan(SCAN_SHOULDER,{from:'view-home'})},
+    {icon:'bolt',t:'60秒平复',d:'马上稳一下',fn:()=>openBreath('panic',{from:'view-home'})},
+    {icon:'timer',t:'3分钟放松',d:'舒缓呼吸',fn:()=>openBreath('soft',{dur:180,from:'view-home'})}
   ];
   if(h>=18&&h<21) return [
-    {emoji:'🤍',t:'睡前身体放松',d:'从头到脚',fn:()=>openScan(SCAN_FULL,{from:'view-home'})},
-    {emoji:'😴',t:'4-7-8呼吸',d:'帮你入睡',fn:()=>openBreath('p478',{from:'view-home'})},
-    {emoji:'🌧️',t:'安眠音景',d:'雨夜好眠',fn:()=>startNight(SLEEP_COMBOS[0],30)}
+    {icon:'body',t:'睡前身体放松',d:'从头到脚',fn:()=>openScan(SCAN_FULL,{from:'view-home'})},
+    {icon:'moonz',t:'4-7-8呼吸',d:'帮你入睡',fn:()=>openBreath('p478',{from:'view-home'})},
+    {icon:'rain',t:'安眠音景',d:'雨夜好眠',img:'s-rain',fn:()=>startNight(SLEEP_COMBOS[0],30)}
   ];
   return [
-    {emoji:'🌧️',t:'雨夜好眠',d:'30分钟雨声',fn:()=>startNight(SLEEP_COMBOS[0],30)},
-    {emoji:'😴',t:'4-7-8呼吸',d:'安眠节律',fn:()=>openBreath('p478',{from:'view-home'})},
-    {emoji:'🎹',t:'晚安钢琴',d:'钢琴竖琴',fn:()=>startNight(SLEEP_COMBOS[3],30)}
+    {icon:'rain',t:'雨夜好眠',d:'30分钟雨声',img:'s-rain',fn:()=>startNight(SLEEP_COMBOS[0],30)},
+    {icon:'moonz',t:'4-7-8呼吸',d:'安眠节律',fn:()=>openBreath('p478',{from:'view-home'})},
+    {icon:'note',t:'晚安钢琴',d:'钢琴竖琴',img:'s-music',fn:()=>startNight(SLEEP_COMBOS[3],30)}
   ];
 }
 function renderRecs(){
   CURRENT_RECS=recCards();
   $('recScroll').innerHTML=CURRENT_RECS.map((c,i)=>
-    '<button class="rec-card" data-rec="'+i+'"><span class="rec-ico">'+c.emoji+'</span>'+
+    '<button class="rec-card '+(c.img?('has-img '+c.img):'')+'" data-rec="'+i+'"><span class="rec-ico">'+svg(c.icon)+'</span>'+
     '<span class="rec-t">'+c.t+'</span><span class="rec-d">'+c.d+'</span></button>'
   ).join('');
 }
@@ -1322,7 +1465,7 @@ function renderSceneList(){
   $('sceneList').innerHTML=Object.keys(SCENES).map(k=>{
     const s=SCENES[k];
     return '<button class="scene-btn '+(k===STATE.scene?'on':'')+'" data-scene="'+k+'">'+
-      '<span class="ico">'+s.icon+'</span><span><span class="nm">'+s.name+'</span><br><span class="ds">'+s.desc+'</span></span></button>';
+      '<span class="ico">'+svg(s.icon)+'</span><span><span class="nm">'+s.name+'</span><br><span class="ds">'+s.desc+'</span></span></button>';
   }).join('');
 }
 function renderChips(){
@@ -1332,7 +1475,7 @@ function renderChips(){
   $('chipsLabel').textContent='当前：'+sc.name+'（最多叠 '+MAX_LAYERS+' 层）';
   $('chipRow').innerHTML=all.map(id=>{
     const on=STATE.layers.includes(id);
-    return '<button class="chip '+(on?'on':'')+'" data-sound="'+id+'">'+(on?'✓ ':'')+SOUNDS[id].name+'</button>';
+    return '<button class="chip '+(on?'on':'')+'" data-sound="'+id+'">'+(on?svg('check'):'')+SOUNDS[id].name+'</button>';
   }).join('');
 }
 function renderTimbre(){
@@ -1410,12 +1553,13 @@ function tryPhoto(src){
 }
 
 /* ---- 动态粒子（每屏 ≤30） ---- */
-function startFx(scene){
-  const cv=$('fxCanvas');
-  if(fxRAF){ cancelAnimationFrame(fxRAF); fxRAF=null; }
-  cv.getContext('2d').clearRect(0,0,cv.width,cv.height);
+let nightFxRAF=null;
+function runFx(cv, scene){
+  if(!cv) return;
+  const ctx=cv.getContext('2d');
+  cv.width=cv.clientWidth; cv.height=cv.clientHeight;
   let parts=[];
-  const W=cv.width=cv.clientWidth, H=cv.height=cv.clientHeight;
+  const W=cv.width, H=cv.height;
   if(scene==='rain'){
     for(let i=0;i<26;i++) parts.push({x:Math.random()*W,y:Math.random()*H,l:14+Math.random()*18,v:6+Math.random()*4});
   }else if(scene==='forest'){
@@ -1425,29 +1569,34 @@ function startFx(scene){
   }else if(scene==='fire'){
     for(let i=0;i<10;i++) parts.push({x:W/2+(Math.random()-.5)*W*.7,y:H*.85+Math.random()*H*.15,r:2+Math.random()*3,v:.4+Math.random()*.5,ph:Math.random()*6.28});
   }
+  let raf=null;
   function frame(){
-    const c=cv.getContext('2d');
-    c.clearRect(0,0,W,H);
+    ctx.clearRect(0,0,W,H);
     if(scene==='rain'){
-      c.strokeStyle='rgba(200,215,235,.35)'; c.lineWidth=1;
-      parts.forEach(p=>{ c.beginPath(); c.moveTo(p.x,p.y); c.lineTo(p.x-2,p.y+p.l); c.stroke(); p.y+=p.v; p.x-=p.v*.15;
+      ctx.strokeStyle='rgba(200,215,235,.35)'; ctx.lineWidth=1;
+      parts.forEach(p=>{ ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(p.x-2,p.y+p.l); ctx.stroke(); p.y+=p.v; p.x-=p.v*.15;
         if(p.y>H){ p.y=-20; p.x=Math.random()*W; } });
     }else if(scene==='forest'){
       parts.forEach(p=>{ p.y-=p.v; p.ph+=.02; p.x+=Math.sin(p.ph)*.3;
         if(p.y<0){ p.y=H; }
-        c.fillStyle='rgba(220,240,190,.5)'; c.beginPath(); c.arc(p.x,p.y,p.r,0,6.28); c.fill(); });
+        ctx.fillStyle='rgba(220,240,190,.5)'; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,6.28); ctx.fill(); });
     }else if(scene==='music'){
       parts.forEach(p=>{ p.y-=p.v; p.ph+=.015; p.x+=Math.sin(p.ph)*.2;
         if(p.y<-10){ p.y=H+10; p.x=Math.random()*W; }
-        c.fillStyle='rgba(210,225,245,.4)'; c.beginPath(); c.arc(p.x,p.y,p.r,0,6.28); c.fill(); });
+        ctx.fillStyle='rgba(210,225,245,.4)'; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,6.28); ctx.fill(); });
     }else if(scene==='fire'){
       parts.forEach(p=>{ p.y-=p.v; p.ph+=.03; p.x+=Math.sin(p.ph)*.4;
         if(p.y<H*.55){ p.y=H*.9; p.x=W/2+(Math.random()-.5)*W*.7; }
-        c.fillStyle='rgba(230,180,130,.45)'; c.beginPath(); c.arc(p.x,p.y,p.r,0,6.28); c.fill(); });
+        ctx.fillStyle='rgba(230,180,130,.45)'; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,6.28); ctx.fill(); });
     }
-    fxRAF=requestAnimationFrame(frame);
+    raf=requestAnimationFrame(frame);
   }
   frame();
+  return raf;
+}
+function startFx(scene){
+  if(fxRAF){ cancelAnimationFrame(fxRAF); fxRAF=null; }
+  fxRAF=runFx($('fxCanvas'), scene);
 }
 
 /* ---- 呼吸波浪线 ---- */
@@ -1525,12 +1674,20 @@ function streakDays(){
 
 /* ---- 睡眠数据 ---- */
 const SLEEP_COMBOS=[
-  {name:'雨夜好眠',emoji:'🌧️',desc:'细雨伴着远雷，把烦恼一点点淋走。',layers:['rain','thunder-rain'],bg:'bg-rain'},
-  {name:'海浪轻摇',emoji:'🌊',desc:'像躺在小船上，随海浪慢慢晃着入睡。',layers:['waves','boat'],bg:'bg-sea'},
-  {name:'炉火暖夜',emoji:'🔥',desc:'炉火噼啪作响，屋子里暖和又安心。',layers:['fire','crackle-fire'],bg:'bg-fire'},
-  {name:'晚安钢琴',emoji:'🎹',desc:'钢琴与竖琴轻轻和鸣，陪你说晚安。',layers:['piano','harp'],bg:'bg-music'}
+  {name:'雨夜好眠',desc:'细雨伴着远雷，把烦恼一点点淋走。',layers:['rain','thunder-rain'],bg:'bg-rain',card:'s-rain',img:'lite/scenes/rain.jpg',fx:'rain'},
+  {name:'海浪轻摇',desc:'像躺在小船上，随海浪慢慢晃着入睡。',layers:['waves','boat'],bg:'bg-sea',card:'s-ocean',img:'lite/scenes/ocean-poster.jpg',video:'lite/scenes/ocean.mp4',poster:'lite/scenes/ocean-poster.jpg',fx:'ocean'},
+  {name:'炉火暖夜',desc:'炉火噼啪作响，屋子里暖和又安心。',layers:['fire','crackle-fire'],bg:'bg-fire',card:'s-fire',img:'lite/scenes/fire.jpg',fx:'fire'},
+  {name:'晚安钢琴',desc:'钢琴与竖琴轻轻和鸣，陪你说晚安。',layers:['piano','harp'],bg:'bg-music',card:'s-music',img:'lite/scenes/music.jpg',fx:'music'}
 ];
 const GARDEN={layers:[]}; // 声音花园当前层（与冥想 STATE.layers 互不干扰）
+// 花园声音分类图标
+const GARDEN_ICON={
+  rain:'wrain','heavy-rain':'wrain','forest-rain':'wrain','thunder-rain':'wrain',
+  waves:'wwater',boat:'wwater',stream:'wwater','forest-stream':'wwater',
+  birds:'wforest',wind:'wforest',night:'wforest',
+  fire:'wfire','crackle-fire':'wfire',cafe:'wfire',
+  piano:'wmusic',harp:'wmusic',guitar:'wmusic'
+};
 
 function toggleGarden(id){
   ensureCtx();
@@ -1551,22 +1708,26 @@ function stopGardenAll(){
 }
 function renderSleepHome(){
   const combo=SLEEP_COMBOS[dayOfYear()%SLEEP_COMBOS.length];
-  $('recName').textContent=combo.emoji+' '+combo.name;
+  const nr=document.querySelector('.night-rec');
+  nr.style.backgroundImage='url('+combo.img+')';
+  nr.style.backgroundSize='cover'; nr.style.backgroundPosition='center';
+  $('recName').textContent=combo.name;
   $('recDesc').textContent=combo.desc;
   $('recSounds').textContent='包含：'+combo.layers.map(id=>SOUNDS[id].name).join(' · ');
   $('recPlayBtn').onclick=()=>startNight(combo);
   $('sleepPresets').innerHTML=SLEEP_COMBOS.map(c=>{
-    return '<button class="mini-card" data-combo="'+c.name+'"><span class="mc-emoji">'+c.emoji+'</span>'+
-      '<span class="mc-name">'+c.name+'</span>'+
-      '<span class="mc-sub">'+c.layers.map(id=>SOUNDS[id].name).join(' · ')+'</span></button>';
+    return '<button class="mini-card scene-card '+c.card+'" data-combo="'+c.name+'">'+
+      '<span class="sc-name">'+c.name+'</span>'+
+      '<span class="sc-sub">'+c.layers.map(id=>SOUNDS[id].name).join(' · ')+'</span></button>';
   }).join('');
   renderGarden();
 }
 function renderGarden(){
   $('gardenGrid').innerHTML=Object.keys(SOUNDS).map(id=>{
     const s=SOUNDS[id]; const on=GARDEN.layers.includes(id);
+    const ic=on?svg('check'):svg(GARDEN_ICON[id]||'note');
     return '<button class="garden-cell '+(on?'on':'')+'" data-g="'+id+'">'+
-      '<span class="g-emoji">'+(on?'✓':'＋')+'</span><span>'+s.name+'</span></button>';
+      '<span class="g-ic">'+ic+'</span><span>'+s.name+'</span></button>';
   }).join('');
   const p=$('gardenPanel');
   if(!GARDEN.layers.length){
@@ -1591,17 +1752,34 @@ function startNight(combo,timerMin){
   stopGardenAll();
   NIGHT.combo=combo;
   NIGHT.timerMin=(timerMin||30); NIGHT.played=0; NIGHT.playing=true;
-  $('nightBg').className='np-bg '+combo.bg+' scrim';
-  $('nightTitle').textContent=combo.emoji+' '+combo.name;
+  $('nightBg').className='np-bg '+combo.bg;
+  const photo=$('nightPhoto'), video=$('nightVideo');
+  video.pause(); video.removeAttribute('src'); video.load();
+  photo.style.display='none'; video.style.display='none';
+  if(nightFxRAF){ cancelAnimationFrame(nightFxRAF); nightFxRAF=null; }
+  if(combo.video){
+    video.poster=combo.poster||combo.img;
+    video.src=combo.video;
+    video.muted=true; video.loop=true; video.setAttribute('playsinline','');
+    video.style.display='block';
+    const pr=video.play&&video.play();
+    if(pr&&pr.catch) pr.catch(()=>{ video.style.display='none'; photo.src=combo.img; photo.style.display='block'; });
+    video.onerror=()=>{ video.style.display='none'; photo.src=combo.img; photo.style.display='block'; };
+  }else{
+    photo.src=combo.img; photo.style.display='block';
+  }
+  $('nightTitle').textContent=combo.name;
   $('nightTime').textContent=fmt(NIGHT.timerMin*60);
   $('nightDone').classList.remove('show');
   $('nightOrb').style.display='none';
   $('nightBallSwitch').classList.remove('on'); $('nightBallSwitch').setAttribute('aria-checked','false');
   document.querySelectorAll('#nightChips .np-chip').forEach(c=>c.classList.toggle('on',+c.dataset.min===NIGHT.timerMin));
-  $('nightPlayPause').textContent='⏸';
+  $('nightPlayPause').innerHTML=svg('pause');
   go('view-night');
   ensureCtx();
   combo.layers.forEach(id=>startLayer(id));
+  // 粒子（在视图显示后再量尺寸）
+  setTimeout(()=>{ if(NIGHT.combo===combo){ nightFxRAF=runFx($('nightFx'), combo.fx); } },60);
   clearInterval(NIGHT.tickIv);
   NIGHT.tickIv=setInterval(nightTick,1000);
 }
@@ -1619,22 +1797,26 @@ function nightTick(){
 function nightFinish(){
   NIGHT.playing=false; clearInterval(NIGHT.tickIv);
   stopAllLayers();
+  if(nightFxRAF){ cancelAnimationFrame(nightFxRAF); nightFxRAF=null; }
+  const v=$('nightVideo'); v.pause();
   $('nightDone').classList.add('show');
 }
 function nightToggle(){
   ensureCtx();
-  if(NIGHT.playing){ NIGHT.playing=false; if(ac) ac.suspend(); $('nightPlayPause').textContent='▶'; }
-  else { ensureCtx(); NIGHT.playing=true; $('nightPlayPause').textContent='⏸'; }
+  if(NIGHT.playing){ NIGHT.playing=false; if(ac) ac.suspend(); $('nightPlayPause').innerHTML=svg('play'); $('nightVideo').pause(); }
+  else { ensureCtx(); NIGHT.playing=true; $('nightPlayPause').innerHTML=svg('pause'); const v=$('nightVideo'); if(v.style.display!=='none'){ const pr=v.play(); if(pr&&pr.catch)pr.catch(()=>{}); } }
 }
 function nightExit(){
   NIGHT.playing=false; clearInterval(NIGHT.tickIv); NIGHT.tickIv=null;
   stopAllLayers();
+  if(nightFxRAF){ cancelAnimationFrame(nightFxRAF); nightFxRAF=null; }
+  const v=$('nightVideo'); v.pause(); v.removeAttribute('src'); v.load();
   GARDEN.layers=[];
   go('view-sleep');
 }
 
 /* ---- 自我页数据 ---- */
-const MOODS=[['平静','😌'],['疲惫','😪'],['焦虑','😟'],['低落','🌧'],['烦躁','😖'],['安心','🌿'],['开心','🙂']];
+const MOODS=[['平静','face_calm'],['疲惫','face_tired'],['焦虑','face_anxious'],['低落','face_low'],['烦躁','face_irritable'],['安心','face_peace'],['开心','face_happy']];
 const IDEAL_DOMAINS={
   calm:{name:'情绪更平和',steps:[
     '每天早上做 3 次缓慢呼吸，并说出此刻的心情',
@@ -1769,17 +1951,17 @@ function renderSelf(){
   moodSel = today? today.mood : null;
   $('moodRow').innerHTML=MOODS.map(m=>{
     const on=today&&today.mood===m[0];
-    return '<button class="mood-chip '+(on?'on':'')+'" data-mood="'+m[0]+'">'+m[1]+' '+m[0]+'</button>';
+    return '<button class="mood-chip '+(on?'on':'')+'" data-mood="'+m[0]+'"><span class="m-face">'+svg(m[1])+'</span>'+m[0]+'</button>';
   }).join('');
   if(today){
-    $('todayNote').innerHTML='<small>今天已打卡</small>'+today.emoji+' '+escapeHtml(today.mood)+(today.note?' · '+escapeHtml(today.note):'');
+    $('todayNote').innerHTML='<small>今天已打卡</small>'+escapeHtml(today.mood)+(today.note?' · '+escapeHtml(today.note):'');
     $('moodNote').value=today.note||'';
   }else{
     $('todayNote').innerHTML='<small>今天还没打卡</small>选一个最贴近现在的心情';
     $('moodNote').value='';
   }
   const recent=moods.slice(-5).reverse();
-  $('moodHistory').innerHTML=recent.length?recent.map(m=>'<div class="mood-h-item"><b>'+escapeHtml(m.dateLabel)+'</b> · '+m.emoji+' '+escapeHtml(m.mood)+(m.note?' — '+escapeHtml(m.note):'')+'</div>').join(''):'<div class="mood-h-item" style="border:none">还没有记录</div>';
+  $('moodHistory').innerHTML=recent.length?recent.map(m=>'<div class="mood-h-item"><b>'+escapeHtml(m.dateLabel)+'</b> · '+escapeHtml(m.mood)+(m.note?' — '+escapeHtml(m.note):'')+'</div>').join(''):'<div class="mood-h-item" style="border:none">还没有记录</div>';
   // 理想
   const ideal=getIdeal();
   idealSelDomain=ideal?ideal.domain:null;
@@ -1812,7 +1994,7 @@ function renderPath(){
   $('pathSteps').innerHTML=dom.steps.map((s,i)=>{
     const n=i+1;
     const cls=n<=done?'done':(n===done+1?'next':'locked');
-    return '<button class="path-step '+cls+'" data-step="'+n+'"><span class="num">'+(n<=done?'✓':n)+'</span><span class="txt">'+escapeHtml(s)+'</span></button>';
+    return '<button class="path-step '+cls+'" data-step="'+n+'"><span class="num">'+(n<=done?svg('check'):n)+'</span><span class="txt">'+escapeHtml(s)+'</span></button>';
   }).join('');
 }
 
@@ -1834,7 +2016,7 @@ function openBreath(key,opts){
   if(RB.preset.fixed) RB.dur=RB.preset.dur;
   RB.phaseIdx=0; RB.secInPhase=0; RB.totalLeft=RB.dur;
   RB.playing=false; RB.started=false; RB.bg=''; RB.quitArmed=false;
-  $('breathQuit').classList.remove('confirm2'); $('breathQuit').textContent='‹ 退出';
+  $('breathQuit').classList.remove('confirm2'); $('breathQuitTxt').textContent='退出';
   $('breathTitle').textContent=RB.preset.name;
   $('rbPhase').textContent='准备'; $('rbCount').textContent='';
   $('rbTime').textContent=fmt(RB.dur);
@@ -2090,8 +2272,8 @@ function bind(){
     if(!quitArmed){
       quitArmed=true;
       $('quitBtn').classList.add('confirm');
-      $('quitBtn').textContent='再点一次退出';
-      quitTimer=setTimeout(()=>{ quitArmed=false; $('quitBtn').classList.remove('confirm'); $('quitBtn').textContent='‹ 退出'; },2500);
+      $('quitBtnTxt').textContent='再点一次退出';
+      quitTimer=setTimeout(()=>{ quitArmed=false; $('quitBtn').classList.remove('confirm'); $('quitBtnTxt').textContent='退出'; },2500);
     }else{
       clearTimeout(quitTimer);
       quitSession(); toast('已退出，随时可以再来');
@@ -2143,8 +2325,8 @@ function bind(){
   let nightQuitArmed=false,nightQuitTimer=null;
   $('nightQuit').addEventListener('click',()=>{
     if(!nightQuitArmed){
-      nightQuitArmed=true; $('nightQuit').classList.add('confirm'); $('nightQuit').textContent='再点一次退出';
-      nightQuitTimer=setTimeout(()=>{ nightQuitArmed=false; $('nightQuit').classList.remove('confirm'); $('nightQuit').textContent='‹ 退出'; },2500);
+      nightQuitArmed=true; $('nightQuit').classList.add('confirm'); $('nightQuitTxt').textContent='再点一次退出';
+      nightQuitTimer=setTimeout(()=>{ nightQuitArmed=false; $('nightQuit').classList.remove('confirm'); $('nightQuitTxt').textContent='退出'; },2500);
     }else{
       clearTimeout(nightQuitTimer); nightExit(); toast('已退出，随时可以再来');
     }
@@ -2250,8 +2432,8 @@ function bind(){
   let rbQuitArmed=false,rbQuitTimer=null;
   $('breathQuit').addEventListener('click',()=>{
     if(RB.started && !rbQuitArmed){
-      rbQuitArmed=true; $('breathQuit').style.background='rgba(196,90,80,.2)'; $('breathQuit').textContent='再点一次';
-      rbQuitTimer=setTimeout(()=>{ rbQuitArmed=false; $('breathQuit').style.background=''; $('breathQuit').textContent='‹ 退出'; },2500);
+      rbQuitArmed=true; $('breathQuit').style.background='rgba(196,90,80,.2)'; $('breathQuitTxt').textContent='再点一次';
+      rbQuitTimer=setTimeout(()=>{ rbQuitArmed=false; $('breathQuit').style.background=''; $('breathQuitTxt').textContent='退出'; },2500);
       return;
     }
     clearTimeout(rbQuitTimer);
@@ -2272,8 +2454,8 @@ function bind(){
   let scQuitArmed=false,scQuitTimer=null;
   $('scanQuit').addEventListener('click',()=>{
     if(SC.started && !scQuitArmed){
-      scQuitArmed=true; $('scanQuit').style.background='rgba(196,90,80,.2)'; $('scanQuit').textContent='再点一次';
-      scQuitTimer=setTimeout(()=>{ scQuitArmed=false; $('scanQuit').style.background=''; $('scanQuit').textContent='‹ 退出'; },2500);
+      scQuitArmed=true; $('scanQuit').style.background='rgba(196,90,80,.2)'; $('scanQuitTxt').textContent='再点一次';
+      scQuitTimer=setTimeout(()=>{ scQuitArmed=false; $('scanQuit').style.background=''; $('scanQuitTxt').textContent='退出'; },2500);
       return;
     }
     clearTimeout(scQuitTimer);
@@ -2295,12 +2477,44 @@ function bind(){
 }
 
 /* ================= 初始化 ================= */
+/* 首页常驻波浪线（4/6 节律，只动 canvas 路径，不抢内容） */
+let homeWaveRAF=null;
+function startHomeWave(){
+  const cv=$('homeWave'); if(!cv) return;
+  if(homeWaveRAF) return;
+  const ctx=cv.getContext('2d');
+  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function draw(now){
+    const W=cv.width=cv.clientWidth, H=cv.height=cv.clientHeight;
+    ctx.clearRect(0,0,W,H);
+    const t=now/1000;
+    const lines=[
+      {amp:7, len:30, spd:1.0, ph:0,   col:'rgba(92,125,104,.75)', w:1.8},
+      {amp:6, len:38, spd:.7,  ph:1.6, col:'rgba(143,174,154,.6)', w:1.6},
+      {amp:5, len:48, spd:.45, ph:3.1, col:'rgba(143,174,154,.4)', w:1.4}
+    ];
+    lines.forEach(L=>{
+      ctx.lineWidth=L.w; ctx.strokeStyle=L.col; ctx.lineCap='round';
+      ctx.beginPath();
+      for(let x=0;x<=W;x+=4){
+        const off=reduced?0:t*L.spd;
+        const y=H*.5+L.amp*Math.sin(x/L.len - off);
+        x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+      }
+      ctx.stroke();
+    });
+    if(!reduced) homeWaveRAF=requestAnimationFrame(draw);
+  }
+  homeWaveRAF=requestAnimationFrame(draw);
+}
 renderHomeCard();
+mountIcons();
 renderTimbre();
 bind();
 renderSleepHome();
 renderSelf();
 go('view-home');
+startHomeWave();
 window.addEventListener('resize',()=>{ if(STATE.sessionOn){ setupSceneVisual(); } });
 </script>
 </body>

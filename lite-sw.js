@@ -1,12 +1,14 @@
 /* 栖 ROOST · lite service worker
  * 设计原则：
  *  1) 只对 lite 自己的资源负责；index.html / survey.html / 旧版 js/css 一律放行网络，绝不读写缓存。
- *  2) 壳 + v3 分片（lite.html / manifest / 图标 / 全部 142 个 v3 base64 分片）：install 时预缓存。
- *  3) 音频（audio/*.ogg、dayXX-Y.mp3、breath-intro.wav）：不预拉，首次播放后 cache-first + SWR 更新。
+ *  2) 页面导航（lite.html）：网络优先（network-first），在线时永远拿到最新版，离线才回退缓存，
+ *     避免老用户被 service worker 旧缓存卡在旧版 / 白屏。
+ *  3) v3 分片、场景图、图标等静态资源：cache-first（内容稳定，命中即用），首次访问回源后缓存。
+ *  4) 音频（audio/*.ogg、dayXX-Y.mp3、breath-intro.wav）：不预拉，首次播放后 cache-first + SWR 更新。
  */
 'use strict';
 
-const VERSION = 'lite-v3';
+const VERSION = 'lite-v4';
 const SHELL_CACHE = VERSION + '-shell';
 const AUDIO_CACHE = VERSION + '-audio';
 
@@ -39,10 +41,10 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
+    // 只保留当前版本的两个缓存，其余（含所有旧版 lite-v1/v2/v3）全部清掉
+    const keep = new Set([SHELL_CACHE, AUDIO_CACHE]);
     await Promise.all(
-      keys
-        .filter((k) => k.indexOf('lite-v') !== 0) // 只清理本 SW 自己的旧缓存
-        .map((k) => caches.delete(k))
+      keys.filter((k) => !keep.has(k)).map((k) => caches.delete(k))
     );
     await self.clients.claim();
   })());
@@ -51,8 +53,12 @@ self.addEventListener('activate', (event) => {
 function isLiteShellRequest(url) {
   const path = url.pathname;
   if (path.endsWith('/lite.html') || path.endsWith('/lite.webmanifest')) return true;
-  if (path.indexOf('/lite/') !== -1) return true; // lite/v3/* 与 lite/icon.svg
+  if (path.indexOf('/lite/') !== -1) return true; // lite/v3/*、lite/scenes/* 与 lite/icon.svg
   return false;
+}
+
+function isNavigation(req, url) {
+  return req.mode === 'navigate' || url.pathname.endsWith('/lite.html');
 }
 
 function isAudioRequest(url) {
@@ -69,7 +75,25 @@ self.addEventListener('fetch', (event) => {
   if (!isLiteShellRequest(url) && !isAudioRequest(url)) return;
 
   if (isLiteShellRequest(url)) {
-    // 壳：cache-first
+    // 页面导航：网络优先，保证更新；网络失败（离线）才回退缓存
+    if (isNavigation(req, url)) {
+      event.respondWith((async () => {
+        try {
+          const resp = await fetch(req);
+          if (resp && resp.ok) {
+            const cache = await caches.open(SHELL_CACHE);
+            cache.put(req, resp.clone());
+          }
+          return resp;
+        } catch (e) {
+          const hit = await caches.match(req, { ignoreSearch: true });
+          if (hit) return hit;
+          throw e;
+        }
+      })());
+      return;
+    }
+    // 其它静态资源（v3 分片 / 场景图 / 图标 / manifest）：cache-first
     event.respondWith((async () => {
       const hit = await caches.match(req, { ignoreSearch: true });
       if (hit) return hit;
@@ -96,5 +120,12 @@ self.addEventListener('fetch', (event) => {
         .catch(() => hit);
       return hit || network;
     })());
+  }
+});
+
+// 允许页面通过 postMessage 触发立即接管
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
   }
 });

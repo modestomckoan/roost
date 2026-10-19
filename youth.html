@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="referrer" content="same-origin">
+<title>栖 Youth · 你的安静片刻</title>
+<meta name="theme-color" content="#4FA08E">
+<style>
+:root{
+  --bg:#F3F7F6; --bg2:#E8F1EF; --card:#FFFFFF; --line:#DDE8E6;
+  --ink:#1E2E2E; --ink-dim:#5E7270; --ink-faint:#8AA09D;
+  --teal:#4FA08E; --teal-deep:#2C7A6A; --teal-tint:#E4F1ED;
+  --sky:#7FB0C9; --sky-tint:#E6F0F5;
+  --accent:linear-gradient(135deg,#8FC3D8 0%,#4FA08E 100%);
+  --shadow:0 8px 30px rgba(50,90,85,.08);
+  --shadow-soft:0 3px 14px rgba(50,90,85,.06);
+  --r-card:22px; --r-btn:16px; --r-pill:999px;
+  --sat:env(safe-area-inset-top,0px); --sab:env(safe-area-inset-bottom,0px);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{overflow-x:hidden;}
+body{
+  font-family:-apple-system,'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif;
+  background:var(--bg);color:var(--ink);font-size:16px;line-height:1.6;min-height:100vh;min-height:100dvh;
+}
+button{font-family:inherit;font-size:inherit;color:inherit;background:none;border:none;cursor:pointer;}
+input,textarea{font-family:inherit;}
+.icn{width:22px;height:22px;flex:none;display:inline-block;vertical-align:middle;}
+
+/* 视图切换 */
+.view{display:none;min-height:100vh;min-height:100dvh;}
+.view.on{display:block;animation:fadeIn .4s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+/* 开屏 */
+#splash{position:fixed;inset:0;z-index:200;background:linear-gradient(160deg,#EAF3F1,#DCEBF0);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;transition:opacity .8s;}
+#splash.hide{opacity:0;pointer-events:none;}
+.splash-orb{width:120px;height:120px;border-radius:50%;background:radial-gradient(circle at 38% 35%,#fff,var(--teal-tint) 75%);box-shadow:0 16px 50px rgba(79,160,142,.3);display:flex;align-items:center;justify-content:center;animation:breathe 6s ease-in-out infinite;}
+.splash-orb svg{width:54px;height:54px;color:var(--teal-deep);}
+@keyframes breathe{0%,100%{transform:scale(.92);}50%{transform:scale(1.06);}}
+.splash-t{margin-top:26px;font-size:26px;font-weight:600;letter-spacing:2px;}
+.splash-s{margin-top:8px;color:var(--ink-dim);font-size:14px;}
+.splash-skip{margin-top:40px;min-height:44px;padding:0 22px;border-radius:var(--r-pill);border:1.5px solid var(--teal);color:var(--teal-deep);font-size:15px;}
+
+/* 通用页容器 */
+.wrap{padding:calc(18px + var(--sat)) 16px calc(110px + var(--sab));}
+.sec-label{font-size:15px;font-weight:600;color:var(--ink-dim);margin:22px 4px 12px;letter-spacing:.5px;}
+.card{background:var(--card);border-radius:var(--r-card);box-shadow:var(--shadow-soft);border:1px solid var(--line);}
+
+/* 顶部问候 */
+.hello{padding:8px 4px 4px;}
+.hello h1{font-size:30px;font-weight:700;letter-spacing:.5px;}
+.hello .brand{color:var(--ink-dim);font-size:14px;margin-top:6px;}
+.quote-card{margin-top:16px;padding:18px;position:relative;overflow:hidden;}
+.quote-card p{font-size:16px;line-height:1.7;color:var(--ink);}
+.quote-card .by{font-size:13px;color:var(--ink-faint);margin-top:8px;}
+.quote-card::before{content:'“';position:absolute;top:-8px;left:10px;font-size:70px;color:var(--teal-tint);font-family:Georgia,serif;}
+
+/* 中央呼吸环 */
+.orb-zone{display:flex;flex-direction:column;align-items:center;margin:26px 0;}
+.orb-btn{position:relative;width:200px;height:200px;border-radius:50%;border:none;cursor:pointer;background:radial-gradient(circle at 40% 35%,#fff,var(--teal-tint) 78%);box-shadow:0 18px 50px rgba(79,160,142,.28);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;}
+.orb-ring{position:absolute;inset:-14px;border-radius:50%;border:1.5px solid rgba(79,160,142,.4);pointer-events:none;}
+.orb-ring.r2{inset:-30px;border-color:rgba(79,160,142,.18);}
+@media (prefers-reduced-motion:no-preference){
+  .orb-btn{animation:breathe 8s ease-in-out infinite;}
+  .orb-ring{animation:ringOut 8s ease-out infinite;}
+  .orb-ring.r2{animation:ringOut 8s ease-out infinite;animation-delay:2.6s;}
+}
+@keyframes ringOut{0%{transform:scale(.95);opacity:.7;}100%{transform:scale(1.35);opacity:0;}}
+.orb-btn .play-ic{width:40px;height:40px;color:var(--teal-deep);}
+.orb-btn .orb-t{font-size:22px;font-weight:600;color:var(--teal-deep);}
+.orb-sub{margin-top:12px;font-size:14px;color:var(--ink-dim);}
+
+/* 继续今日 */
+.continue-card{display:flex;align-items:center;gap:14px;padding:16px;margin-top:6px;cursor:pointer;}
+.continue-card .day-num{width:48px;height:48px;border-radius:14px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;flex:none;}
+.continue-card .ci{flex:1;min-width:0;}
+.continue-card .ci b{font-size:16px;}
+.continue-card .ci span{display:block;font-size:13px;color:var(--ink-dim);margin-top:2px;}
+.continue-card .go{color:var(--teal-deep);width:22px;height:22px;}
+
+/* 横滑推荐 */
+.hscroll{display:flex;gap:12px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:none;}
+.hscroll::-webkit-scrollbar{display:none;}
+.rec-card{flex:0 0 150px;height:150px;border-radius:18px;position:relative;overflow:hidden;isolation:isolate;cursor:pointer;display:flex;align-items:flex-end;padding:12px;}
+.rec-card::before{content:'';position:absolute;inset:0;z-index:-1;background-size:cover;background-position:center;}
+.rec-card::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(10,20,25,0) 35%,rgba(10,20,25,.65));}
+.rec-card.rain::before{background-image:url('lite/scenes/rain.jpg');}
+.rec-card.ocean::before{background-image:url('lite/scenes/ocean-poster.jpg');}
+.rec-card.fire::before{background-image:url('lite/scenes/fire.jpg');}
+.rec-card.music::before{background-image:url('lite/scenes/music.jpg');}
+.rec-card.forest::before{background-image:url('lite/scenes/forest.jpg');}
+.rec-card .rc-t{color:#fff;font-size:15px;font-weight:600;text-shadow:0 1px 6px rgba(0,0,0,.4);}
+.rec-card .rc-d{color:rgba(255,255,255,.85);font-size:12px;}
+
+/* 三宫格小统计 */
+.stat3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;}
+.stat3 .st{padding:14px 8px;text-align:center;}
+.stat3 .b{font-size:22px;font-weight:700;color:var(--teal-deep);}
+.stat3 .k{font-size:12px;color:var(--ink-dim);margin-top:3px;}
+
+/* 发现页 */
+.search{display:flex;align-items:center;gap:10px;padding:0 14px;min-height:48px;border-radius:var(--r-pill);background:var(--card);border:1px solid var(--line);}
+.search svg{width:20px;height:20px;color:var(--ink-faint);}
+.search input{flex:1;border:none;outline:none;background:none;font-size:15px;min-height:44px;}
+.func-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;}
+.func{padding:16px 8px;text-align:center;cursor:pointer;}
+.func .fi{width:44px;height:44px;border-radius:14px;background:var(--teal-tint);color:var(--teal-deep);display:flex;align-items:center;justify-content:center;margin:0 auto 8px;}
+.func .fi svg{width:24px;height:24px;}
+.func span{font-size:13px;}
+.cat-tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 2px;scrollbar-width:none;margin-top:14px;}
+.cat-tabs::-webkit-scrollbar{display:none;}
+.cat-tab{flex:none;min-height:38px;padding:0 16px;border-radius:var(--r-pill);background:var(--card);border:1px solid var(--line);font-size:14px;color:var(--ink-dim);}
+.cat-tab.on{background:var(--teal-deep);color:#fff;border-color:var(--teal-deep);}
+.course-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
+.course-card{border-radius:18px;overflow:hidden;position:relative;cursor:pointer;isolation:isolate;background:var(--card);border:1px solid var(--line);}
+.course-card .cover{height:96px;position:relative;isolation:isolate;}
+.course-card .cover::before{content:'';position:absolute;inset:0;background-size:cover;background-position:center;}
+.course-card .cover.rain::before{background-image:url('lite/scenes/rain.jpg');}
+.course-card .cover.ocean::before{background-image:url('lite/scenes/ocean-poster.jpg');}
+.course-card .cover.fire::before{background-image:url('lite/scenes/fire.jpg');}
+.course-card .cover.music::before{background-image:url('lite/scenes/music.jpg');}
+.course-card .cover.forest::before{background-image:url('lite/scenes/forest.jpg');}
+.course-card .cb{padding:10px 12px;}
+.course-card .cb b{font-size:14px;display:block;}
+.course-card .cb span{font-size:12px;color:var(--ink-dim);}
+
+/* 声音花园 */
+.garden-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px;}
+.garden-cell{min-height:60px;border-radius:14px;background:var(--card);border:1px solid var(--line);display:flex;align-items:center;gap:10px;padding:0 12px;text-align:left;cursor:pointer;}
+.garden-cell.on{background:var(--teal-deep);border-color:var(--teal-deep);color:#fff;}
+.garden-cell .g-ic{width:22px;height:22px;}
+.garden-cell.on .g-ic{color:#fff;}
+.garden-cell span.nm{font-size:15px;}
+.garden-panel{margin-top:12px;padding:16px;}
+.garden-row{margin-top:10px;}
+.garden-row .cap{display:flex;justify-content:space-between;font-size:14px;margin-bottom:2px;}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:40px;background:none;}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:var(--bg2);}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:var(--teal-deep);margin-top:-10px;}
+input[type=range]::-moz-range-track{height:6px;border-radius:3px;background:var(--bg2);}
+input[type=range]::-moz-range-thumb{width:26px;height:26px;border:none;border-radius:50%;background:var(--teal-deep);}
+.stop-btn{margin-top:14px;width:100%;min-height:52px;border-radius:var(--r-btn);background:#E88; color:#fff;font-size:16px;background:linear-gradient(135deg,#E89,var(--teal-deep));}
+
+/* 底部 tabbar */
+#tabbar{position:fixed;left:0;right:0;bottom:0;z-index:90;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:6px 8px calc(8px + var(--sab));display:grid;grid-template-columns:repeat(3,1fr);}
+#tabbar button{min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--ink-faint);font-size:12px;}
+#tabbar button svg{width:24px;height:24px;}
+#tabbar button.on{color:var(--teal-deep);font-weight:600;}
+
+/* 问答页 */
+.quiz{padding:calc(20px + var(--sat)) 20px calc(24px + var(--sab));max-width:480px;margin:0 auto;}
+.quiz .qstep{font-size:13px;color:var(--teal-deep);font-weight:600;}
+.quiz h2{font-size:24px;margin:8px 0 20px;line-height:1.4;}
+.opt{display:flex;align-items:center;gap:12px;width:100%;min-height:60px;padding:0 18px;border-radius:16px;background:var(--card);border:1.5px solid var(--line);margin-bottom:12px;text-align:left;font-size:17px;}
+.opt.on{border-color:var(--teal);background:var(--teal-tint);}
+.opt .oi{width:30px;height:30px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;flex:none;}
+.opt.on .oi{background:var(--teal);color:#fff;}
+.quiz-nav{display:flex;gap:12px;margin-top:20px;}
+.btn{min-height:54px;border-radius:var(--r-btn);font-size:17px;font-weight:50px;}
+.btn-primary{flex:1;background:var(--accent);color:#fff;}
+.btn-ghost{min-width:110px;background:var(--card);border:1.5px solid var(--line);color:var(--ink-dim);}
+
+/* 详情页 */
+.detail-hero{height:200px;border-radius:22px;position:relative;overflow:hidden;isolation:isolate;margin-bottom:16px;}
+.detail-hero::before{content:'';position:absolute;inset:0;background-size:cover;background-position:center;}
+.detail-hero.rain::before{background-image:url('lite/scenes/rain.jpg');}
+.detail-hero.ocean::before{background-image:url('lite/scenes/ocean-poster.jpg');}
+.detail-hero.fire::before{background-image:url('lite/scenes/fire.jpg');}
+.detail-hero.music::before{background-image:url('lite/scenes/music.jpg');}
+.detail-hero.forest::before{background-image:url('lite/scenes/forest.jpg');}
+.detail-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,20,25,0) 40%,rgba(10,20,25,.55));}
+.detail-hero .dh-t{position:absolute;left:16px;bottom:14px;z-index:2;color:#fff;}
+.detail-hero .dh-t b{font-size:22px;}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+.chip{min-height:38px;padding:0 14px;border-radius:var(--r-pill);background:var(--bg2);font-size:14px;color:var(--ink-dim);}
+.chip.on{background:var(--teal-deep);color:#fff;}
+.slider-row{margin-top:16px;}
+.slider-row .lab{display:flex;justify-content:space-between;font-size:14px;color:var(--ink-dim);margin-bottom:4px;}
+
+/* 沉浸播放页 */
+#view-player{position:fixed;inset:0;z-index:100;background:#10202a;color:#fff;overflow:hidden;}
+#sceneLayer{position:absolute;inset:0;overflow:hidden;}
+.scene-photo,.scene-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+#sceneLayer .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,15,20,.4),rgba(8,15,20,.15) 45%,rgba(8,15,20,.6));}
+#fxCanvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+.p-top{position:absolute;top:calc(12px + var(--sat));left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 14px;z-index:6;}
+.quit-btn{min-height:44px;padding:0 14px;border-radius:var(--r-pill);background:rgba(255,255,255,.16);color:#fff;display:flex;align-items:center;gap:6px;font-size:15px;backdrop-filter:blur(8px);}
+.quit-btn.confirm{background:rgba(200,90,80,.8);}
+.sound-entry{min-width:46px;min-height:46px;border-radius:50%;background:rgba(255,255,255,.16);color:#fff;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);}
+.p-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-58%);text-align:center;z-index:5;width:100%;}
+.ring-wrap{position:relative;width:220px;height:220px;margin:0 auto;}
+.ring-wrap svg{transform:rotate(-90deg);}
+.ring-track{fill:none;stroke:rgba(255,255,255,.18);stroke-width:6;}
+.ring-prog{fill:none;stroke:#8FD8C4;stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .5s linear;}
+.ring-time{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.ring-time .t{font-size:44px;font-weight:200;font-variant-numeric:tabular-nums;}
+.ring-time .l{font-size:14px;opacity:.8;margin-top:2px;}
+.p-bottom{position:absolute;left:0;right:0;bottom:calc(20px + var(--sab));z-index:6;padding:0 22px;}
+.ctrl{display:flex;align-items:center;justify-content:center;gap:34px;margin-top:14px;}
+.ctrl .side{min-width:56px;min-height:56px;border-radius:50%;background:rgba(255,255,255,.14);color:#fff;display:flex;align-items:center;justify-content:center;}
+.ctrl .side svg{width:26px;height:26px;}
+.ctrl .main{width:74px;height:74px;border-radius:50%;background:#fff;color:var(--teal-deep);display:flex;align-items:center;justify-content:center;}
+.ctrl .main svg{width:32px;height:32px;}
+.vol-card{background:rgba(20,32,38,.55);backdrop-filter:blur(10px);border-radius:16px;padding:12px 16px;margin-bottom:12px;}
+.vol-card .vr{display:flex;align-items:center;gap:10px;font-size:13px;}
+.vol-card .vr span{width:60px;opacity:.85;}
+.p-tag{position:absolute;top:calc(64px + var(--sat));left:0;right:0;text-align:center;z-index:5;font-size:18px;opacity:.9;}
+
+/* 完成报告 */
+#view-report{background:var(--bg);}
+.report-wrap{padding:calc(24px + var(--sat)) 20px calc(40px + var(--sab));max-width:480px;margin:0 auto;}
+.report-wrap h1{font-size:26px;text-align:center;}
+.report-wrap .sub{text-align:center;color:var(--ink-dim);font-size:14px;margin-top:6px;}
+.mood-pick{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:16px 0;}
+.mood-f{width:58px;height:58px;border-radius:50%;background:var(--card);border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.mood-f svg{width:36px;height:36px;color:var(--teal-deep);}
+.mood-f.on{border-color:var(--teal);background:var(--teal-tint);}
+.mood-row-label{font-size:14px;color:var(--ink-dim);text-align:center;margin-top:6px;}
+textarea.note{width:100%;min-height:90px;border:1.5px solid var(--line);border-radius:16px;padding:12px;font-size:15px;margin-top:10px;resize:vertical;background:var(--card);}
+
+/* 沉浸浅底（呼吸/扫描） */
+.calm-stage{position:fixed;inset:0;z-index:100;background:linear-gradient(180deg,#F3F7F6,#E3EFEB);overflow-y:auto;padding:calc(14px + var(--sat)) 20px calc(30px + var(--sab));}
+.calm-top{display:flex;align-items:center;gap:10px;}
+.back-btn{min-width:48px;min-height:48px;border-radius:14px;background:var(--card);box-shadow:var(--shadow-soft);display:flex;align-items:center;justify-content:center;}
+.back-btn svg{width:24px;height:24px;}
+.calm-title{font-size:20px;font-weight:600;}
+.orb-200{width:200px;height:200px;border-radius:50%;margin:24px auto;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(circle at 38% 32%,rgba(255,255,255,.95),rgba(180,214,202,.6) 60%,rgba(140,180,190,.35));border:1.5px solid rgba(79,160,142,.4);box-shadow:0 18px 50px rgba(120,160,140,.28);transition:transform 1.2s cubic-bezier(.4,0,.6,1);}
+.orb-200 .ph{font-size:32px;color:#3C5A50;}
+.orb-200 .ct{font-size:52px;color:var(--teal-deep);font-variant-numeric:tabular-nums;}
+.dur-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+.big-start{margin-top:20px;width:100%;min-height:56px;border-radius:var(--r-btn);background:var(--teal-deep);color:#fff;font-size:18px;}
+
+/* 底部弹层 */
+.sheet-mask{position:fixed;inset:0;z-index:120;background:rgba(20,30,30,.45);opacity:0;pointer-events:none;transition:opacity .3s;}
+.sheet-mask.open{opacity:1;pointer-events:auto;}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:130;background:var(--card);border-radius:24px 24px 0 0;padding:14px 18px calc(20px + var(--sab));transform:translateY(105%);transition:transform .34s cubic-bezier(.32,.72,.24,1);max-height:82vh;overflow-y:auto;}
+.sheet.open{transform:none;}
+.sheet h3{font-size:19px;margin-bottom:12px;}
+.sheet-close{position:absolute;top:14px;right:14px;min-width:44px;min-height:44px;color:var(--ink-dim);}
+.sheet-close svg{width:22px;height:22px;}
+
+#toast{position:fixed;left:50%;bottom:calc(120px + var(--sab));transform:translateX(-50%) translateY(20px);background:rgba(30,45,42,.94);color:#fff;font-size:15px;padding:12px 20px;border-radius:14px;opacity:0;pointer-events:none;transition:.3s;z-index:150;max-width:84%;text-align:center;}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+@media (min-width:768px){
+  .wrap,.quiz,.report-wrap{max-width:560px;margin-left:auto;margin-right:auto;}
+}
+</style>
+</head>
+<body>
+<!-- 开屏 -->
+<div id="splash">
+  <div class="splash-orb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 3c1 3-2 4.5-2 7a4 4 0 0 0 8 0c0-1.5-.5-2.8-1.5-4 .2 1.5-.5 2.3-1.5 2.5.3-2.3-.8-4.5-3-5.5z"/></svg></div>
+  <div class="splash-t">栖 Youth</div>
+  <div class="splash-s">每天几分钟，给自己一个安静的角落</div>
+  <button class="splash-skip" id="splashSkip">跳过</button>
+</div>
+
+<!-- ========== 冥想首页 ========== -->
+<section id="view-home" class="view">
+  <div class="wrap">
+    <div class="hello">
+      <h1 id="homeGreet">你好</h1>
+      <div class="brand">栖 Youth · 你的安静片刻</div>
+    </div>
+    <div class="card quote-card">
+      <p id="dailyQuote">愿你在这喧闹的世界里，守住自己的一片安静。</p>
+      <div class="by" id="dailyQuoteBy">— 为你准备的一句</div>
+    </div>
+
+    <div class="orb-zone">
+      <button class="orb-btn" id="quickStart">
+        <span class="orb-ring"></span>
+        <span class="orb-ring r2"></span>
+        <svg class="play-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg>
+        <span class="orb-t">快速开始</span>
+      </button>
+      <div class="orb-sub">选个目的，马上进入</div>
+    </div>
+
+    <div class="card continue-card" id="continueCard">
+      <div class="day-num" id="contDay">1</div>
+      <div class="ci"><b id="contTitle">在这里安顿</b><span>继续 30 天课程 · 约 15 分钟</span></div>
+      <svg class="go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+    </div>
+
+    <div class="sec-label">为你推荐</div>
+    <div class="hscroll" id="recScroll"></div>
+
+    <div class="stat3">
+      <div class="card st"><div class="b" id="stMin">0</div><div class="k">累计分钟</div></div>
+      <div class="card st"><div class="b" id="stDays">0</div><div class="k">练习天数</div></div>
+      <div class="card st"><div class="b" id="stCount">0</div><div class="k">练习次数</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 发现 ========== -->
+<section id="view-discover" class="view">
+  <div class="wrap">
+    <div class="hello"><h1 style="font-size:26px">发现</h1></div>
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+      <input id="searchInput" type="text" placeholder="搜课程、音景、呼吸法…">
+    </div>
+
+    <div class="func-grid">
+      <button class="card func" data-fn="start"><div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg></div><span>快速开始</span></button>
+      <button class="card func" data-fn="timer"><div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="13" r="7"/><path d="M12 10v3.5l2.5 1.5M9 3h6"/></svg></div><span>计时冥想</span></button>
+      <button class="card func" data-fn="breath"><div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 9a8 8 0 0 1 16 0"/><path d="M6.5 13.5a5 5 0 0 1 11 0"/><path d="M9 18a2 2 0 0 1 6 0"/></svg></div><span>呼吸练习</span></button>
+      <button class="card func" data-fn="scan"><div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="5" r="2.2"/><path d="M12 8v6"/><path d="M7 11c1.5-1.2 3-1.6 5-1.6s3.5.4 5 1.6"/><path d="M12 14c-1 2-3 3-5 3.5M12 14c1 2 3 3 5 3.5"/></svg></div><span>身体扫描</span></button>
+      <button class="card func" data-fn="mood"><div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M8 11c.6.6 1.4.6 2 0M14 11c.6.6 1.4.6 2 0"/><path d="M9.5 15.5c1.5 1 3.5 1 5 0"/></svg></div><span>心情记录</span></button>
+      <button class="card func" data-fn="garden"><div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 8c2-2.5 4-2.5 6 0s4 2.5 6 0 4-2.5 6 0"/><path d="M3 14c2-2.5 4-2.5 6 0s4 2.5 6 0 4-2.5 6 0"/></svg></div><span>声音花园</span></button>
+    </div>
+
+    <div class="cat-tabs" id="catTabs"></div>
+    <div class="course-grid" id="courseGrid"></div>
+
+    <div id="gardenSection" style="display:none">
+      <div class="sec-label">声音花园 <span style="font-weight:400;color:var(--ink-faint)">· 最多两层</span></div>
+      <div class="garden-grid" id="gardenGrid"></div>
+      <div class="card garden-panel" id="gardenPanel"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 自我 ========== -->
+<section id="view-self" class="view">
+  <div class="wrap">
+    <div class="hello"><h1 style="font-size:26px">自我</h1></div>
+    <div class="card" style="padding:18px;display:flex;align-items:center;gap:14px;margin-top:8px;">
+      <div style="width:56px;height:56px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#fff;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="3.2"/><path d="M5.5 20.5c1-3.6 3.8-5.4 6.5-5.4s5.5 1.8 6.5 5.4"/></svg>
+      </div>
+      <div style="flex:1">
+        <b id="selfName">练习者</b>
+        <div style="font-size:13px;color:var(--ink-dim);margin-top:2px" id="selfStreak">连续 0 天</div>
+      </div>
+      <button class="chip" id="editName">编辑</button>
+    </div>
+
+    <div class="stat3">
+      <div class="card st"><div class="b" id="selfMin">0</div><div class="k">累计分钟</div></div>
+      <div class="card st"><div class="b" id="selfDays">0</div><div class="k">练习天数</div></div>
+      <div class="card st"><div class="b" id="selfCount">0</div><div class="k">次数</div></div>
+    </div>
+
+    <div class="sec-label">我的</div>
+    <div class="func-grid" style="grid-template-columns:repeat(2,1fr)">
+      <button class="card func" data-self="records"><div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/></svg></div><span>练习记录</span></button>
+      <button class="card func" data-self="mood"><div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M8 11c.6.6 1.4.6 2 0M14 11c.6.6 1.4.6 2 0"/><path d="M9.5 15.5c1.5 1 3.5 1 5 0"/></svg></div><span>心情历史</span></button>
+      <button class="card func" data-self="favs"><div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20l-7-7a4.5 4.5 0 0 1 7-6 4.5 4.5 0 0 1 7 6z"/></svg></div><span>我的收藏</span></button>
+      <button class="card func" data-self="device"><div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="3" y="13" width="4" height="7" rx="2"/><rect x="17" y="13" width="4" height="7" rx="2"/></svg></div><span>我的设备</span></button>
+      <button class="card func" data-self="ai"><div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2 2M16.4 16.4l2 2M5.6 18.4l2-2M16.4 7.6l2-2"/><circle cx="12" cy="12" r="3"/></svg></div><span>小栖 AI</span></button>
+      <button class="card func" data-self="settings"><div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg></div><span>设置</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 快速开始问答 ========== -->
+<section id="view-quiz" class="view">
+  <div class="quiz">
+    <div class="qstep" id="quizStep">第 1 步 / 3 步</div>
+    <h2 id="quizQ">你现在想为什么而安静？</h2>
+    <div id="quizOpts"></div>
+    <div class="quiz-nav">
+      <button class="btn btn-ghost" id="quizBack" style="display:none">上一步</button>
+      <button class="btn btn-primary" id="quizNext">下一步</button>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 场景详情 ========== -->
+<section id="view-detail" class="view">
+  <div class="wrap">
+    <div class="calm-top">
+      <button class="back-btn" id="detailBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.5 5.5L8 12l6.5 6.5"/></svg></button>
+      <div class="calm-title">场景详情</div>
+    </div>
+    <div class="detail-hero" id="detailHero" style="margin-top:16px">
+      <div class="dh-t"><b id="detailName">雨夜</b><div id="detailDesc" style="font-size:14px;opacity:.9"></div></div>
+    </div>
+    <div class="sec-label">技巧</div>
+    <div class="chips" id="detailChips"></div>
+    <div class="slider-row">
+      <div class="lab"><span>状态</span><span id="stateVal">平静</span></div>
+      <input type="range" id="stateSlider" min="0" max="2" step="1">
+    </div>
+    <button class="btn btn-primary" id="detailStart" style="width:100%;margin-top:20px">开始练习</button>
+  </div>
+</section>
+
+<!-- ========== 沉浸播放 ========== -->
+<section id="view-player" class="view">
+  <div id="sceneLayer">
+    <img id="scenePhoto" class="scene-photo" alt="" style="display:none">
+    <video id="sceneVideo" class="scene-video" muted loop playsinline preload="metadata" style="display:none"></video>
+    <canvas id="fxCanvas"></canvas>
+    <div class="scrim"></div>
+  </div>
+  <div class="p-top">
+    <button class="quit-btn" id="quitBtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.5 5.5L8 12l6.5 6.5"/></svg><span id="quitTxt">退出</span></button>
+    <button class="sound-entry" id="volEntry" aria-label="音量"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9a4 4 0 0 1 0 6"/></svg></button>
+  </div>
+  <div class="p-tag" id="playerTag">准备开始</div>
+  <div class="p-center">
+    <div class="ring-wrap">
+      <svg width="220" height="220" viewBox="0 0 220 220">
+        <circle class="ring-track" cx="110" cy="110" r="100"/>
+        <circle class="ring-prog" id="ringProg" cx="110" cy="110" r="100" stroke-dasharray="628.3" stroke-dashoffset="0"/>
+      </svg>
+      <div class="ring-time"><div class="t" id="ringTime">15:00</div><div class="l" id="ringLabel">剩余</div></div>
+    </div>
+  </div>
+  <div class="p-bottom">
+    <div class="vol-card" id="volCard" style="display:none">
+      <div class="vr"><span>引导声</span><input type="range" id="voiceVol" min="0" max="1" step="0.05" value="0.85"></div>
+      <div class="vr"><span>音景</span><input type="range" id="ambVol" min="0" max="1" step="0.05" value="0.35"></div>
+    </div>
+    <div class="ctrl">
+      <button class="side" id="back15" aria-label="后退15秒"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 8.5l-4 3.5 4 3.5V8.5z" fill="currentColor" stroke="none"/><path d="M18 8.5l-4 3.5 4 3.5V8.5z" fill="currentColor" stroke="none"/><path d="M20 12a8 8 0 1 1-2.3-5.6"/></svg></button>
+      <button class="main" id="playPause" aria-label="播放暂停"></button>
+      <button class="side" id="fwd15" aria-label="前进15秒"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 8.5l4 3.5-4 3.5V8.5z" fill="currentColor" stroke="none"/><path d="M6 8.5l4 3.5-4 3.5V8.5z" fill="currentColor" stroke="none"/><path d="M4 12a8 8 0 1 0 2.3-5.6"/></svg></button>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 完成报告 ========== -->
+<section id="view-report" class="view">
+  <div class="report-wrap">
+    <h1>这一段，完成了</h1>
+    <div class="sub" id="reportTime">本次 15 分钟</div>
+    <div class="mood-row-label">开始前的心情</div>
+    <div class="mood-pick" id="beforeMood"></div>
+    <div class="mood-row-label">现在的心情</div>
+    <div class="mood-pick" id="afterMood"></div>
+    <textarea class="note" id="reportNote" placeholder="此刻的感受，写几句给以后的自己（可留空）" maxlength="120"></textarea>
+    <button class="btn btn-primary" id="reportSave" style="width:100%;margin-top:16px">保存并结束</button>
+  </div>
+</section>
+
+<!-- ========== 呼吸沉浸 ========== -->
+<section id="view-breath" class="view calm-stage">
+  <div class="calm-top">
+    <button class="back-btn" id="breathQuit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.5 5.5L8 12l6.5 6.5"/></svg></button>
+    <div class="calm-title" id="breathTitle">舒缓呼吸</div>
+  </div>
+  <div class="dur-chips" id="breathDurs" style="margin-top:16px"></div>
+  <div class="orb-200" id="breathOrb"><div class="ph" id="rbPhase">准备</div><div class="ct" id="rbCount"></div></div>
+  <div style="text-align:center;font-size:26px;font-variant-numeric:tabular-nums" id="rbTime">03:00</div>
+  <button class="big-start" id="breathStart">开始</button>
+</section>
+
+<!-- ========== 身体扫描 ========== -->
+<section id="view-scan" class="view calm-stage">
+  <div class="calm-top">
+    <button class="back-btn" id="scanQuit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.5 5.5L8 12l6.5 6.5"/></svg></button>
+    <div class="calm-title">身体扫描</div>
+  </div>
+  <div style="text-align:center;margin-top:18px;font-size:26px" id="scanPart">准备</div>
+  <div style="text-align:center;color:var(--ink-dim);font-size:14px;margin-top:4px" id="scanProg">0 / 10</div>
+  <p style="text-align:center;font-size:16px;line-height:1.8;margin-top:16px;padding:0 10px;color:var(--ink-dim)" id="scanGuide">坐下来，轻轻闭上眼，跟着节奏放松。</p>
+  <button class="big-start" id="scanStart">开始</button>
+</section>
+
+<!-- 底部 tabbar -->
+<nav id="tabbar">
+  <button class="on" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg>冥想</button>
+  <button data-tab="discover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>发现</button>
+  <button data-tab="self"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="3.2"/><path d="M5.5 20.5c1-3.6 3.8-5.4 6.5-5.4s5.5 1.8 6.5 5.4"/></svg>自我</button>
+</nav>
+
+<!-- sheet -->
+<div class="sheet-mask" id="sheetMask"></div>
+<div class="sheet" id="sheet">
+  <button class="sheet-close" id="sheetClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <h3 id="sheetTitle">标题</h3>
+  <div id="sheetBody"></div>
+</div>
+
+<div id="toast"></div>
+<script>
+'use strict';
+/* ================= 数据 ================= */
+const SOUNDS={
+  waves:{name:'潮汐海岸',file:'audio/waves.ogg'},boat:{name:'湖面轻舟',file:'audio/boat.ogg'},
+  stream:{name:'山间溪流',file:'audio/stream.ogg'},'forest-stream':{name:'林中潺潺',file:'audio/forest-stream.ogg'},
+  rain:{name:'细雨淅沥',file:'audio/rain.ogg'},'heavy-rain':{name:'大雨滂沱',file:'audio/heavy-rain.ogg'},
+  'forest-rain':{name:'林间阵雨',file:'audio/forest-rain.ogg'},'thunder-rain':{name:'远雷雨夜',file:'audio/thunder-rain.ogg'},
+  birds:{name:'林间鸟鸣',file:'audio/birds.ogg'},wind:{name:'旷野微风',file:'audio/wind.ogg'},
+  night:{name:'夏夜虫鸣',file:'audio/night.ogg'},fire:{name:'炉边暖火',file:'audio/fire.ogg'},
+  'crackle-fire':{name:'柴火噼啪',file:'audio/crackle-fire.ogg'},cafe:{name:'午后咖啡馆',file:'audio/cafe.ogg'},
+  piano:{name:'微光钢琴',file:'audio/piano.ogg'},harp:{name:'月下竖琴',file:'audio/harp.ogg'},
+  guitar:{name:'晚风木吉他',file:'audio/guitar.ogg'}
+};
+const SCENES={
+  sea:{name:'海边',cover:'ocean',desc:'海浪轻摇，把心放慢',sounds:['waves','boat'],def:['waves'],bgCls:'ocean',fx:'ocean',img:'lite/scenes/ocean-poster.jpg',video:'lite/scenes/ocean.mp4',v3Poster:'sea-poster',v3Video:'seavideo'},
+  rain:{name:'雨景',cover:'rain',desc:'听一场雨，把烦恼淋走',sounds:['rain','heavy-rain','thunder-rain'],def:['rain'],bgCls:'rain',fx:'rain',img:'lite/scenes/rain.jpg'},
+  forest:{name:'林间',cover:'forest',desc:'在树影里深呼吸',sounds:['birds','wind','night'],def:['birds','wind'],bgCls:'forest',fx:'forest',img:'lite/scenes/forest.jpg'},
+  fire:{name:'炉火',cover:'fire',desc:'暖光里安坐',sounds:['fire','crackle-fire'],def:['fire'],bgCls:'fire',fx:'fire',img:'lite/scenes/fire.jpg'},
+  music:{name:'器乐',cover:'music',desc:'钢琴与弦乐陪伴',sounds:['piano','harp','guitar'],def:['piano'],bgCls:'music',fx:'music',img:'lite/scenes/music.jpg'}
+};
+const TITLES=['在这里安顿','一口气的来去','身体扫描初体验','和呼吸做朋友','看见念头来去','从肩膀开始放松','一周小结 · 善待自己','听一听周围的声音','脚下的支撑','第十天 · 温和回顾','情绪来了又走','手掌的触感','安静下来的勇气','两周小结 · 温柔回看','听一听心跳','和思绪坐在一起','身体的智慧','呼吸的节奏','暮色里的感谢','二十天 · 内心的家','和不舒服相处','行走中的觉察','对自己温柔一点','当焦虑升起','此刻的光亮','念头只是故事','把觉察带进日常','静坐的礼物','温柔地收尾','三十天 · 带着安静继续'];
+const QUOTES=[
+  ['安静不是没有声音，而是心里有了余地。','为你准备的一句'],
+  ['你不必马上变好，先深呼吸，就已经在变好。','为你准备的一句'],
+  ['情绪像云，来的时候轻轻看它一眼，它会自己走。','为你准备的一句'],
+  ['把速度放慢一点，心就会跟上。','为你准备的一句'],
+  ['对自己温柔，是你能给自己最稳的安全感。','为你准备的一句'],
+  ['今天不必解决所有事，呼吸之间就有一片安静。','为你准备的一句'],
+  ['慢下来，世界追不上稳稳呼吸的你。','为你准备的一句']
+];
+const MOODS=[['平静','face_calm'],['疲惫','face_tired'],['焦虑','face_anxious'],['低落','face_low'],['烦躁','face_irritable'],['安心','face_peace'],['开心','face_happy']];
+const FACES={
+  face_calm:'<circle cx="12" cy="12" r="8.5"/><path d="M8 11c.6.6 1.4.6 2 0M14 11c.6.6 1.4.6 2 0"/><path d="M9.5 15.5c1.5 1 3.5 1 5 0"/>',
+  face_tired:'<circle cx="12" cy="12" r="8.5"/><path d="M8 11h2M14 11h2"/><path d="M9.5 16c1.5-1 3.5-1 5 0"/>',
+  face_anxious:'<circle cx="12" cy="12" r="8.5"/><path d="M8 9.5l2 .8M16 9.5l-2 .8"/><circle cx="9" cy="12" r=".7" fill="currentColor"/><circle cx="15" cy="12" r=".7" fill="currentColor"/><path d="M9.5 16q1-1 1.7 0t1.6 0q1-.9 1.7 0"/>',
+  face_low:'<circle cx="12" cy="12" r="8.5"/><path d="M8 10.5v1.5M16 10.5v1.5"/><path d="M9.5 16.5c1.5-1.5 3.5-1.5 5 0"/>',
+  face_irritable:'<circle cx="12" cy="12" r="8.5"/><path d="M8 9l2 1M16 9l-2 1"/><circle cx="9" cy="12" r=".7" fill="currentColor"/><circle cx="15" cy="12" r=".7" fill="currentColor"/><path d="M9.5 16.5h5"/>',
+  face_peace:'<circle cx="12" cy="12" r="8.5"/><path d="M8 11c.6.6 1.4.6 2 0M14 11c.6.6 1.4.6 2 0"/><path d="M9.5 15c1.5 1.2 3.5 1.2 5 0"/>',
+  face_happy:'<circle cx="12" cy="12" r="8.5"/><path d="M8 10.5c.6.6 1.4.6 2 0M14 10.5c.6.6 1.4.6 2 0"/><path d="M8.5 14.5c1 2.2 6 2.2 7 0"/>'
+};
+function face(k){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">'+FACES[k]+'</svg>';}
+const $=id=>document.getElementById(id);
+const fmt=s=>{s=Math.max(0,Math.floor(s));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');};
+function dayOfYear(){const d=new Date();return Math.floor((d-new Date(d.getFullYear(),0,0))/86400000);}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+/* ================= 统计 ================= */
+function getStats(){try{return JSON.parse(localStorage.getItem('youth_stats'))||{days:{},minutes:0,count:0};}catch(e){return{days:{},minutes:0,count:0};}}
+function saveStats(s){try{localStorage.setItem('youth_stats',JSON.stringify(s));}catch(e){}}
+function logPractice(min){const s=getStats();s.days=s.days||{};s.days[new Date().toDateString()]=true;s.minutes=(s.minutes||0)+min;s.count=(s.count||0)+1;saveStats(s);}
+function streak(){const d=(getStats().days)||{};let n=0;const c=new Date();for(let i=0;i<365;i++){if(d[c.toDateString()])n++;else if(i>0)break;c.setDate(c.getDate()-1);}return n;}
+
+/* ================= 音频引擎 ================= */
+let ac=null,master=null,duckGain=1;
+const bufferCache=new Map();
+const activeLayers=new Map();
+const LAYER_VOL={};
+const voiceAudio=new Audio(); voiceAudio.setAttribute('playsinline','');
+function ensureCtx(){
+  if(!ac){ac=new (window.AudioContext||window.webkitAudioContext)();master=ac.createGain();master.gain.value=.35*duckGain;const c=ac.createDynamicsCompressor();c.threshold.value=-6;c.ratio.value=18;master.connect(c);c.connect(ac.destination);}
+  if(ac.state==='suspended')ac.resume();
+}
+function applyMaster(){if(master&&ac)master.gain.setTargetAtTime((+$('ambVol').value||.35)*duckGain,ac.currentTime,.6);}
+voiceAudio.addEventListener('playing',()=>{duckGain=.4;applyMaster();});
+voiceAudio.addEventListener('ended',()=>{duckGain=1;applyMaster();});
+voiceAudio.addEventListener('error',()=>{duckGain=1;applyMaster();});
+async function decodeLayer(file){ensureCtx();if(!bufferCache.has(file))bufferCache.set(file,fetch(file).then(r=>{if(!r.ok)throw 0;return r.arrayBuffer();}).then(b=>ac.decodeAudioData(b)));return bufferCache.get(file);}
+async function startLayer(id){if(activeLayers.has(id))return;ensureCtx();try{const buf=await decodeLayer(SOUNDS[id].file);const s=ac.createBufferSource();s.buffer=buf;s.loop=true;const g=ac.createGain();g.gain.setValueAtTime(0,ac.currentTime);s.connect(g);g.connect(master);s.start();g.gain.linearRampToValueAtTime(LAYER_VOL[id]??1,ac.currentTime+2);activeLayers.set(id,{source:s,gain:g});}catch(e){}}
+function setLayerVol(id,v){LAYER_VOL[id]=v;const r=activeLayers.get(id);if(r&&ac)r.gain.gain.setTargetAtTime(v,ac.currentTime,.15);}
+function stopLayer(id){const r=activeLayers.get(id);if(!r)return;activeLayers.delete(id);if(ac){r.gain.gain.setTargetAtTime(0,ac.currentTime,.2);r.source.stop(ac.currentTime+.3);}}
+function stopAllLayers(){[...activeLayers.keys()].forEach(stopLayer);}
+
+/* ================= v3 分片 ================= */
+self.$R=self.$R||{};
+const V3N={'sea-poster':6,'rain':22,'forest':44,'fire':12,'music':7,'seavideo':51};
+async function loadV3(key){if($R[key])return;for(let i=0;i<V3N[key];i++){await new Promise((res,rej)=>{const s=document.createElement('script');s.src='lite/v3/v3-'+key+'-p'+String(i).padStart(3,'0')+'.js';s.onload=res;s.onerror=rej;document.head.appendChild(s);});}}
+function b64url(b64,t){const n=atob(b64),a=new Uint8Array(n.length);for(let i=0;i<n.length;i++)a[i]=n.charCodeAt(i);return URL.createObjectURL(new Blob([a],{type:t}));}
+
+/* ================= 粒子 ================= */
+function runFx(cv,scene){
+  const ctx=cv.getContext('2d');cv.width=cv.clientWidth;cv.height=cv.clientHeight;
+  let parts=[];const W=cv.width,H=cv.height;let raf=null;
+  if(scene==='rain')for(let i=0;i<24;i++)parts.push({x:Math.random()*W,y:Math.random()*H,l:14+Math.random()*18,v:6+Math.random()*4});
+  else if(scene==='forest')for(let i=0;i<10;i++)parts.push({x:Math.random()*W,y:Math.random()*H,r:1.5+Math.random()*2,v:.2+Math.random()*.3,ph:Math.random()*6.28});
+  else if(scene==='music')for(let i=0;i<12;i++)parts.push({x:Math.random()*W,y:H+Math.random()*H,r:2+Math.random()*3,v:.3+Math.random()*.4,ph:Math.random()*6.28});
+  else if(scene==='fire')for(let i=0;i<10;i++)parts.push({x:W/2+(Math.random()-.5)*W*.7,y:H*.85+Math.random()*H*.15,r:2+Math.random()*3,v:.4+Math.random()*.5,ph:Math.random()*6.28});
+  function frame(){ctx.clearRect(0,0,W,H);
+    if(scene==='rain'){ctx.strokeStyle='rgba(200,215,235,.35)';ctx.lineWidth=1;parts.forEach(p=>{ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x-2,p.y+p.l);ctx.stroke();p.y+=p.v;p.x-=p.v*.15;if(p.y>H){p.y=-20;p.x=Math.random()*W;}});}
+    else if(scene==='forest'){parts.forEach(p=>{p.y-=p.v;p.ph+=.02;p.x+=Math.sin(p.ph)*.3;if(p.y<0)p.y=H;ctx.fillStyle='rgba(220,240,190,.5)';ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.28);ctx.fill();});}
+    else if(scene==='music'){parts.forEach(p=>{p.y-=p.v;p.ph+=.015;p.x+=Math.sin(p.ph)*.2;if(p.y<-10){p.y=H+10;p.x=Math.random()*W;}ctx.fillStyle='rgba(210,225,245,.4)';ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.28);ctx.fill();});}
+    else if(scene==='fire'){parts.forEach(p=>{p.y-=p.v;p.ph+=.03;p.x+=Math.sin(p.ph)*.4;if(p.y<H*.55){p.y=H*.9;p.x=W/2+(Math.random()-.5)*W*.7;}ctx.fillStyle='rgba(230,180,130,.45)';ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.28);ctx.fill();});}
+    raf=requestAnimationFrame(frame);}
+  frame();return raf;
+}
+
+/* ================= 路由 ================= */
+const ROOT={'view-home':'home','view-discover':'discover','view-self':'self'};
+let fxRAF=null;
+function go(name){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+  $(name).classList.add('on');
+  const isRoot=!!ROOT[name];
+  $('tabbar').style.display=isRoot?'grid':'none';
+  document.querySelectorAll('#tabbar button').forEach(b=>b.classList.toggle('on',b.dataset.tab===ROOT[name]));
+  window.scrollTo(0,0);
+  if(name==='view-home')renderHome();
+}
+let toastT=null;
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2000);}
+
+/* ================= sheet ================= */
+function openSheet(title,html){$('sheetTitle').textContent=title;$('sheetBody').innerHTML=html;$('sheetMask').classList.add('open');$('sheet').classList.add('open');}
+function closeSheet(){$('sheetMask').classList.remove('open');$('sheet').classList.remove('open');}
+
+/* ================= 开屏 ================= */
+function hideSplash(){const s=$('splash');if(!s)return;s.classList.add('hide');setTimeout(()=>s.remove(),800);}
+$('splashSkip').addEventListener('click',hideSplash);
+setTimeout(hideSplash,2600);
+
+/* ================= 首页 ================= */
+function greet(){const h=new Date().getHours();if(h>=5&&h<11)return'早上好';if(h>=11&&h<13)return'中午好';if(h>=13&&h<18)return'下午好';if(h>=18&&h<21)return'晚上好';return'夜深了';}
+function getDay(){try{return +localStorage.getItem('youth_day')||1;}catch(e){return 1;}}
+function setDay(d){try{localStorage.setItem('youth_day',d);}catch(e){}}
+function recList(){
+  const h=new Date().getHours();
+  return [
+    {cls:'rain',t:'雨夜舒压',d:'听雨声放松',fn:()=>openDetail('rain')},
+    {cls:'ocean',t:'助眠海浪',d:'今晚好眠',fn:()=>startNight('sea',30)},
+    {cls:'forest',t:'林间专注',d:'深呼吸',fn:()=>openDetail('forest')},
+    {cls:'fire',t:'暖炉安心',d:'情绪柔软',fn:()=>openDetail('fire')},
+    {cls:'music',t:'钢琴陪伴',d:'写点什么',fn:()=>openDetail('music')}
+  ];
+}
+function renderHome(){
+  $('homeGreet').textContent=greet();
+  const q=QUOTES[dayOfYear()%QUOTES.length];
+  $('dailyQuote').textContent=q[0];$('dailyQuoteBy').textContent=q[1];
+  const d=getDay();$('contDay').textContent=d;$('contTitle').textContent=TITLES[(d-1)%30];
+  $('recScroll').innerHTML=recList().map((r,i)=>'<button class="rec-card '+r.cls+'" data-rec="'+i+'"><div><div class="rc-t">'+r.t+'</div><div class="rc-d">'+r.d+'</div></div></button>').join('');
+  const s=getStats();
+  $('stMin').textContent=s.minutes||0;$('stDays').textContent=Object.keys(s.days||{}).length;$('stCount').textContent=s.count||0;
+}
+$('recScroll').addEventListener('click',e=>{const b=e.target.closest('[data-rec]');if(!b)return;ensureCtx();recList()[+b.dataset.rec].fn();});
+$('continueCard').addEventListener('click',()=>{openDetail('sea',{courseDay:getDay()});});
+$('quickStart').addEventListener('click',()=>startQuiz());
+
+/* ================= 发现页 ================= */
+const CATS=['推荐','舒压','助眠','专注','情绪','成长','声音'];
+const COURSES=[
+  {t:'30 天温和计划',d:'每天 15 分钟',cover:'forest',act:()=>openDetail('forest',{courseDay:1})},
+  {t:'7 天舒压入门',d:'轻量好坚持',cover:'rain',act:()=>openDetail('rain',{track:7})},
+  {t:'15 天专注养成',d:'找回注意力',cover:'music',act:()=>openDetail('music',{track:15})},
+  {t:'30 天深度练习',d:'完整之旅',cover:'ocean',act:()=>openDetail('sea',{track:30})},
+  {t:'睡前放松专题',d:'助眠四节',cover:'night',act:()=>startNight('rain',30)},
+  {t:'情绪整理专栏',d:'温柔对待自己',cover:'fire',act:()=>openDetail('fire',{})}
+];
+let CUR_CAT='推荐';
+function renderDiscover(){
+  $('catTabs').innerHTML=CATS.map(c=>'<button class="cat-tab '+(c===CUR_CAT?'on':'')+'" data-cat="'+c+'">'+c+'</button>').join('');
+  renderCourses();renderGarden();
+}
+function renderCourses(){
+  const q=($('searchInput').value||'').trim();
+  let list=COURSES.slice();
+  if(q)list=list.filter(c=>c.t.includes(q)||c.d.includes(q));
+  $('courseGrid').innerHTML=list.map((c,i)=>'<div class="course-card" data-ci="'+i+'"><div class="cover '+(c.cover==='night'?'rain':c.cover)+'"></div><div class="cb"><b>'+c.t+'</b><span>'+c.d+'</span></div></div>').join('');
+}
+$('courseGrid').addEventListener('click',e=>{const b=e.target.closest('[data-ci]');if(!b)return;COURSES[+b.dataset.ci].act();});
+$('catTabs').addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(!b)return;CUR_CAT=b.dataset.cat;renderDiscover();if(CUR_CAT==='声音'){$('gardenSection').style.display='block';$('gardenSection').scrollIntoView({behavior:'smooth'});}else $('gardenSection').style.display='none';});
+$('searchInput').addEventListener('input',renderCourses);
+
+/* 声音花园 */
+const GARDEN={layers:[]};
+const GICON={rain:'wrain','heavy-rain':'wrain','forest-rain':'wrain','thunder-rain':'wrain',waves:'wwater',boat:'wwater',stream:'wwater','forest-stream':'wwater',birds:'wforest',wind:'wforest',night:'wforest',fire:'wfire','crackle-fire':'wfire',cafe:'wfire',piano:'wmusic',harp:'wmusic',guitar:'wmusic'};
+function renderGarden(){
+  $('gardenGrid').innerHTML=Object.keys(SOUNDS).map(id=>{
+    const on=GARDEN.layers.includes(id);
+    return '<button class="garden-cell '+(on?'on':'')+'" data-g="'+id+'"><span class="g-ic">'+(on?checkIc():dotIc(GICON[id]))+'</span><span class="nm">'+SOUNDS[id].name+'</span></button>';
+  }).join('');
+  const p=$('gardenPanel');
+  if(!GARDEN.layers.length){p.innerHTML='<div style="font-size:14px;color:var(--ink-dim)">还没选声音。点上面的小格，点亮一层试试。</div>';return;}
+  let h='<div style="font-size:14px;font-weight:600">已选声音</div>';
+  GARDEN.layers.forEach(id=>{h+='<div class="garden-row"><div class="cap"><span>'+SOUNDS[id].name+'</span><span>'+Math.round((LAYER_VOL[id]??1)*100)+'%</span></div><input type="range" data-gv="'+id+'" min="0" max="1" step="0.05" value="'+(LAYER_VOL[id]??1)+'"></div>';});
+  h+='<button class="stop-btn" id="gStop">停止全部声音</button>';
+  p.innerHTML=h;
+}
+function checkIc(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';}
+function dotIc(k){const m={wrain:'<path d="M7 14a4 4 0 1 1 .7-7.9A5 5 0 0 1 17 7.5 3.3 3.3 0 0 1 16.5 14z"/>',wwater:'<path d="M12 4.5c-1.8 2.4-3 4.3-3 6.2a3 3 0 0 0 6 0c0-1.9-1.2-3.8-3-6.2z"/>',wforest:'<path d="M12 3l4.5 6h-9z"/><path d="M8 9.5h8L19 15H5z"/><path d="M12 15v6"/>',wfire:'<path d="M12 3c1 3-2 4.5-2 7a4 4 0 0 0 8 0c0-1.5-.5-2.8-1.5-4 .2 1.5-.5 2.3-1.5 2.5.3-2.3-.8-4.5-3-5.5z"/>',wmusic:'<path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/>'};return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'+(m[k]||'')+'</svg>';}
+$('gardenGrid').addEventListener('click',e=>{
+  const b=e.target.closest('[data-g]');if(!b)return;ensureCtx();const id=b.dataset.g;
+  if(GARDEN.layers.includes(id)){GARDEN.layers=GARDEN.layers.filter(x=>x!==id);stopLayer(id);}
+  else{if(GARDEN.layers.length>=2){toast('最多同时两层声音，先关一个');return;}GARDEN.layers.push(id);startLayer(id);}
+  renderGarden();
+});
+$('gardenPanel').addEventListener('click',e=>{if(e.target.closest('#gStop')){GARDEN.layers.slice().forEach(stopLayer);GARDEN.layers=[];renderGarden();toast('声音都停了');}});
+$('gardenPanel').addEventListener('input',e=>{const g=e.target.closest('[data-gv]');if(g){setLayerVol(g.dataset.gv,+e.target.value);e.target.previousElementSibling.querySelector('span').textContent=Math.round(e.target.value*100)+'%';}});
+
+/* 发现页功能入口 */
+document.querySelectorAll('[data-fn]').forEach(b=>b.addEventListener('click',()=>{
+  const f=b.dataset.fn;ensureCtx();
+  if(f==='start')startQuiz();
+  else if(f==='timer')openDetail('sea',{dur:600});
+  else if(f==='breath')openBreath('soft');
+  else if(f==='scan')openScan();
+  else if(f==='mood')openMoodSheet();
+  else if(f==='garden'){CUR_CAT='声音';renderDiscover();$('gardenSection').style.display='block';$('gardenSection').scrollIntoView({behavior:'smooth'});}
+}));
+
+/* ================= 问答 ================= */
+const QZ={step:0,purpose:null,dur:300,voice:true,scene:'rain'};
+const Q_STEPS=[
+  {q:'你现在想为什么而安静？',opts:[['舒压','rain'],['助眠','sea'],['专注','music'],['情绪','fire']]},
+  {q:'想练多久？',opts:[['3 分钟',180],['5 分钟',300],['10 分钟',600],['15 分钟',900]]},
+  {q:'要温柔的引导词吗？',opts:[['要 · 有人带我',1],['不用 · 只要音景',0]]}
+];
+function startQuiz(){QZ.step=0;QZ.purpose=null;QZ.dur=300;QZ.voice=true;go('view-quiz');renderQuiz();}
+function renderQuiz(){
+  const st=Q_STEPS[QZ.step];
+  $('quizStep').textContent='第 '+(QZ.step+1)+' 步 / '+Q_STEPS.length+' 步';
+  $('quizQ').textContent=st.q;
+  $('quizOpts').innerHTML=st.opts.map((o,i)=>{
+    let sel=false;
+    if(QZ.step===0)sel=QZ.purpose===o[1];
+    if(QZ.step===1)sel=QZ.dur===o[1];
+    if(QZ.step===2)sel=QZ.voice===o[1];
+    return '<button class="opt '+(sel?'on':'')+'" data-o="'+i+'"><span class="oi">'+(sel?'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>':'')+'</span>'+o[0]+'</button>';
+  }).join('');
+  $('quizBack').style.display=QZ.step>0?'block':'none';
+  $('quizNext').textContent=QZ.step===Q_STEPS.length-1?'开始':'下一步';
+}
+$('quizOpts').addEventListener('click',e=>{
+  const b=e.target.closest('[data-o]');if(!b)return;const i=+b.dataset.o,o=Q_STEPS[QZ.step].opts[i][1];
+  if(QZ.step===0)QZ.purpose=o;if(QZ.step===1)QZ.dur=o;if(QZ.step===2)QZ.voice=!!o;
+  renderQuiz();
+});
+$('quizBack').addEventListener('click',()=>{if(QZ.step>0){QZ.step--;renderQuiz();}});
+$('quizNext').addEventListener('click',()=>{
+  if(QZ.step===0&&!QZ.purpose){toast('选一个方向吧');return;}
+  if(QZ.step<Q_STEPS.length-1){QZ.step++;renderQuiz();}
+  else{openDetail(QZ.purpose||'rain',{quiz:true});}
+});
+
+/* ================= 详情 → 播放 ================= */
+let CUR_SCENE='rain';
+function openDetail(sceneKey,opts){
+  opts=opts||{};CUR_SCENE=sceneKey;
+  const sc=SCENES[sceneKey];
+  $('detailHero').className='detail-hero '+sc.cover;
+  $('detailName').textContent=sc.name;$('detailDesc').textContent=sc.desc;
+  $('detailChips').innerHTML=['深呼吸','身体放松','专注当下'].map(t=>'<span class="chip">'+t+'</span>').join('');
+  $('detailStart').onclick=()=>startPlayer(sceneKey,opts);
+  go('view-detail');
+}
+$('stateSlider').addEventListener('input',e=>{$('stateVal').textContent=['活跃','平静','放松'][+e.target.value];});
+$('detailBack').addEventListener('click',()=>go('view-home'));
+
+/* ================= 沉浸播放 ================= */
+const PL={scene:null,dur:300,elapsed:0,playing:false,tickIv:null,voiceOn:true,queue:[],qIdx:0,layers:[],fxRaf:null,quitArmed:false,fromQuiz:false,courseDay:0};
+const RING_LEN=628.3;
+function setPlayIc(playing){$('playPause').innerHTML=playing?'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="7" y="5" width="3.4" height="14" rx="1.2"/><rect x="13.6" y="5" width="3.4" height="14" rx="1.2"/></svg>':'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>';}
+async function mountScene(sceneKey){
+  const sc=SCENES[sceneKey];
+  const photo=$('scenePhoto'),video=$('sceneVideo');
+  video.pause();video.removeAttribute('src');video.load();
+  photo.style.display='none';video.style.display='none';
+  if(PL.fxRaf){cancelAnimationFrame(PL.fxRaf);PL.fxRaf=null;}
+  if(sceneKey==='sea'){
+    try{
+      await loadV3('sea-poster');if(!$R['sea-poster'])throw 0;
+      const pb=b64url($R['sea-poster'],'image/jpeg');photo.src=pb;photo.style.display='block';
+      await loadV3('seavideo');if(!$R['seavideo'])throw 0;
+      video.poster=pb;video.src=b64url($R['seavideo'],'video/mp4');video.muted=true;video.loop=true;video.setAttribute('playsinline','');video.style.display='block';
+      const pr=video.play();if(pr&&pr.catch)pr.catch(()=>{video.style.display='none';photo.style.display='block';});
+    }catch(e){photo.src=sc.img;photo.style.display='block';}
+  }else{
+    photo.src=sc.img;photo.style.display='block';
+  }
+  setTimeout(()=>{if(PL.scene===sceneKey)PL.fxRaf=runFx($('fxCanvas'),sc.fx);},80);
+}
+function startPlayer(sceneKey,opts){
+  opts=opts||{};ensureCtx();
+  PL.scene=sceneKey;PL.dur=opts.dur||QZ.dur||300;PL.elapsed=0;PL.playing=true;PL.voiceOn=(opts.voice!==undefined)?opts.voice:QZ.voice;PL.quitArmed=false;
+  PL.courseDay=opts.courseDay||0;PL.fromQuiz=!!opts.quiz;
+  stopAllLayers();GARDEN.layers=[];
+  go('view-player');
+  mountScene(sceneKey);
+  // 分层
+  const sc=SCENES[sceneKey];
+  PL.layers=sc.def.slice();PL.layers.forEach(id=>startLayer(id));
+  $('playerTag').textContent=sc.name+' · '+(PL.voiceOn?'有引导':'纯音景');
+  $('volCard').style.display=PL.voiceOn?'block':'none';
+  $('quitTxt').textContent='退出';$('quitBtn').classList.remove('confirm');
+  setPlayIc(true);
+  scheduleVoice();
+  clearInterval(PL.tickIv);PL.tickIv=setInterval(tick,1000);
+  updateRing();
+}
+function startNight(sceneKey,mins){startPlayer(sceneKey,{dur:(mins||30)*60,voice:false});}
+function scheduleVoice(){
+  if(!PL.voiceOn)return;
+  const day=PL.courseDay||getDay();
+  const pad=String(day).padStart(2,'0');
+  PL.queue=['breath-intro.wav','day'+pad+'-1.mp3','day'+pad+'-2.mp3','day'+pad+'-3.mp3','day'+pad+'-4.mp3'];
+  PL.qIdx=0;playVoice();
+}
+function playVoice(){
+  if(!PL.voiceOn||PL.qIdx>=PL.queue.length)return;
+  voiceAudio.onended=()=>{PL.qIdx++;playVoice();};
+  voiceAudio.src=PL.queue[PL.qIdx];voiceAudio.volume=$('voiceVol').value;
+  voiceAudio.play().catch(()=>{PL.qIdx++;playVoice();});
+}
+function tick(){
+  if(!PL.playing)return;
+  PL.elapsed++;
+  updateRing();
+  if(PL.elapsed>=PL.dur)finishPlayer();
+}
+function updateRing(){
+  const rem=Math.max(0,PL.dur-PL.elapsed);
+  $('ringTime').textContent=fmt(rem);
+  const p=PL.elapsed/PL.dur;
+  $('ringProg').style.strokeDashoffset=RING_LEN*p;
+}
+function togglePlay(){
+  ensureCtx();
+  PL.playing=!PL.playing;
+  setPlayIc(PL.playing);
+  if(PL.playing){voiceAudio.play().catch(()=>{});}else{voiceAudio.pause();}
+}
+$('playPause').addEventListener('click',togglePlay);
+$('back15').addEventListener('click',()=>{PL.elapsed=Math.max(0,PL.elapsed-15);updateRing();});
+$('fwd15').addEventListener('click',()=>{PL.elapsed=Math.min(PL.dur,PL.elapsed+15);updateRing();});
+$('volEntry').addEventListener('click',()=>{$('volCard').style.display=$('volCard').style.display==='none'?'block':'none';});
+$('voiceVol').addEventListener('input',e=>{voiceAudio.volume=e.target.value;});
+$('ambVol').addEventListener('input',applyMaster);
+$('quitBtn').addEventListener('click',()=>{
+  if(!PL.quitArmed){PL.quitArmed=true;$('quitBtn').classList.add('confirm');$('quitTxt').textContent='再点一次退出';setTimeout(()=>{PL.quitArmed=false;$('quitBtn').classList.remove('confirm');$('quitTxt').textContent='退出';},2500);return;}
+  quitPlayer();
+});
+function quitPlayer(){
+  PL.playing=false;clearInterval(PL.tickIv);PL.tickIv=null;
+  voiceAudio.pause();voiceAudio.removeAttribute('src');voiceAudio.load();
+  stopAllLayers();if(PL.fxRaf){cancelAnimationFrame(PL.fxRaf);PL.fxRaf=null;}
+  const v=$('sceneVideo');v.pause();v.removeAttribute('src');v.load();
+  go('view-home');
+}
+function finishPlayer(){
+  PL.playing=false;clearInterval(PL.tickIv);PL.tickIv=null;
+  voiceAudio.pause();stopAllLayers();
+  const mins=Math.round(PL.dur/60);
+  logPractice(mins);
+  if(PL.courseDay){setDay(Math.min(30,PL.courseDay+1));}
+  openReport(mins);
+}
+
+/* ================= 完成报告 ================= */
+let beforeMood=null,afterMood=null;
+function openReport(mins){
+  beforeMood=null;afterMood=null;$('reportNote').value='';
+  $('reportTime').textContent='本次 '+mins+' 分钟';
+  $('beforeMood').innerHTML=MOODS.map(m=>'<button class="mood-f" data-m="'+m[1]+'">'+face(m[1])+'</button>').join('');
+  $('afterMood').innerHTML=MOODS.map(m=>'<button class="mood-f" data-m="'+m[1]+'">'+face(m[1])+'</button>').join('');
+  go('view-report');
+}
+function bindMoodPick(id,key){$(id).addEventListener('click',e=>{const b=e.target.closest('[data-m]');if(!b)return;$(id).querySelectorAll('.mood-f').forEach(x=>x.classList.remove('on'));b.classList.add('on');if(id==='beforeMood')beforeMood=b.dataset.m;else afterMood=b.dataset.m;});}
+bindMoodPick('beforeMood');bindMoodPick('afterMood');
+$('reportSave').addEventListener('click',()=>{
+  try{
+    const list=JSON.parse(localStorage.getItem('youth_sessions')||'[]');
+    list.push({date:new Date().toDateString(),mins:Math.round(PL.dur/60),before:beforeMood,after:afterMood,note:$('reportNote').value.trim()});
+    localStorage.setItem('youth_sessions',JSON.stringify(list));
+  }catch(e){}
+  toast('已保存，下次见');
+  go('view-home');
+});
+
+/* ================= 呼吸 ================= */
+const BP={soft:{name:'舒缓呼吸',phases:[{t:'吸气',s:4},{t:'呼气',s:6}],dur:180},p478:{name:'4-7-8 安眠呼吸',phases:[{t:'吸气',s:4},{t:'屏息',s:7},{t:'呼气',s:8}],dur:300},box:{name:'盒子呼吸',phases:[{t:'吸气',s:4},{t:'屏息',s:4},{t:'呼气',s:4},{t:'屏息',s:4}],dur:180},panic:{name:'60 秒平复',phases:[{t:'吸气',s:4},{t:'呼气',s:6}],dur:60,fixed:true}};
+const RB={preset:null,dur:180,pi:0,sp:0,left:0,playing:false,started:false,timer:null};
+function openBreath(key){
+  RB.preset=BP[key];RB.dur=RB.preset.dur;if(RB.preset.fixed)RB.dur=RB.preset.dur;
+  RB.pi=0;RB.left=RB.dur;RB.playing=false;RB.started=false;
+  $('breathTitle').textContent=RB.preset.name;
+  $('rbPhase').textContent='准备';$('rbCount').textContent='';
+  $('rbTime').textContent=fmt(RB.dur);
+  $('breathStart').textContent='开始';
+  $('breathOrb').style.transform='scale(1)';
+  $('breathDurs').innerHTML=RB.preset.fixed?'':[60,180,300,600].map(s=>'<button class="chip '+(s===RB.dur?'on':'')+'" data-d="'+s+'">'+(s/60)+' 分钟</button>').join('');
+  go('view-breath');
+}
+$('breathDurs').addEventListener('click',e=>{const b=e.target.closest('[data-d]');if(!b||RB.started)return;RB.dur=+b.dataset.d;RB.left=RB.dur;$('rbTime').textContent=fmt(RB.dur);document.querySelectorAll('#breathDurs .chip').forEach(c=>c.classList.toggle('on',c===b));});
+function rbApply(){const ph=RB.preset.phases[RB.pi];RB.sp=ph.s;$('rbPhase').textContent=ph.t;$('rbCount').textContent=ph.s;const o=$('breathOrb');if(ph.t==='吸气'){o.style.transitionDuration=ph.s+'s';o.style.transform='scale(1.18)';}else if(ph.t==='呼气'){o.style.transitionDuration=ph.s+'s';o.style.transform='scale(.82)';}else{o.style.transitionDuration='300ms';}}
+$('breathStart').addEventListener('click',()=>{
+  ensureCtx();
+  if(!RB.started){RB.started=true;RB.playing=true;rbApply();$('breathStart').textContent='暂停';clearInterval(RB.timer);RB.timer=setInterval(()=>{RB.sp--;if(RB.sp<=0){RB.pi=(RB.pi+1)%RB.preset.phases.length;rbApply();}else $('rbCount').textContent=RB.sp;RB.left--;$('rbTime').textContent=fmt(Math.max(0,RB.left));if(RB.left<=0){clearInterval(RB.timer);RB.playing=false;const m=Math.max(1,Math.round(RB.dur/60));logPractice(m);toast('完成了约 '+m+' 分钟');go('view-home');}},1000);}
+  else if(RB.playing){RB.playing=false;$('breathStart').textContent='继续';}
+  else{RB.playing=true;$('breathStart').textContent='暂停';}
+});
+$('breathQuit').addEventListener('click',()=>{clearInterval(RB.timer);RB.playing=false;go('view-discover');});
+
+/* ================= 身体扫描 ================= */
+const SC_PARTS=[['头顶','头皮放松'],['面部','松开眉心'],['后颈','不再绷紧'],['肩膀','往下沉'],['胸口','自然起伏'],['心口','温柔待己'],['腹部','跟着呼吸'],['双手','手指变软'],['臀部','稳稳坐着'],['双脚','被接住']];
+const SC={step:0,playing:false,started:false,timer:null};
+function openScan(){SC.step=0;SC.playing=false;SC.started=false;$('scanPart').textContent='准备';$('scanProg').textContent='0 / '+SC_PARTS.length;$('scanGuide').textContent='坐下来，轻轻闭上眼。';$('scanStart').textContent='开始';go('view-scan');}
+$('scanStart').addEventListener('click',()=>{
+  if(!SC.started){SC.started=true;SC.playing=true;$('scanStart').textContent='暂停';scStep();clearInterval(SC.timer);SC.timer=setInterval(()=>{SC.step++;if(SC.step>=SC_PARTS.length){clearInterval(SC.timer);logPractice(3);toast('身体放松完成');go('view-home');return;}scStep();},20000);}
+  else if(SC.playing){SC.playing=false;$('scanStart').textContent='继续';}
+  else{SC.playing=true;$('scanStart').textContent='暂停';}
+});
+function scStep(){const p=SC_PARTS[SC.step];$('scanPart').textContent=p[0];$('scanProg').textContent=(SC.step+1)+' / '+SC_PARTS.length;$('scanGuide').textContent=p[1]+'，慢慢松下来。';}
+$('scanQuit').addEventListener('click',()=>{clearInterval(SC.timer);SC.playing=false;go('view-discover');});
+
+/* ================= 自我页 ================= */
+function getProfile(){try{return JSON.parse(localStorage.getItem('youth_profile'))||{name:'练习者'};}catch(e){return{name:'练习者'};}}
+function renderSelf(){
+  const pr=getProfile();$('selfName').textContent=pr.name;
+  $('selfStreak').textContent='连续 '+streak()+' 天';
+  const s=getStats();$('selfMin').textContent=s.minutes||0;$('selfDays').textContent=Object.keys(s.days||{}).length;$('selfCount').textContent=s.count||0;
+}
+$('editName').addEventListener('click',()=>{
+  const n=prompt('怎么称呼你？',getProfile().name);if(n&&n.trim()){try{localStorage.setItem('youth_profile',JSON.stringify({name:n.trim()}));}catch(e){}renderSelf();toast('已更新称呼');}
+});
+function openMoodSheet(){
+  const list=JSON.parse(localStorage.getItem('youth_mood')||'[]');
+  openSheet('心情打卡','<div class="mood-pick" style="justify-content:flex-start">'+MOODS.map(m=>'<button class="mood-f" data-m="'+m[1]+'">'+face(m[1])+'</button>').join('')+'</div><p style="font-size:13px;color:var(--ink-dim);margin-top:8px">今天的心情会存到下面。</p><div id="moodList" style="margin-top:12px">'+(list.length?list.slice(-8).reverse().map(m=>'<div style="padding:10px 0;border-top:1px solid var(--line);font-size:14px">'+m.mood+' · '+esc(m.date)+(m.note?' — '+esc(m.note):'')+'</div>').join(''):'<div style="color:var(--ink-faint);font-size:14px;padding:12px 0">还没有记录</div>')+'</div>');
+  $('sheetBody').querySelectorAll('.mood-f').forEach(b=>b.addEventListener('click',()=>{
+    const list=JSON.parse(localStorage.getItem('youth_mood')||'[]');
+    list.push({date:new Date().toDateString(),mood:MOODS.find(m=>m[1]===b.dataset.m)[0],note:''});
+    localStorage.setItem('youth_mood',JSON.stringify(list));toast('心情已记下');closeSheet();
+  }));
+}
+document.querySelectorAll('[data-self]').forEach(b=>b.addEventListener('click',()=>{
+  const s=b.dataset.self;
+  if(s==='records'){
+    const st=getStats();
+    openSheet('练习记录','<div style="font-size:15px;line-height:2"><div>累计时长：<b>'+(st.minutes||0)+'</b> 分钟</div><div>练习天数：<b>'+Object.keys(st.days||{}).length+'</b> 天</div><div>练习次数：<b>'+(st.count||0)+'</b> 次</div><div>连续：<b>'+streak()+'</b> 天</div></div><p style="font-size:13px;color:var(--ink-faint);margin-top:10px">数据只存在这台手机上。</p>');
+  }else if(s==='mood'){openMoodSheet();}
+  else if(s==='favs'){openSheet('我的收藏','<div style="color:var(--ink-faint);font-size:14px;line-height:1.8">练习过的场景和课程会在这里出现。<br>在场景页点右上角的星标即可收藏。<br><br>（收藏功能即将随更多内容上线）</div>');}
+  else if(s==='device'){openSheet('我的设备','<p style="font-size:15px;line-height:1.9">你的脑机接口耳机还在开发中。此版本先用音景与呼吸引导走通练习闭环。</p><p style="font-size:14px;color:var(--ink-dim);margin-top:10px;line-height:1.9">硬件就绪后通过蓝牙连接，实时读取脑电频段；当前不能判断真实放松程度。</p>');}
+  else if(s==='ai'){openSheet('小栖 AI','<div style="text-align:center;padding:20px 0"><div style="width:56px;height:56px;border-radius:50%;background:var(--teal-tint);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;color:var(--teal-deep)"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/></svg></div><p style="font-size:15px">小栖 AI 即将上线。</p><p style="font-size:13px;color:var(--ink-dim);margin-top:6px">到时候可以和它聊聊你的状态，它会陪你选练习。</p></div>');}
+  else if(s==='settings'){openSheet('设置','<div style="font-size:15px;line-height:2.2">动效（呼吸光环）：<span id="setMotion">开</span><br>提醒：即将上线</div>');}
+}));
+
+/* ================= tabbar ================= */
+document.querySelectorAll('#tabbar button').forEach(b=>b.addEventListener('click',()=>{
+  const t=b.dataset.tab;
+  if(t==='home')go('view-home');
+  else if(t==='discover'){go('view-discover');renderDiscover();}
+  else if(t==='self'){go('view-self');renderSelf();}
+}));
+$('sheetClose').addEventListener('click',closeSheet);
+$('sheetMask').addEventListener('click',closeSheet);
+
+/* 退出时停音 */
+window.addEventListener('pagehide',()=>{clearInterval(PL.tickIv);clearInterval(RB.timer);clearInterval(SC.timer);stopAllLayers();voiceAudio.pause();});
+
+/* ================= 初始化 ================= */
+renderHome();
+renderDiscover();
+go('view-home');
+</script>
+
+</html>

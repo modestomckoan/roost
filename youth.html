@@ -247,68 +247,6 @@ textarea.note{width:100%;min-height:90px;border:1.5px solid var(--line);border-r
 #toast{position:fixed;left:50%;bottom:calc(120px + var(--sab));transform:translateX(-50%) translateY(20px);background:rgba(30,45,42,.94);color:#fff;font-size:15px;padding:12px 20px;border-radius:14px;opacity:0;pointer-events:none;transition:.3s;z-index:150;max-width:84%;text-align:center;}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-/* ================= 流动极光背景 ================= */
-#aurora{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
-#aurora .blob{position:absolute;border-radius:50%;filter:blur(72px);opacity:.5;will-change:transform;}
-#aurora .b1{width:62vmax;height:62vmax;left:-20vmax;top:-18vmax;background:radial-gradient(circle at 50% 50%,rgba(143,195,216,.6),transparent 70%);animation:drift1 27s ease-in-out infinite;}
-#aurora .b2{width:56vmax;height:56vmax;right:-22vmax;top:6vmax;background:radial-gradient(circle at 50% 50%,rgba(150,206,186,.55),transparent 70%);animation:drift2 33s ease-in-out infinite;}
-#aurora .b3{width:50vmax;height:50vmax;left:-12vmax;bottom:-24vmax;background:radial-gradient(circle at 50% 50%,rgba(196,224,236,.5),transparent 70%);animation:drift3 31s ease-in-out infinite;}
-@keyframes drift1{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(8vmax,6vmax) scale(1.12);}}
-@keyframes drift2{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-7vmax,8vmax) scale(1.08);}}
-@keyframes drift3{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(9vmax,-7vmax) scale(1.15);}}
-.view{position:relative;z-index:1;}
-@keyframes rise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
-.view.on .wrap > *{animation:rise .55s cubic-bezier(.22,.8,.3,1) both;}
-.view.on .wrap > *:nth-child(2){animation-delay:.05s;}
-.view.on .wrap > *:nth-child(3){animation-delay:.1s;}
-.view.on .wrap > *:nth-child(4){animation-delay:.15s;}
-.view.on .wrap > *:nth-child(5){animation-delay:.2s;}
-.view.on .wrap > *:nth-child(6){animation-delay:.25s;}
-.view.on .wrap > *:nth-child(7){animation-delay:.3s;}
-.view.on .wrap > *:nth-child(8){animation-delay:.35s;}
-@media (prefers-reduced-motion:reduce){
-  #aurora .blob{animation:none;}
-  .view.on .wrap > *{animation:none;}
-}
-
-/* ================= 心境界（生成式心境图） ================= */
-.mind-hero{position:relative;width:100%;max-width:330px;aspect-ratio:1/1;margin:16px auto 2px;border-radius:30px;overflow:hidden;box-shadow:0 20px 50px rgba(70,110,120,.2),0 2px 10px rgba(70,110,120,.08);border:1px solid rgba(255,255,255,.7);}
-.mind-hero canvas{width:100%;height:100%;display:block;}
-.mind-hint{position:absolute;left:0;right:0;bottom:12px;text-align:center;font-size:13px;color:#5E7270;pointer-events:none;letter-spacing:.5px;}
-.mind-echo{text-align:center;font-size:15px;color:var(--ink-dim);line-height:1.7;min-height:24px;margin:6px 10px 2px;}
-.mind-hero.bloom{animation:bloom .9s cubic-bezier(.22,.8,.3,1);}
-@keyframes bloom{0%{transform:scale(.94);opacity:.4;}60%{transform:scale(1.015);}100%{transform:scale(1);opacity:1;}}
-
-/* 自我页花园横幅 */
-.garden-banner{display:flex;align-items:center;gap:14px;padding:14px 16px;margin-top:14px;cursor:pointer;position:relative;overflow:hidden;background:linear-gradient(135deg,#E3F1EC 0%,#D9E9F1 100%);}
-.garden-banner canvas{width:54px;height:54px;border-radius:50%;flex:none;box-shadow:0 4px 14px rgba(90,140,130,.25);}
-.garden-banner .gb-t{flex:1;min-width:0;}
-.garden-banner .gb-t b{font-size:16px;display:block;}
-.garden-banner .gb-t span{font-size:12.5px;color:var(--ink-dim);}
-.garden-banner .go{color:var(--teal-deep);width:22px;height:22px;flex:none;}
-
-/* 心境花园视图 */
-.mg-head{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
-.mg-summary{display:flex;gap:10px;margin:10px 0 16px;}
-.mg-summary .ms{flex:1;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;text-align:center;}
-.mg-summary .ms b{font-size:22px;display:block;color:var(--teal-deep);}
-.mg-summary .ms span{font-size:12px;color:var(--ink-faint);}
-.mg-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.mg-cell{border-radius:20px;overflow:hidden;cursor:pointer;background:var(--card);box-shadow:var(--shadow-soft);border:1px solid var(--line);}
-.mg-cell canvas{width:100%;aspect-ratio:1/1.06;display:block;}
-.mg-cell .mg-cap{padding:8px 12px 11px;}
-.mg-cell .mg-cap b{font-size:13px;display:block;font-weight:600;}
-.mg-cell .mg-cap span{font-size:11px;color:var(--ink-faint);display:block;margin-top:1px;}
-.mg-empty{margin-top:40px;text-align:center;padding:30px 20px;}
-.mg-empty .seed{width:96px;height:96px;border-radius:50%;margin:0 auto 18px;background:radial-gradient(circle at 40% 35%,#fff,#CFE6E0 78%);box-shadow:0 14px 40px rgba(90,140,130,.25);animation:breathe 7s ease-in-out infinite;}
-.mg-empty p{color:var(--ink-dim);font-size:14px;margin-top:6px;}
-.mg-detail-canvas{width:100%;max-width:300px;aspect-ratio:1/1;margin:0 auto 14px;border-radius:24px;display:block;box-shadow:0 14px 40px rgba(70,110,120,.18);border:1px solid var(--line);}
-.mg-meta{font-size:14px;line-height:2;color:var(--ink-dim);}
-.mg-meta .mf{display:flex;align-items:center;gap:10px;}
-.mg-meta .mf svg{width:26px;height:26px;color:var(--teal-deep);flex:none;}
-.mg-save{margin-top:16px;width:100%;min-height:52px;border-radius:var(--r-btn);background:var(--accent);color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;gap:8px;}
-.mg-save svg{width:20px;height:20px;}
-
 @media (min-width:768px){
   .wrap,.quiz,.report-wrap{max-width:560px;margin-left:auto;margin-right:auto;}
 }
@@ -322,9 +260,6 @@ textarea.note{width:100%;min-height:90px;border:1.5px solid var(--line);border-r
   <div class="splash-s">每天几分钟，给自己一个安静的角落</div>
   <button class="splash-skip" id="splashSkip">跳过</button>
 </div>
-
-<!-- 流动极光背景 -->
-<div id="aurora" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
 
 <!-- ========== 冥想首页 ========== -->
 <section id="view-home" class="view">
@@ -415,12 +350,6 @@ textarea.note{width:100%;min-height:90px;border:1.5px solid var(--line);border-r
       <div class="card st"><div class="b" id="selfCount">0</div><div class="k">次数</div></div>
     </div>
 
-    <button class="card garden-banner" id="gardenBanner">
-      <canvas id="gbCanvas" width="108" height="108"></canvas>
-      <div class="gb-t"><b>心境花园</b><span id="gbSub">已种下 0 朵 · 每一次安静都在生长</span></div>
-      <svg class="go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
-    </button>
-
     <div class="sec-label">我的</div>
     <div class="func-grid" style="grid-template-columns:repeat(2,1fr)">
       <button class="card func" data-self="records"><div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/></svg></div><span>练习记录</span></button>
@@ -506,36 +435,12 @@ textarea.note{width:100%;min-height:90px;border:1.5px solid var(--line);border-r
   <div class="report-wrap">
     <h1>这一段，完成了</h1>
     <div class="sub" id="reportTime">本次 15 分钟</div>
-    <div class="mind-hero" id="mindHero"><canvas id="mindCanvas"></canvas><div class="mind-hint" id="mindHint">选完此刻的心情，为你长出这一朵</div></div>
-    <div class="mind-echo" id="mindEcho"></div>
     <div class="mood-row-label">开始前的心情</div>
     <div class="mood-pick" id="beforeMood"></div>
     <div class="mood-row-label">现在的心情</div>
     <div class="mood-pick" id="afterMood"></div>
     <textarea class="note" id="reportNote" placeholder="此刻的感受，写几句给以后的自己（可留空）" maxlength="120"></textarea>
-    <button class="btn btn-primary" id="reportSave" style="width:100%;margin-top:16px">保存并种下这朵</button>
-  </div>
-</section>
-
-<!-- ========== 心境花园 ========== -->
-<section id="view-mindgarden" class="view">
-  <div class="wrap">
-    <div class="mg-head">
-      <button class="back-btn" id="mgBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.5 5.5L8 12l6.5 6.5"/></svg></button>
-      <div class="calm-title">心境花园</div>
-    </div>
-    <div style="font-size:13.5px;color:var(--ink-dim);margin-top:10px">每一次安静，都长出一朵只属于你的光。</div>
-    <div class="mg-summary">
-      <div class="ms"><b id="mgCount">0</b><span>已种</span></div>
-      <div class="ms"><b id="mgStreak">0</b><span>连续天</span></div>
-      <div class="ms"><b id="mgMin">0</b><span>累计分钟</span></div>
-    </div>
-    <div class="mg-grid" id="mgGrid"></div>
-    <div class="mg-empty card" id="mgEmpty">
-      <div class="seed"></div>
-      <b>花园还是一片安静的空地</b>
-      <p>完成第一次冥想，在这里种下第一朵光。</p>
-    </div>
+    <button class="btn btn-primary" id="reportSave" style="width:100%;margin-top:16px">保存并结束</button>
   </div>
 </section>
 
